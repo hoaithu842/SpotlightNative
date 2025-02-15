@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Spotlight</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="library">Your Library</string>
+    <string name="premium">Premium</string>
 </resources>
