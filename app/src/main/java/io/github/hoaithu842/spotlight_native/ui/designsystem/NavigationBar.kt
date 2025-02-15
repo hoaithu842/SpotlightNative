@@ -1,13 +1,14 @@
 package io.github.hoaithu842.spotlight_native.ui.designsystem
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationRailItem
-import androidx.compose.material3.NavigationRailItemDefaults
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,20 +20,19 @@ import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
 @Composable
 fun SpotlightNavigationBar(
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
+    content: @Composable RowScope.() -> Unit,
 ) {
     NavigationBar(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight(),
+        content = content,
         containerColor = MaterialTheme.colorScheme.background,
-    ) {
-        content()
-    }
+    )
 }
 
 @Composable
-fun SpotlightNavigationBarItem(
+fun RowScope.SpotlightNavigationBarItem(
     title: String,
     selected: Boolean,
     icon: Int,
@@ -40,7 +40,7 @@ fun SpotlightNavigationBarItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    NavigationRailItem(
+    NavigationBarItem(
         selected = selected,
         onClick = onClick,
         icon = {
@@ -48,14 +48,12 @@ fun SpotlightNavigationBarItem(
                 Icon(
                     painter = painterResource(selectedIcon),
                     contentDescription = "",
-                    tint = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.size(SpotlightDimens.NavigationBarIconSize),
                 )
             } else {
                 Icon(
                     painter = painterResource(icon),
                     contentDescription = "",
-                    tint = NavigationGray,
                     modifier = Modifier.size(SpotlightDimens.NavigationBarIconSize),
                 )
             }
@@ -64,19 +62,17 @@ fun SpotlightNavigationBarItem(
             Text(
                 text = title,
                 style = SpotlightTextStyle.Text11W400,
-                color = if (!selected) NavigationGray else MaterialTheme.colorScheme.onBackground,
                 overflow = TextOverflow.Ellipsis,
             )
         },
-        colors = NavigationRailItemDefaults.colors(
-            indicatorColor = Color.Transparent
-//            selectedIconColor = selectedIconColor,
-//            selectedTextColor = selectedTextColor,
-//            selectedIndicatorColor = indicatorColor,
-//            unselectedIconColor = unselectedIconColor,
-//            unselectedTextColor = unselectedTextColor,
-//            disabledIconColor = disabledIconColor,
-//            disabledTextColor = disabledTextColor,
+        colors = NavigationBarItemColors(
+            selectedIndicatorColor = Color.Transparent,
+            selectedIconColor = MaterialTheme.colorScheme.onBackground,
+            selectedTextColor = MaterialTheme.colorScheme.onBackground,
+            unselectedIconColor = NavigationGray,
+            unselectedTextColor = NavigationGray,
+            disabledIconColor = NavigationGray,
+            disabledTextColor = NavigationGray,
         ),
         modifier = modifier,
     )
