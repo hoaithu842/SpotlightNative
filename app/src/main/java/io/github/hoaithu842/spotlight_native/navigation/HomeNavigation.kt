@@ -14,8 +14,12 @@ fun NavController.navigateToHomeScreen(navOptions: NavOptions? = null) =
     navigate(route = HomeRoute, navOptions = navOptions)
 
 
-fun NavGraphBuilder.homeScreen() {
+fun NavGraphBuilder.homeScreen(
+    onAvatarClick: () -> Unit,
+) {
     composable<HomeRoute> {
-        HomeScreen()
+        HomeScreen(
+            onAvatarClick = onAvatarClick,
+        )
     }
 }

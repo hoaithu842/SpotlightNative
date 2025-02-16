@@ -7,12 +7,13 @@ import androidx.navigation.compose.NavHost
 @Composable
 fun SpotlightNavHost(
     navHostController: NavHostController,
+    onAvatarClick: () -> Unit
 ) {
     NavHost(
         navController = navHostController,
         startDestination = HomeRoute,
     ) {
-        homeScreen()
+        homeScreen(onAvatarClick = onAvatarClick)
         searchScreen()
         libraryScreen()
         premiumScreen()

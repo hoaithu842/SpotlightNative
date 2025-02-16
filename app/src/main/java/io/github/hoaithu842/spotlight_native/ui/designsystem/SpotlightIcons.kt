@@ -10,4 +10,8 @@ object SpotlightIcons {
     val Library = R.drawable.library
     val LibrarySelected = R.drawable.library_selected
     val Premium = R.drawable.premium
+    val Add = R.drawable.add
+    val Lightning = R.drawable.lightning
+    val Clock = R.drawable.clock
+    val Settings = R.drawable.settings
 }

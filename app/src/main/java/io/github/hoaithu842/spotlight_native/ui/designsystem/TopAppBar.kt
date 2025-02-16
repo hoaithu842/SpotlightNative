@@ -48,7 +48,7 @@ fun HomeTopAppBar(
         verticalAlignment = Alignment.Bottom,
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+            painter = painterResource(id = R.drawable.ic_launcher_background),
             contentDescription = "",
             modifier = Modifier
                 .padding(start = SpotlightDimens.TopAppBarHorizontalPadding)
