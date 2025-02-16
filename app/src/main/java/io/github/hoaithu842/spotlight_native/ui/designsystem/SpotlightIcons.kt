@@ -16,4 +16,6 @@ object SpotlightIcons {
     val Settings = R.drawable.settings
     val Play = R.drawable.play
     val Pause = R.drawable.pause
+    val Down = R.drawable.down
+    val More = R.drawable.more
 }

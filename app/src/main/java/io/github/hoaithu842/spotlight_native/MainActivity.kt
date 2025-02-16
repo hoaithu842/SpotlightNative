@@ -4,6 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,6 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -77,6 +85,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            var isNavBarDisplaying by remember { mutableStateOf(true) }
+            val density = LocalDensity.current
+
             val navController = rememberNavController()
             var currentDestination by remember { mutableStateOf(TopLevelDestination.HOME) }
 
@@ -104,14 +115,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.background(MaterialTheme.colorScheme.background),
                 ) { page ->
                     if (page == 0) {
-                        HomeScreenDrawer(
-//                            onSwipeLeft = {
-//                                coroutineScope.launch {
-//                                    pagerState.animateScrollToPage(1)
-//                                }
-//                            },
-//                            modifier = Modifier.padding(end = 70.dp)
-                        )
+                        HomeScreenDrawer()
                     } else {
                         Box(
                             Modifier.fillMaxSize()
@@ -119,23 +123,38 @@ class MainActivity : ComponentActivity() {
                             Scaffold(
                                 modifier = Modifier.fillMaxSize(),
                                 bottomBar = {
-                                    SpotlightNavigationBar {
-                                        TopLevelDestination.entries.forEach { destination ->
-                                            SpotlightNavigationBarItem(
-                                                title = stringResource(id = destination.title),
-                                                selected = currentDestination == destination,
-                                                icon = destination.unselectedIcon,
-                                                selectedIcon = destination.selectedIcon,
-                                                onClick = {
-                                                    if (currentDestination != destination) {
-                                                        navigateToTopLevelDestination(
-                                                            navController = navController,
-                                                            topLevelDestination = destination,
-                                                        )
-                                                        currentDestination = destination
-                                                    }
-                                                },
-                                            )
+                                    AnimatedVisibility(
+                                        visible = isNavBarDisplaying,
+                                        enter = slideInVertically {
+                                            // Slide in from 40 dp from the top.
+                                            with(density) { -40.dp.roundToPx() }
+                                        } + expandVertically(
+                                            // Expand from the top.
+                                            expandFrom = Alignment.Top
+                                        ) + fadeIn(
+                                            // Fade in with the initial alpha of 0.3f.
+                                            initialAlpha = 0.3f
+                                        ),
+                                        exit = slideOutVertically() + shrinkVertically() + fadeOut()
+                                    ) {
+                                        SpotlightNavigationBar {
+                                            TopLevelDestination.entries.forEach { destination ->
+                                                SpotlightNavigationBarItem(
+                                                    title = stringResource(id = destination.title),
+                                                    selected = currentDestination == destination,
+                                                    icon = destination.unselectedIcon,
+                                                    selectedIcon = destination.selectedIcon,
+                                                    onClick = {
+                                                        if (currentDestination != destination) {
+                                                            navigateToTopLevelDestination(
+                                                                navController = navController,
+                                                                topLevelDestination = destination,
+                                                            )
+                                                            currentDestination = destination
+                                                        }
+                                                    },
+                                                )
+                                            }
                                         }
                                     }
                                 },
@@ -153,8 +172,9 @@ class MainActivity : ComponentActivity() {
                                     )
                                     MinimizedPlayer(
                                         isPlaying = true,
-                                        songName = "Trốn Tìmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
-                                        artists = "Đen, MTV Bandddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+                                        songName = "Trốn Tìm",
+                                        artists = "Đen, MTV Band",
+                                        onPlayerClick = {},
                                         modifier = Modifier.align(Alignment.BottomCenter)
                                     )
                                 }
