@@ -17,4 +17,10 @@ object SpotlightDimens {
     val HomeScreenDrawerHeaderVerticalPadding = 10.dp
     val HomeScreenDrawerHeaderOptionHeight = 30.dp
     val HomeScreenDrawerHeaderOptionIconSize = 24.dp
+
+    val MinimizedPlayerHeight = 60.dp
+    val MinimizedPlayerProgressIndicatorPadding = 12.dp
+    val MinimizedPlayerThumbnailSize = 38.dp
+    val MinimizedPlayerThumbnailPaddingStart = 15.dp
+    val MinimizedPlayerInfoPaddingStart = 10.dp
 }

@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -35,6 +35,7 @@ import io.github.hoaithu842.spotlight_native.navigation.navigateToLibraryScreen
 import io.github.hoaithu842.spotlight_native.navigation.navigateToPremiumScreen
 import io.github.hoaithu842.spotlight_native.navigation.navigateToSearchScreen
 import io.github.hoaithu842.spotlight_native.ui.components.HomeScreenDrawer
+import io.github.hoaithu842.spotlight_native.ui.components.MinimizedPlayer
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightNavigationBar
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightNavigationBarItem
 import io.github.hoaithu842.spotlight_native.ui.theme.BlurGray
@@ -139,7 +140,7 @@ class MainActivity : ComponentActivity() {
                                     }
                                 },
                             ) { innerPadding ->
-                                Column(
+                                Box(
                                     modifier = Modifier.padding(innerPadding),
                                 ) {
                                     SpotlightNavHost(
@@ -149,6 +150,12 @@ class MainActivity : ComponentActivity() {
                                                 pagerState.animateScrollToPage(0)
                                             }
                                         },
+                                    )
+                                    MinimizedPlayer(
+                                        isPlaying = true,
+                                        songName = "Trốn Tìmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+                                        artists = "Đen, MTV Bandddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+                                        modifier = Modifier.align(Alignment.BottomCenter)
                                     )
                                 }
                             }

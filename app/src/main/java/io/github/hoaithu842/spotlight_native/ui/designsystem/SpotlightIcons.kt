@@ -14,4 +14,6 @@ object SpotlightIcons {
     val Lightning = R.drawable.lightning
     val Clock = R.drawable.clock
     val Settings = R.drawable.settings
+    val Play = R.drawable.play
+    val Pause = R.drawable.pause
 }
