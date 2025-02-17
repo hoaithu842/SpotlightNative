@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import io.github.hoaithu842.spotlight_native.extensions.noRippleClickable
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightIcons
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
@@ -27,6 +29,7 @@ import io.github.hoaithu842.spotlight_native.ui.theme.SpotlightTheme
 
 @Composable
 fun FullsizePlayer(
+    onMinimizeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -36,7 +39,10 @@ fun FullsizePlayer(
     ) {
         FullsizePlayerTopAppBar(
             artist = "Đen",
-            modifier = Modifier.padding(horizontal = SpotlightDimens.FullsizePlayerTopAppBarPadding)
+            onMinimizeClick = onMinimizeClick,
+            modifier = Modifier
+                .statusBarsPadding()
+                .padding(horizontal = SpotlightDimens.FullsizePlayerTopAppBarPadding)
         )
     }
 }
@@ -44,6 +50,7 @@ fun FullsizePlayer(
 @Composable
 fun FullsizePlayerTopAppBar(
     artist: String,
+    onMinimizeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -56,7 +63,11 @@ fun FullsizePlayerTopAppBar(
         Icon(
             painter = painterResource(SpotlightIcons.Down),
             contentDescription = "",
-            modifier = Modifier.size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
+            modifier = Modifier
+                .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
+                .noRippleClickable {
+                    onMinimizeClick()
+                },
             tint = MaterialTheme.colorScheme.onBackground,
         )
         Text(
@@ -80,6 +91,6 @@ fun FullsizePlayerTopAppBar(
 @Composable
 fun FullsizePlayerPreview() {
     SpotlightTheme {
-        FullsizePlayer()
+        FullsizePlayer(onMinimizeClick = {})
     }
 }

@@ -6,20 +6,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,7 +38,6 @@ import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
 import io.github.hoaithu842.spotlight_native.ui.theme.ProgressIndicatorColor
 import io.github.hoaithu842.spotlight_native.ui.theme.ProgressIndicatorTrackColor
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MinimizedPlayer(
     isPlaying: Boolean,
@@ -51,11 +46,6 @@ fun MinimizedPlayer(
     onPlayerClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-//    var showBottomSheet by remember { mutableStateOf(false) }
-//    val sheetState = rememberModalBottomSheetState(
-//        skipPartiallyExpanded = true,
-//    )
-
     var playing by remember { mutableStateOf(isPlaying) }
     Box(
         modifier = modifier
@@ -66,9 +56,9 @@ fun MinimizedPlayer(
             )
             .background(MinimizedPlayerBackground)
             .clickable {
-//                showBottomSheet = true
                 onPlayerClick()
             }
+            .padding(bottom = 2.dp)
     ) {
         Box(
             modifier = Modifier
@@ -133,7 +123,4 @@ fun MinimizedPlayer(
             strokeCap = StrokeCap.Round,
         )
     }
-//    if (showBottomSheet) {
-//
-//    }
 }
