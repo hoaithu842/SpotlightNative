@@ -18,4 +18,10 @@ object SpotlightIcons {
     val Pause = R.drawable.pause
     val Down = R.drawable.down
     val More = R.drawable.more
+    val Heart = R.drawable.heart
+    val HeartSelected = R.drawable.heart_selected
+    val Shuffle = R.drawable.shuffle
+    val Timer = R.drawable.timer
+    val PlayNext = R.drawable.play_next
+    val PlayPrevious = R.drawable.play_previous
 }

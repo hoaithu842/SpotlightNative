@@ -2,6 +2,7 @@ package io.github.hoaithu842.spotlight_native.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -85,9 +86,11 @@ fun MinimizedPlayer(
                     Text(
                         text = songName,
                         style = SpotlightTextStyle.Text11W400,
-                        overflow = TextOverflow.Ellipsis,
                         color = MaterialTheme.colorScheme.onBackground,
                         maxLines = 1,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .basicMarquee()
                     )
                     Text(
                         text = artists,

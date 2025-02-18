@@ -147,13 +147,10 @@ class MainActivity : ComponentActivity() {
                             AnimatedVisibility(
                                 visible = isNavBarDisplaying,
                                 enter = slideInVertically {
-                                    // Slide in from 40 dp from the top.
                                     with(density) { -40.dp.roundToPx() }
                                 } + expandVertically(
-                                    // Expand from the top.
                                     expandFrom = Alignment.Top
                                 ) + fadeIn(
-                                    // Fade in with the initial alpha of 0.3f.
                                     initialAlpha = 0.3f
                                 ),
                                 exit = slideOutVertically() + shrinkVertically() + fadeOut()
@@ -180,57 +177,65 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                     ) { innerPadding ->
-                        BottomSheetScaffold(
-                            scaffoldState = scaffoldState,
-                            sheetPeekHeight = SpotlightDimens.MinimizedPlayerHeight * 2 + SpotlightDimens.NavigationBarHeight,
-                            sheetShape = RoundedCornerShape(0.dp),
-                            sheetDragHandle = {},
-                            sheetShadowElevation = 0.dp,
-                            sheetContent = {
-                                AnimatedContent(
-                                    targetState = scaffoldState.bottomSheetState.currentValue,
-                                    label = "",
-                                ) {
-                                    when (it) {
-                                        SheetValue.Hidden -> {}
-                                        SheetValue.Expanded -> {
-                                            FullsizePlayer(
-                                                onMinimizeClick = {
-                                                    coroutineScope.launch {
-                                                        isNavBarDisplaying = true
-                                                        delay(100)
-                                                        scaffoldState.bottomSheetState.partialExpand()
+                        Box(
+                            modifier = Modifier
+                                .padding(bottom = innerPadding.calculateBottomPadding())
+                                .fillMaxSize()
+                        ) {
+                            BottomSheetScaffold(
+                                scaffoldState = scaffoldState,
+                                sheetPeekHeight = SpotlightDimens.MinimizedPlayerHeight,
+                                sheetShape = RoundedCornerShape(0.dp),
+                                sheetDragHandle = {},
+                                sheetShadowElevation = 0.dp,
+                                sheetContent = {
+                                    AnimatedContent(
+                                        targetState = scaffoldState.bottomSheetState.currentValue,
+                                        label = "",
+                                    ) {
+                                        when (it) {
+                                            SheetValue.Hidden -> {}
+                                            SheetValue.Expanded -> {
+                                                FullsizePlayer(
+                                                    songName = "Listen to Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
+                                                    artists = " Grissini Project",
+                                                    onMinimizeClick = {
+                                                        coroutineScope.launch {
+                                                            isNavBarDisplaying = true
+                                                            delay(100)
+                                                            scaffoldState.bottomSheetState.partialExpand()
+                                                        }
                                                     }
-                                                }
-                                            )
-                                        }
+                                                )
+                                            }
 
-                                        SheetValue.PartiallyExpanded -> {
-                                            MinimizedPlayer(
-                                                isPlaying = true,
-                                                songName = "Trốn Tìm",
-                                                artists = "Đen, MTV Band",
-                                                onPlayerClick = {
-                                                    coroutineScope.launch {
-                                                        isNavBarDisplaying = false
-                                                        scaffoldState.bottomSheetState.expand()
+                                            SheetValue.PartiallyExpanded -> {
+                                                MinimizedPlayer(
+                                                    isPlaying = true,
+                                                    songName = "Listen to Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
+                                                    artists = " Grissini Project",
+                                                    onPlayerClick = {
+                                                        coroutineScope.launch {
+                                                            isNavBarDisplaying = false
+                                                            scaffoldState.bottomSheetState.expand()
+                                                        }
                                                     }
-                                                }
-                                            )
+                                                )
+                                            }
                                         }
                                     }
-                                }
-                            },
-                            snackbarHost = { SnackbarHost(it) },
-                            sheetContainerColor = Color.Transparent,
-                            modifier = Modifier
-                                .padding(innerPadding)
-                                .fillMaxSize(),
-                        ) {
-                            SpotlightNavHost(
-                                navHostController = navController,
-                                onAvatarClick = { drawerState = drawerState.opposite() },
-                            )
+                                },
+                                snackbarHost = { SnackbarHost(it) },
+                                sheetContainerColor = Color.Transparent,
+                                modifier = Modifier
+                                    .padding(innerPadding)
+                                    .fillMaxSize(),
+                            ) {
+                                SpotlightNavHost(
+                                    navHostController = navController,
+                                    onAvatarClick = { drawerState = drawerState.opposite() },
+                                )
+                            }
                         }
                     }
                 }
