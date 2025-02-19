@@ -1,4 +1,4 @@
-package io.github.hoaithu842.spotlight_native.ui.designsystem
+package io.github.hoaithu842.spotlight_native.presentation.designsystem
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight

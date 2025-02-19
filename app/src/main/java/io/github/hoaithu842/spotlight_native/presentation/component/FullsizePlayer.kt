@@ -1,4 +1,4 @@
-package io.github.hoaithu842.spotlight_native.ui.component
+package io.github.hoaithu842.spotlight_native.presentation.component
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
@@ -40,23 +40,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.hoaithu842.spotlight_native.R
 import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
-import io.github.hoaithu842.spotlight_native.ui.designsystem.FullsizePlayerTopAppBar
-import io.github.hoaithu842.spotlight_native.ui.designsystem.PlayerControllerTopAppBar
-import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
-import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightIcons
-import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
-import io.github.hoaithu842.spotlight_native.ui.theme.MinimizedPlayerBackground
-import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
-import io.github.hoaithu842.spotlight_native.ui.theme.ProgressIndicatorColor
-import io.github.hoaithu842.spotlight_native.ui.theme.ProgressIndicatorTrackColor
-import io.github.hoaithu842.spotlight_native.ui.theme.SpotlightTheme
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.FullsizePlayerTopAppBar
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.PlayerControllerTopAppBar
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightDimens
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightIcons
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightTextStyle
+import io.github.hoaithu842.spotlight_native.presentation.theme.MinimizedPlayerBackground
+import io.github.hoaithu842.spotlight_native.presentation.theme.NavigationGray
+import io.github.hoaithu842.spotlight_native.presentation.theme.ProgressIndicatorColor
+import io.github.hoaithu842.spotlight_native.presentation.theme.ProgressIndicatorTrackColor
+import io.github.hoaithu842.spotlight_native.presentation.theme.SpotlightTheme
 import kotlinx.coroutines.launch
 
 @Composable
 fun FullsizePlayer(
+    isPlaying: Boolean,
     songName: String,
     artists: String,
     onMinimizeClick: () -> Unit,
+    onMainFunctionClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val lazyListState = rememberLazyListState()
@@ -87,8 +89,10 @@ fun FullsizePlayer(
             }
             item {
                 MainPlayerContent(
+                    isPlaying = isPlaying,
                     songName = songName,
                     artists = artists,
+                    onMainFunctionClick = onMainFunctionClick,
                 )
             }
 
@@ -137,12 +141,13 @@ fun FullsizePlayer(
             PlayerControllerTopAppBar(
                 songName = songName,
                 artists = artists,
-                isPlaying = true,
+                isPlaying = isPlaying,
+                onMainFunctionClick = onMainFunctionClick,
                 onPlayerClick = {
                     scope.launch {
                         lazyListState.animateScrollToItem(0)
                     }
-                }
+                },
             )
         }
     }
@@ -150,8 +155,10 @@ fun FullsizePlayer(
 
 @Composable
 fun MainPlayerContent(
+    isPlaying: Boolean,
     songName: String,
     artists: String,
+    onMainFunctionClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -240,6 +247,8 @@ fun MainPlayerContent(
             )
         }
         PlayerController(
+            isPlaying = isPlaying,
+            onMainFunctionClick = onMainFunctionClick,
             modifier = Modifier.padding(vertical = 14.dp)
         )
     }
@@ -247,6 +256,8 @@ fun MainPlayerContent(
 
 @Composable
 fun PlayerController(
+    isPlaying: Boolean,
+    onMainFunctionClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -273,7 +284,7 @@ fun PlayerController(
                 .noRippleClickable { },
         )
         Icon(
-            painter = painterResource(SpotlightIcons.Pause),
+            painter = painterResource(if (isPlaying) SpotlightIcons.Pause else SpotlightIcons.Play),
             contentDescription = "",
             tint = MinimizedPlayerBackground,
             modifier = Modifier
@@ -281,7 +292,9 @@ fun PlayerController(
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.onBackground)
                 .padding((SpotlightDimens.PlayerControllerLargeIconSize - SpotlightDimens.PlayerControllerMediumIconSize) / 2)
-                .noRippleClickable { },
+                .noRippleClickable {
+                    onMainFunctionClick()
+                },
         )
         Icon(
             painter = painterResource(SpotlightIcons.PlayNext),
@@ -307,9 +320,11 @@ fun PlayerController(
 fun FullsizePlayerPreview() {
     SpotlightTheme {
         FullsizePlayer(
+            isPlaying = true,
             songName = "Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
             artists = " Grissini Project",
             onMinimizeClick = {},
+            onMainFunctionClick = {},
         )
     }
 }

@@ -1,4 +1,4 @@
-package io.github.hoaithu842.spotlight_native.ui.designsystem
+package io.github.hoaithu842.spotlight_native.presentation.designsystem
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,10 +23,6 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,14 +30,16 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.hoaithu842.spotlight_native.R
 import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
-import io.github.hoaithu842.spotlight_native.ui.theme.MinimizedPlayerBackground
-import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
-import io.github.hoaithu842.spotlight_native.ui.theme.ProgressIndicatorColor
-import io.github.hoaithu842.spotlight_native.ui.theme.ProgressIndicatorTrackColor
-import io.github.hoaithu842.spotlight_native.ui.theme.TopAppBarGray
+import io.github.hoaithu842.spotlight_native.presentation.theme.MinimizedPlayerBackground
+import io.github.hoaithu842.spotlight_native.presentation.theme.NavigationGray
+import io.github.hoaithu842.spotlight_native.presentation.theme.ProgressIndicatorColor
+import io.github.hoaithu842.spotlight_native.presentation.theme.ProgressIndicatorTrackColor
+import io.github.hoaithu842.spotlight_native.presentation.theme.SpotlightTheme
+import io.github.hoaithu842.spotlight_native.presentation.theme.TopAppBarGray
 
 enum class HomeScreenTab {
     All,
@@ -172,13 +170,13 @@ fun FullsizePlayerTopAppBar(
 
 @Composable
 fun PlayerControllerTopAppBar(
+    isPlaying: Boolean,
     songName: String,
     artists: String,
-    isPlaying: Boolean,
     onPlayerClick: () -> Unit,
+    onMainFunctionClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var playing by remember { mutableStateOf(isPlaying) }
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -226,7 +224,7 @@ fun PlayerControllerTopAppBar(
                     .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
                     .align(Alignment.CenterEnd)
                     .noRippleClickable {
-                        playing = !playing
+                        onMainFunctionClick()
                     }
             )
         }
@@ -241,5 +239,35 @@ fun PlayerControllerTopAppBar(
             trackColor = ProgressIndicatorColor,
             strokeCap = StrokeCap.Round,
         )
+    }
+}
+
+@Preview
+@Composable
+fun TopAppBarPreview() {
+    SpotlightTheme {
+        Column {
+            HomeTopAppBar(
+                onAvatarClick = {},
+                currentTab = HomeScreenTab.All,
+                onTabClick = {},
+                modifier = Modifier.padding(vertical = 20.dp),
+            )
+
+            FullsizePlayerTopAppBar(
+                artists = "Preview",
+                onMinimizeClick = {},
+                modifier = Modifier.padding(vertical = 20.dp),
+            )
+
+            PlayerControllerTopAppBar(
+                songName = "Preview",
+                artists = "Preview",
+                isPlaying = true,
+                onPlayerClick = {},
+                onMainFunctionClick = {},
+                modifier = Modifier.padding(vertical = 20.dp),
+            )
+        }
     }
 }

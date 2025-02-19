@@ -59,6 +59,12 @@ dependencies {
     // Hilt
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    // ExoPlayer
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.exoplayer.dash)
+    implementation(libs.androidx.media3.ui)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -1,4 +1,4 @@
-package io.github.hoaithu842.spotlight_native.ui.screen
+package io.github.hoaithu842.spotlight_native.presentation.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,14 +10,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun LibraryScreen() {
+fun SearchScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
     ) {
         Text(
-            text = "LibraryScreen",
+            text = "SearchScreen",
             modifier = Modifier.align(Alignment.Center),
         )
     }

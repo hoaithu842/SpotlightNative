@@ -1,4 +1,4 @@
-package io.github.hoaithu842.spotlight_native.ui.component
+package io.github.hoaithu842.spotlight_native.presentation.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,10 +18,6 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,13 +27,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.hoaithu842.spotlight_native.R
 import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
-import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
-import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightIcons
-import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
-import io.github.hoaithu842.spotlight_native.ui.theme.MinimizedPlayerBackground
-import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
-import io.github.hoaithu842.spotlight_native.ui.theme.ProgressIndicatorColor
-import io.github.hoaithu842.spotlight_native.ui.theme.ProgressIndicatorTrackColor
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightDimens
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightIcons
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightTextStyle
+import io.github.hoaithu842.spotlight_native.presentation.theme.MinimizedPlayerBackground
+import io.github.hoaithu842.spotlight_native.presentation.theme.NavigationGray
+import io.github.hoaithu842.spotlight_native.presentation.theme.ProgressIndicatorColor
+import io.github.hoaithu842.spotlight_native.presentation.theme.ProgressIndicatorTrackColor
 
 @Composable
 fun MinimizedPlayer(
@@ -45,9 +41,9 @@ fun MinimizedPlayer(
     songName: String,
     artists: String,
     onPlayerClick: () -> Unit,
+    onMainFunctionClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var playing by remember { mutableStateOf(isPlaying) }
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -103,14 +99,14 @@ fun MinimizedPlayer(
             }
 
             Icon(
-                painter = painterResource(if (playing) SpotlightIcons.Pause else SpotlightIcons.Play),
+                painter = painterResource(if (isPlaying) SpotlightIcons.Pause else SpotlightIcons.Play),
                 contentDescription = "",
                 tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
                     .align(Alignment.CenterEnd)
                     .noRippleClickable {
-                        playing = !playing
+                        onMainFunctionClick()
                     },
             )
         }

@@ -3,7 +3,7 @@ package io.github.hoaithu842.spotlight_native.navigation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import io.github.hoaithu842.spotlight_native.R
-import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightIcons
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightIcons
 import kotlin.reflect.KClass
 
 enum class TopLevelDestination(

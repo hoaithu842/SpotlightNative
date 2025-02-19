@@ -1,4 +1,4 @@
-package io.github.hoaithu842.spotlight_native.ui.component
+package io.github.hoaithu842.spotlight_native.presentation.designsystem
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,13 +24,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.hoaithu842.spotlight_native.R
-import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
-import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightIcons
-import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
-import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
-import io.github.hoaithu842.spotlight_native.ui.theme.TopAppBarGray
+import io.github.hoaithu842.spotlight_native.presentation.theme.NavigationGray
+import io.github.hoaithu842.spotlight_native.presentation.theme.SpotlightTheme
+import io.github.hoaithu842.spotlight_native.presentation.theme.TopAppBarGray
 
 enum class CustomDrawerState {
     Opened,
@@ -166,5 +165,13 @@ fun HomeScreenDrawerOption(
             maxLines = 1,
             modifier = Modifier.padding(start = SpotlightDimens.HomeScreenDrawerHeaderPadding),
         )
+    }
+}
+
+@Preview
+@Composable
+fun HomeScreenDrawerPreview() {
+    SpotlightTheme {
+        HomeScreenDrawer()
     }
 }

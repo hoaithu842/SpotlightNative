@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
@@ -44,6 +45,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -56,16 +58,16 @@ import io.github.hoaithu842.spotlight_native.navigation.navigateToHomeScreen
 import io.github.hoaithu842.spotlight_native.navigation.navigateToLibraryScreen
 import io.github.hoaithu842.spotlight_native.navigation.navigateToPremiumScreen
 import io.github.hoaithu842.spotlight_native.navigation.navigateToSearchScreen
-import io.github.hoaithu842.spotlight_native.ui.component.CustomDrawerState
-import io.github.hoaithu842.spotlight_native.ui.component.FullsizePlayer
-import io.github.hoaithu842.spotlight_native.ui.component.HomeScreenDrawer
-import io.github.hoaithu842.spotlight_native.ui.component.MinimizedPlayer
-import io.github.hoaithu842.spotlight_native.ui.component.isOpened
-import io.github.hoaithu842.spotlight_native.ui.component.opposite
-import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
-import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightNavigationBar
-import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightNavigationBarItem
-import io.github.hoaithu842.spotlight_native.ui.theme.SpotlightTheme
+import io.github.hoaithu842.spotlight_native.presentation.component.FullsizePlayer
+import io.github.hoaithu842.spotlight_native.presentation.component.MinimizedPlayer
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.CustomDrawerState
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.HomeScreenDrawer
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightDimens
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightNavigationBar
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightNavigationBarItem
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.isOpened
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.opposite
+import io.github.hoaithu842.spotlight_native.presentation.theme.SpotlightTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -106,11 +108,14 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var networkMonitor: NetworkMonitor
 
+    private val viewModel: MainActivityViewModel by viewModels()
+
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val playerState by viewModel.playerState.collectAsStateWithLifecycle()
             val isOffline by networkMonitor.isOnline.collectAsState(initial = true)
             var isNavBarDisplaying by remember { mutableStateOf(true) }
             val density = LocalDensity.current
@@ -211,6 +216,7 @@ class MainActivity : ComponentActivity() {
                                             SheetValue.Hidden -> {}
                                             SheetValue.Expanded -> {
                                                 FullsizePlayer(
+                                                    isPlaying = playerState.isPlaying,
                                                     songName = "Listen to Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
                                                     artists = " Grissini Project",
                                                     onMinimizeClick = {
@@ -219,13 +225,14 @@ class MainActivity : ComponentActivity() {
                                                             delay(100)
                                                             scaffoldState.bottomSheetState.partialExpand()
                                                         }
-                                                    }
+                                                    },
+                                                    onMainFunctionClick = viewModel::process,
                                                 )
                                             }
 
                                             SheetValue.PartiallyExpanded -> {
                                                 MinimizedPlayer(
-                                                    isPlaying = true,
+                                                    isPlaying = playerState.isPlaying,
                                                     songName = "Listen to Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
                                                     artists = " Grissini Project",
                                                     onPlayerClick = {
@@ -233,7 +240,8 @@ class MainActivity : ComponentActivity() {
                                                             isNavBarDisplaying = false
                                                             scaffoldState.bottomSheetState.expand()
                                                         }
-                                                    }
+                                                    },
+                                                    onMainFunctionClick = viewModel::process,
                                                 )
                                             }
                                         }

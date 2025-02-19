@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import io.github.hoaithu842.spotlight_native.ui.screen.PremiumScreen
+import io.github.hoaithu842.spotlight_native.presentation.screen.PremiumScreen
 import kotlinx.serialization.Serializable
 
 @Serializable

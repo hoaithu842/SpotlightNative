@@ -1,4 +1,4 @@
-package io.github.hoaithu842.spotlight_native.ui.screen
+package io.github.hoaithu842.spotlight_native.presentation.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -11,8 +11,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import io.github.hoaithu842.spotlight_native.ui.designsystem.HomeScreenTab
-import io.github.hoaithu842.spotlight_native.ui.designsystem.HomeTopAppBar
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.HomeScreenTab
+import io.github.hoaithu842.spotlight_native.presentation.designsystem.HomeTopAppBar
 
 @Composable
 fun HomeScreen(
