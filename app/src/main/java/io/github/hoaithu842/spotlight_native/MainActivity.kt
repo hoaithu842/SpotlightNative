@@ -27,8 +27,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,24 +48,27 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import dagger.hilt.android.AndroidEntryPoint
+import io.github.hoaithu842.spotlight_native.manager.NetworkMonitor
 import io.github.hoaithu842.spotlight_native.navigation.SpotlightNavHost
 import io.github.hoaithu842.spotlight_native.navigation.TopLevelDestination
 import io.github.hoaithu842.spotlight_native.navigation.navigateToHomeScreen
 import io.github.hoaithu842.spotlight_native.navigation.navigateToLibraryScreen
 import io.github.hoaithu842.spotlight_native.navigation.navigateToPremiumScreen
 import io.github.hoaithu842.spotlight_native.navigation.navigateToSearchScreen
-import io.github.hoaithu842.spotlight_native.ui.components.CustomDrawerState
-import io.github.hoaithu842.spotlight_native.ui.components.FullsizePlayer
-import io.github.hoaithu842.spotlight_native.ui.components.HomeScreenDrawer
-import io.github.hoaithu842.spotlight_native.ui.components.MinimizedPlayer
-import io.github.hoaithu842.spotlight_native.ui.components.isOpened
-import io.github.hoaithu842.spotlight_native.ui.components.opposite
+import io.github.hoaithu842.spotlight_native.ui.component.CustomDrawerState
+import io.github.hoaithu842.spotlight_native.ui.component.FullsizePlayer
+import io.github.hoaithu842.spotlight_native.ui.component.HomeScreenDrawer
+import io.github.hoaithu842.spotlight_native.ui.component.MinimizedPlayer
+import io.github.hoaithu842.spotlight_native.ui.component.isOpened
+import io.github.hoaithu842.spotlight_native.ui.component.opposite
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightNavigationBar
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightNavigationBarItem
 import io.github.hoaithu842.spotlight_native.ui.theme.SpotlightTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.math.roundToInt
 
 fun navigateToTopLevelDestination(
@@ -96,12 +101,17 @@ fun navigateToTopLevelDestination(
     }
 }
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var networkMonitor: NetworkMonitor
+
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val isOffline by networkMonitor.isOnline.collectAsState(initial = true)
             var isNavBarDisplaying by remember { mutableStateOf(true) }
             val density = LocalDensity.current
             val scaffoldState = rememberBottomSheetScaffoldState()
@@ -119,6 +129,10 @@ class MainActivity : ComponentActivity() {
                 targetValue = if (drawerState.isOpened()) offsetValue else 0.dp,
                 label = "",
             )
+            val snackbarHostState = remember { SnackbarHostState() }
+            LaunchedEffect(isOffline) {
+                snackbarHostState.showSnackbar(isOffline.toString())
+            }
 
             LaunchedEffect(scaffoldState.bottomSheetState.currentValue) {
                 if (scaffoldState.bottomSheetState.currentValue == SheetValue.PartiallyExpanded) {
@@ -225,7 +239,7 @@ class MainActivity : ComponentActivity() {
                                         }
                                     }
                                 },
-                                snackbarHost = { SnackbarHost(it) },
+                                snackbarHost = { SnackbarHost(snackbarHostState) },
                                 sheetContainerColor = Color.Transparent,
                                 modifier = Modifier
                                     .padding(innerPadding)

@@ -1,4 +1,4 @@
-package io.github.hoaithu842.spotlight_native.extensions
+package io.github.hoaithu842.spotlight_native.extension
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

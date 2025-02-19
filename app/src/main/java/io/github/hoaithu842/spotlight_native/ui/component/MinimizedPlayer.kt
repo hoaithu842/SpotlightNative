@@ -1,4 +1,4 @@
-package io.github.hoaithu842.spotlight_native.ui.components
+package io.github.hoaithu842.spotlight_native.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,7 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.hoaithu842.spotlight_native.R
-import io.github.hoaithu842.spotlight_native.extensions.noRippleClickable
+import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightIcons
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle

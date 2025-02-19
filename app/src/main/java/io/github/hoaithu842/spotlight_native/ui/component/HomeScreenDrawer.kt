@@ -1,4 +1,4 @@
-package io.github.hoaithu842.spotlight_native.ui.components
+package io.github.hoaithu842.spotlight_native.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
