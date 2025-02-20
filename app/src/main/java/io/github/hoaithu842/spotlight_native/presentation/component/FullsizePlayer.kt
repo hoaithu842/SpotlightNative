@@ -40,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.hoaithu842.spotlight_native.R
 import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
+import io.github.hoaithu842.spotlight_native.extension.toTimeFormat
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.FullsizePlayerTopAppBar
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.PlayerControllerTopAppBar
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightDimens
@@ -57,6 +58,8 @@ fun FullsizePlayer(
     isPlaying: Boolean,
     songName: String,
     artists: String,
+    currentPosition: Long,
+    duration: Long,
     onMinimizeClick: () -> Unit,
     onMainFunctionClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -92,6 +95,8 @@ fun FullsizePlayer(
                     isPlaying = isPlaying,
                     songName = songName,
                     artists = artists,
+                    currentPosition = currentPosition,
+                    duration = duration,
                     onMainFunctionClick = onMainFunctionClick,
                 )
             }
@@ -142,6 +147,8 @@ fun FullsizePlayer(
                 songName = songName,
                 artists = artists,
                 isPlaying = isPlaying,
+                currentPosition = currentPosition,
+                duration = duration,
                 onMainFunctionClick = onMainFunctionClick,
                 onPlayerClick = {
                     scope.launch {
@@ -158,6 +165,8 @@ fun MainPlayerContent(
     isPlaying: Boolean,
     songName: String,
     artists: String,
+    currentPosition: Long,
+    duration: Long,
     onMainFunctionClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -217,7 +226,7 @@ fun MainPlayerContent(
         }
 
         LinearProgressIndicator(
-            progress = { 0.2f },
+            progress = { (currentPosition * 1.0 / duration).toFloat() },
             modifier = Modifier
                 .padding(top = 15.dp)
                 .fillMaxWidth(),
@@ -234,13 +243,13 @@ fun MainPlayerContent(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
-                text = "0:00",
+                text = currentPosition.toTimeFormat(),
                 style = SpotlightTextStyle.Text11W400,
                 overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colorScheme.onBackground,
             )
             Text(
-                text = "-1:18",
+                text = duration.toTimeFormat(),
                 style = SpotlightTextStyle.Text11W400,
                 overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colorScheme.onBackground,
@@ -323,6 +332,8 @@ fun FullsizePlayerPreview() {
             isPlaying = true,
             songName = "Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
             artists = " Grissini Project",
+            currentPosition = 0,
+            duration = 232155,
             onMinimizeClick = {},
             onMainFunctionClick = {},
         )

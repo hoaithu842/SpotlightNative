@@ -115,7 +115,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val playerState by viewModel.playerState.collectAsStateWithLifecycle()
+            val isPlaying by viewModel.isPlaying.collectAsStateWithLifecycle(initialValue = false)
+            val currentPosition by viewModel.currentPosition.collectAsStateWithLifecycle(
+                initialValue = 0
+            )
             val isOffline by networkMonitor.isOnline.collectAsState(initial = true)
             var isNavBarDisplaying by remember { mutableStateOf(true) }
             val density = LocalDensity.current
@@ -216,9 +219,11 @@ class MainActivity : ComponentActivity() {
                                             SheetValue.Hidden -> {}
                                             SheetValue.Expanded -> {
                                                 FullsizePlayer(
-                                                    isPlaying = playerState.isPlaying,
+                                                    isPlaying = isPlaying,
                                                     songName = "Listen to Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
                                                     artists = " Grissini Project",
+                                                    currentPosition = currentPosition,
+                                                    duration = viewModel.getDuration(),
                                                     onMinimizeClick = {
                                                         coroutineScope.launch {
                                                             isNavBarDisplaying = true
@@ -232,9 +237,11 @@ class MainActivity : ComponentActivity() {
 
                                             SheetValue.PartiallyExpanded -> {
                                                 MinimizedPlayer(
-                                                    isPlaying = playerState.isPlaying,
+                                                    isPlaying = isPlaying,
                                                     songName = "Listen to Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
                                                     artists = " Grissini Project",
+                                                    currentPosition = currentPosition,
+                                                    duration = viewModel.getDuration(),
                                                     onPlayerClick = {
                                                         coroutineScope.launch {
                                                             isNavBarDisplaying = false

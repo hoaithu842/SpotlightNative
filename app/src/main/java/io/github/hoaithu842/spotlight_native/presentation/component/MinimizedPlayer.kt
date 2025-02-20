@@ -40,6 +40,8 @@ fun MinimizedPlayer(
     isPlaying: Boolean,
     songName: String,
     artists: String,
+    currentPosition: Long,
+    duration: Long,
     onPlayerClick: () -> Unit,
     onMainFunctionClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -112,7 +114,7 @@ fun MinimizedPlayer(
         }
 
         LinearProgressIndicator(
-            progress = { 0.2f },
+            progress = { (currentPosition * 1.0 / duration).toFloat() },
             modifier = Modifier
                 .padding(horizontal = SpotlightDimens.MinimizedPlayerProgressIndicatorPadding)
                 .fillMaxWidth()

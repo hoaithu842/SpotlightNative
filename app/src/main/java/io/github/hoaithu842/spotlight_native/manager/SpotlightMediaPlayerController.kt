@@ -7,7 +7,13 @@ import androidx.media3.common.Player
 import androidx.media3.common.Player.STATE_ENDED
 import androidx.media3.common.Player.STATE_READY
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.session.MediaSession
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,7 +21,26 @@ import javax.inject.Singleton
 class SpotlightMediaPlayerController @Inject constructor(
     @ApplicationContext context: Context,
 ) : MediaPlayerController {
-    private val player = ExoPlayer.Builder(context).build()
+    private val player: ExoPlayer = ExoPlayer.Builder(context).build()
+
+    override val mediaSession: MediaSession = MediaSession.Builder(context, player).build()
+
+    override val isPlayingFlow: Flow<Boolean> = flow {
+        while (true) {
+            emit(player.isPlaying)
+            delay(500)
+        }
+    }.flowOn(Dispatchers.Main)
+
+    override val currentPositionFlow: Flow<Long> = flow {
+        while (true) {
+            if (player.isPlaying) {
+                emit(player.currentPosition)
+            }
+            delay(500)
+        }
+    }.flowOn(Dispatchers.Main)
+
 
     override fun prepare(pathSource: String, listener: MediaPlayerListener) {
         val mediaItem = MediaItem.fromUri(pathSource)

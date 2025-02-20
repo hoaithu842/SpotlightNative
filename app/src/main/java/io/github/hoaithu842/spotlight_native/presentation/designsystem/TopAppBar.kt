@@ -173,6 +173,8 @@ fun PlayerControllerTopAppBar(
     isPlaying: Boolean,
     songName: String,
     artists: String,
+    currentPosition: Long,
+    duration: Long,
     onPlayerClick: () -> Unit,
     onMainFunctionClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -230,7 +232,7 @@ fun PlayerControllerTopAppBar(
         }
 
         LinearProgressIndicator(
-            progress = { 0.2f },
+            progress = { (currentPosition * 1.0 / duration).toFloat() },
             modifier = Modifier
                 .padding(horizontal = SpotlightDimens.MinimizedPlayerProgressIndicatorPadding)
                 .fillMaxWidth()
@@ -264,6 +266,8 @@ fun TopAppBarPreview() {
                 songName = "Preview",
                 artists = "Preview",
                 isPlaying = true,
+                currentPosition = 0,
+                duration = 232155,
                 onPlayerClick = {},
                 onMainFunctionClick = {},
                 modifier = Modifier.padding(vertical = 20.dp),

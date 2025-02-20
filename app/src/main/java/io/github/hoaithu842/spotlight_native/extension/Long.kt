@@ -1,0 +1,12 @@
+package io.github.hoaithu842.spotlight_native.extension
+
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
+
+fun Long.toTimeFormat(): String {
+    val duration = toDuration(DurationUnit.MILLISECONDS)
+    val mins = duration.inWholeMinutes
+    val secs = duration.minus(mins.toDuration(DurationUnit.MINUTES)).inWholeSeconds
+
+    return "$mins:${secs.toString().padStart(length = 2, padChar = '0')}"
+}
