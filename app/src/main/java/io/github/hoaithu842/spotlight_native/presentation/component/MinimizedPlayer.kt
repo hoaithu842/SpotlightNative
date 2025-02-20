@@ -26,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.hoaithu842.spotlight_native.R
+import io.github.hoaithu842.spotlight_native.domain.model.Song
 import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightIcons
@@ -38,8 +39,7 @@ import io.github.hoaithu842.spotlight_native.presentation.theme.ProgressIndicato
 @Composable
 fun MinimizedPlayer(
     isPlaying: Boolean,
-    songName: String,
-    artists: String,
+    song: Song,
     currentPosition: Long,
     duration: Long,
     onPlayerClick: () -> Unit,
@@ -82,7 +82,7 @@ fun MinimizedPlayer(
                     modifier = Modifier.padding(start = SpotlightDimens.MinimizedPlayerInfoPaddingStart)
                 ) {
                     Text(
-                        text = songName,
+                        text = song.title,
                         style = SpotlightTextStyle.Text11W400,
                         color = MaterialTheme.colorScheme.onBackground,
                         maxLines = 1,
@@ -91,7 +91,7 @@ fun MinimizedPlayer(
                             .basicMarquee()
                     )
                     Text(
-                        text = artists,
+                        text = song.artists,
                         style = SpotlightTextStyle.Text11W400,
                         overflow = TextOverflow.Ellipsis,
                         color = NavigationGray,
@@ -114,7 +114,7 @@ fun MinimizedPlayer(
         }
 
         LinearProgressIndicator(
-            progress = { (currentPosition * 1.0 / duration).toFloat() },
+            progress = { if (duration.toInt() == 0) 0f else (currentPosition * 1.0 / duration).toFloat() },
             modifier = Modifier
                 .padding(horizontal = SpotlightDimens.MinimizedPlayerProgressIndicatorPadding)
                 .fillMaxWidth()

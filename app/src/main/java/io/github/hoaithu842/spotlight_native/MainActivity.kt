@@ -1,6 +1,10 @@
 package io.github.hoaithu842.spotlight_native
 
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -37,6 +41,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,6 +73,7 @@ import io.github.hoaithu842.spotlight_native.presentation.designsystem.Spotlight
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.isOpened
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.opposite
 import io.github.hoaithu842.spotlight_native.presentation.theme.SpotlightTheme
+import io.github.hoaithu842.spotlight_native.service.SpotlightMediaPlaybackService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -105,9 +111,24 @@ fun navigateToTopLevelDestination(
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    // Service
+    private var mediaPlaybackService: SpotlightMediaPlaybackService? = null
+    private var isBound = false
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            mediaPlaybackService =
+                (service as SpotlightMediaPlaybackService.MediaPlaybackBinder).getService()
+            isBound = true
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            isBound = false
+        }
+
+    }
+
     @Inject
     lateinit var networkMonitor: NetworkMonitor
-
     private val viewModel: MainActivityViewModel by viewModels()
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -119,12 +140,13 @@ class MainActivity : ComponentActivity() {
             val currentPosition by viewModel.currentPosition.collectAsStateWithLifecycle(
                 initialValue = 0
             )
+            val currentSong by viewModel.currentSong.collectAsStateWithLifecycle()
             val isOffline by networkMonitor.isOnline.collectAsState(initial = true)
-            var isNavBarDisplaying by remember { mutableStateOf(true) }
+            var isNavBarDisplaying by rememberSaveable { mutableStateOf(true) }
             val density = LocalDensity.current
             val scaffoldState = rememberBottomSheetScaffoldState()
             val navController = rememberNavController()
-            var currentDestination by remember { mutableStateOf(TopLevelDestination.HOME) }
+            var currentDestination by rememberSaveable { mutableStateOf(TopLevelDestination.HOME) }
             val coroutineScope = rememberCoroutineScope()
             var drawerState by remember { mutableStateOf(CustomDrawerState.Closed) }
             val configuration = LocalConfiguration.current
@@ -146,6 +168,12 @@ class MainActivity : ComponentActivity() {
                 if (scaffoldState.bottomSheetState.currentValue == SheetValue.PartiallyExpanded) {
                     isNavBarDisplaying = true
                 }
+            }
+
+            LaunchedEffect(Unit) {
+                val intent = Intent(this@MainActivity, SpotlightMediaPlaybackService::class.java)
+                startService(intent)
+                bindService(intent, connection, BIND_AUTO_CREATE)
             }
 
             SpotlightTheme {
@@ -220,8 +248,7 @@ class MainActivity : ComponentActivity() {
                                             SheetValue.Expanded -> {
                                                 FullsizePlayer(
                                                     isPlaying = isPlaying,
-                                                    songName = "Listen to Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
-                                                    artists = " Grissini Project",
+                                                    song = currentSong,
                                                     currentPosition = currentPosition,
                                                     duration = viewModel.getDuration(),
                                                     onMinimizeClick = {
@@ -231,15 +258,16 @@ class MainActivity : ComponentActivity() {
                                                             scaffoldState.bottomSheetState.partialExpand()
                                                         }
                                                     },
+                                                    onPrevClick = viewModel::prev,
                                                     onMainFunctionClick = viewModel::process,
+                                                    onNextClick = viewModel::next,
                                                 )
                                             }
 
                                             SheetValue.PartiallyExpanded -> {
                                                 MinimizedPlayer(
                                                     isPlaying = isPlaying,
-                                                    songName = "Listen to Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
-                                                    artists = " Grissini Project",
+                                                    song = currentSong,
                                                     currentPosition = currentPosition,
                                                     duration = viewModel.getDuration(),
                                                     onPlayerClick = {
@@ -270,5 +298,12 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val intent = Intent(this@MainActivity, SpotlightMediaPlaybackService::class.java)
+        stopService(intent)
+        unbindService(connection)
     }
 }

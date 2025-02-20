@@ -33,6 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.hoaithu842.spotlight_native.R
+import io.github.hoaithu842.spotlight_native.domain.model.Song
 import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
 import io.github.hoaithu842.spotlight_native.presentation.theme.MinimizedPlayerBackground
 import io.github.hoaithu842.spotlight_native.presentation.theme.NavigationGray
@@ -171,8 +172,7 @@ fun FullsizePlayerTopAppBar(
 @Composable
 fun PlayerControllerTopAppBar(
     isPlaying: Boolean,
-    songName: String,
-    artists: String,
+    song: Song,
     currentPosition: Long,
     duration: Long,
     onPlayerClick: () -> Unit,
@@ -202,7 +202,7 @@ fun PlayerControllerTopAppBar(
                     .align(Alignment.CenterStart)
             ) {
                 Text(
-                    text = songName,
+                    text = song.title,
                     style = SpotlightTextStyle.Text11W400,
                     color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier
@@ -210,7 +210,7 @@ fun PlayerControllerTopAppBar(
                         .basicMarquee()
                 )
                 Text(
-                    text = artists,
+                    text = song.artists,
                     style = SpotlightTextStyle.Text11W400,
                     overflow = TextOverflow.Ellipsis,
                     color = NavigationGray,
@@ -232,7 +232,7 @@ fun PlayerControllerTopAppBar(
         }
 
         LinearProgressIndicator(
-            progress = { (currentPosition * 1.0 / duration).toFloat() },
+            progress = { if (duration.toInt() == 0) 0f else (currentPosition * 1.0 / duration).toFloat() },
             modifier = Modifier
                 .padding(horizontal = SpotlightDimens.MinimizedPlayerProgressIndicatorPadding)
                 .fillMaxWidth()
@@ -263,8 +263,10 @@ fun TopAppBarPreview() {
             )
 
             PlayerControllerTopAppBar(
-                songName = "Preview",
-                artists = "Preview",
+                song = Song(
+                    title = "Preview",
+                    artists = "Preview",
+                ),
                 isPlaying = true,
                 currentPosition = 0,
                 duration = 232155,

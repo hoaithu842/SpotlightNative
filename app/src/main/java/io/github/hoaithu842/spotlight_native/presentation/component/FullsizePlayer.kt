@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.hoaithu842.spotlight_native.R
+import io.github.hoaithu842.spotlight_native.domain.model.Song
 import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
 import io.github.hoaithu842.spotlight_native.extension.toTimeFormat
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.FullsizePlayerTopAppBar
@@ -56,12 +57,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun FullsizePlayer(
     isPlaying: Boolean,
-    songName: String,
-    artists: String,
+    song: Song,
     currentPosition: Long,
     duration: Long,
     onMinimizeClick: () -> Unit,
+    onPrevClick: () -> Unit,
     onMainFunctionClick: () -> Unit,
+    onNextClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val lazyListState = rememberLazyListState()
@@ -93,11 +95,12 @@ fun FullsizePlayer(
             item {
                 MainPlayerContent(
                     isPlaying = isPlaying,
-                    songName = songName,
-                    artists = artists,
+                    song = song,
                     currentPosition = currentPosition,
                     duration = duration,
+                    onPrevClick = onPrevClick,
                     onMainFunctionClick = onMainFunctionClick,
+                    onNextClick = onNextClick,
                 )
             }
 
@@ -144,8 +147,7 @@ fun FullsizePlayer(
             exit = fadeOut(),
         ) {
             PlayerControllerTopAppBar(
-                songName = songName,
-                artists = artists,
+                song = song,
                 isPlaying = isPlaying,
                 currentPosition = currentPosition,
                 duration = duration,
@@ -163,11 +165,12 @@ fun FullsizePlayer(
 @Composable
 fun MainPlayerContent(
     isPlaying: Boolean,
-    songName: String,
-    artists: String,
+    song: Song,
     currentPosition: Long,
     duration: Long,
+    onPrevClick: () -> Unit,
     onMainFunctionClick: () -> Unit,
+    onNextClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -196,7 +199,7 @@ fun MainPlayerContent(
                     .padding(end = SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize.times(2))
             ) {
                 Text(
-                    text = songName,
+                    text = song.title,
                     style = SpotlightTextStyle.Text22W400,
                     color = MaterialTheme.colorScheme.onBackground,
                     maxLines = 1,
@@ -205,7 +208,7 @@ fun MainPlayerContent(
                         .basicMarquee()
                 )
                 Text(
-                    text = artists,
+                    text = song.artists,
                     style = SpotlightTextStyle.Text16W400,
                     overflow = TextOverflow.Ellipsis,
                     color = NavigationGray,
@@ -226,7 +229,7 @@ fun MainPlayerContent(
         }
 
         LinearProgressIndicator(
-            progress = { (currentPosition * 1.0 / duration).toFloat() },
+            progress = { if (duration.toInt() == 0) 0f else (currentPosition * 1.0 / duration).toFloat() },
             modifier = Modifier
                 .padding(top = 15.dp)
                 .fillMaxWidth(),
@@ -257,7 +260,9 @@ fun MainPlayerContent(
         }
         PlayerController(
             isPlaying = isPlaying,
+            onPrevClick = onPrevClick,
             onMainFunctionClick = onMainFunctionClick,
+            onNextClick = onNextClick,
             modifier = Modifier.padding(vertical = 14.dp)
         )
     }
@@ -266,7 +271,9 @@ fun MainPlayerContent(
 @Composable
 fun PlayerController(
     isPlaying: Boolean,
+    onPrevClick: () -> Unit,
     onMainFunctionClick: () -> Unit,
+    onNextClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -290,7 +297,9 @@ fun PlayerController(
             tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .size(SpotlightDimens.PlayerControllerMediumIconSize)
-                .noRippleClickable { },
+                .noRippleClickable {
+                    onPrevClick()
+                },
         )
         Icon(
             painter = painterResource(if (isPlaying) SpotlightIcons.Pause else SpotlightIcons.Play),
@@ -311,7 +320,9 @@ fun PlayerController(
             tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .size(SpotlightDimens.PlayerControllerMediumIconSize)
-                .noRippleClickable { },
+                .noRippleClickable {
+                    onNextClick()
+                },
         )
         Icon(
             painter = painterResource(SpotlightIcons.Timer),
@@ -330,12 +341,16 @@ fun FullsizePlayerPreview() {
     SpotlightTheme {
         FullsizePlayer(
             isPlaying = true,
-            songName = "Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
-            artists = " Grissini Project",
+            song = Song(
+                title = "Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
+                artists = "Grissini Project"
+            ),
             currentPosition = 0,
             duration = 232155,
             onMinimizeClick = {},
+            onPrevClick = {},
             onMainFunctionClick = {},
+            onNextClick = {},
         )
     }
 }
