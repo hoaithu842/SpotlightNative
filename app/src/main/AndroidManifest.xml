@@ -8,6 +8,10 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
+    <queries>
+        <package android:name="io.github.hoaithu842.spotlight_native.service" />
+    </queries>
+
     <application
         android:name=".SpotlightApplication"
         android:allowBackup="true"
@@ -32,8 +36,11 @@
         </activity>
         <service
             android:name=".service.SpotlightMediaPlaybackService"
-            android:exported="false"
+            android:exported="true"
             android:foregroundServiceType="mediaPlayback">
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaSessionService" />
+            </intent-filter>
         </service>
     </application>
 

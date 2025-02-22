@@ -27,9 +27,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.hoaithu842.spotlight_native.R
-import io.github.hoaithu842.spotlight_native.presentation.theme.NavigationGray
-import io.github.hoaithu842.spotlight_native.presentation.theme.SpotlightTheme
-import io.github.hoaithu842.spotlight_native.presentation.theme.TopAppBarGray
+import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
+import io.github.hoaithu842.spotlight_native.ui.theme.SpotlightTheme
+import io.github.hoaithu842.spotlight_native.ui.theme.TopAppBarGray
 
 enum class CustomDrawerState {
     Opened,

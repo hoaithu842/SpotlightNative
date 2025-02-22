@@ -1,4 +1,4 @@
-package io.github.hoaithu842.spotlight_native.presentation.theme
+package io.github.hoaithu842.spotlight_native.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

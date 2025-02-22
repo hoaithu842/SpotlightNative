@@ -35,12 +35,12 @@ import androidx.compose.ui.unit.dp
 import io.github.hoaithu842.spotlight_native.R
 import io.github.hoaithu842.spotlight_native.domain.model.Song
 import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
-import io.github.hoaithu842.spotlight_native.presentation.theme.MinimizedPlayerBackground
-import io.github.hoaithu842.spotlight_native.presentation.theme.NavigationGray
-import io.github.hoaithu842.spotlight_native.presentation.theme.ProgressIndicatorColor
-import io.github.hoaithu842.spotlight_native.presentation.theme.ProgressIndicatorTrackColor
-import io.github.hoaithu842.spotlight_native.presentation.theme.SpotlightTheme
-import io.github.hoaithu842.spotlight_native.presentation.theme.TopAppBarGray
+import io.github.hoaithu842.spotlight_native.ui.theme.MinimizedPlayerBackground
+import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
+import io.github.hoaithu842.spotlight_native.ui.theme.ProgressIndicatorColor
+import io.github.hoaithu842.spotlight_native.ui.theme.ProgressIndicatorTrackColor
+import io.github.hoaithu842.spotlight_native.ui.theme.SpotlightTheme
+import io.github.hoaithu842.spotlight_native.ui.theme.TopAppBarGray
 
 enum class HomeScreenTab {
     All,

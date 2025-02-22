@@ -1,86 +1,51 @@
 package io.github.hoaithu842.spotlight_native.service
 
-import android.app.PendingIntent
-import android.app.Service
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.os.Binder
-import android.os.IBinder
-import androidx.annotation.OptIn
-import androidx.core.app.NotificationCompat
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.session.MediaStyleNotificationHelper
+import android.util.Log
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.session.MediaSession
+import androidx.media3.session.MediaSessionService
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.hoaithu842.spotlight_native.R
-import io.github.hoaithu842.spotlight_native.manager.MediaPlayerController
+import io.github.hoaithu842.spotlight_native.domain.repository.PlayerRepository
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SpotlightMediaPlaybackService : Service() {
+class SpotlightMediaPlaybackService : MediaSessionService() {
     @Inject
-    lateinit var mediaPlayerController: MediaPlayerController
+    lateinit var playerRepository: PlayerRepository
+    private var mediaSession: MediaSession? = null
 
-    private val binder = MediaPlaybackBinder()
-
-    inner class MediaPlaybackBinder : Binder() {
-        fun getService(): SpotlightMediaPlaybackService = this@SpotlightMediaPlaybackService
-    }
-
-    override fun onBind(intent: Intent?): IBinder {
-        sendNotification("")
-        return binder
-    }
-
-    @OptIn(UnstableApi::class)
-    private fun sendNotification(track: String) {
-        val notification = NotificationCompat.Builder(this, "channel_id")
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setSmallIcon(R.drawable.ic_launcher_background)
-            .addAction(R.drawable.play_previous, "Previous", createPrevPendingIntent())
-            .addAction(R.drawable.play, "Pause", createPlayPausePendingIntent())
-            .addAction(R.drawable.play_next, "Next", createNextPendingIntent())
-            .setStyle(
-                MediaStyleNotificationHelper.MediaStyle(mediaPlayerController.mediaSession)
-                    .setShowActionsInCompactView(1)
-            )
-            .setContentTitle("Wonderful Music")
-            .setContentText("My Awesome Band")
-            .setLargeIcon(
-                BitmapFactory.decodeResource(
-                    resources,
-                    R.drawable.ic_launcher_background
-                )
-            )
-            .setOngoing(true) // Prevent swipe when playing
-            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
-            .build()
-        startForeground(1, notification)
-    }
-
-    private fun createPrevPendingIntent(): PendingIntent {
-        val intent = Intent(this, SpotlightMediaPlaybackService::class.java).apply {
-            action = "prev"
+    private fun fetchPlaylist(player: ExoPlayer) {
+        player.clearMediaItems()
+        playerRepository.songsList.forEach {
+            player.addMediaItem(MediaItem.fromUri(it.source))
         }
-        return PendingIntent.getService(
-            this, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        player.prepare()
     }
 
-    private fun createPlayPausePendingIntent(): PendingIntent {
-        val intent = Intent(this, SpotlightMediaPlaybackService::class.java).apply {
-            action = "play_pause"
-        }
-        return PendingIntent.getService(
-            this, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
+    override fun onCreate() {
+        super.onCreate()
+        val player = ExoPlayer.Builder(this).build()
+        fetchPlaylist(player)
+        mediaSession = MediaSession.Builder(this, player).build()
     }
 
-    private fun createNextPendingIntent(): PendingIntent {
-        val intent = Intent(this, SpotlightMediaPlaybackService::class.java).apply {
-            action = "next"
+    override fun onDestroy() {
+        mediaSession?.run {
+            player.release()
+            release()
+            mediaSession = null
         }
-        return PendingIntent.getService(
-            this, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        super.onDestroy()
+    }
+
+    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? {
+        return mediaSession
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        Log.d("21127176", "onTaskRemoved")
     }
 }

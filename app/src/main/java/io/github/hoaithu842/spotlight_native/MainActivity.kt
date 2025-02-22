@@ -1,16 +1,12 @@
 package io.github.hoaithu842.spotlight_native
 
 import android.content.ComponentName
-import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.IBinder
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.expandVertically
@@ -40,7 +36,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -50,11 +45,13 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.media3.session.MediaController
+import androidx.media3.session.SessionToken
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.google.common.util.concurrent.MoreExecutors
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.hoaithu842.spotlight_native.manager.NetworkMonitor
 import io.github.hoaithu842.spotlight_native.navigation.SpotlightNavHost
@@ -63,8 +60,6 @@ import io.github.hoaithu842.spotlight_native.navigation.navigateToHomeScreen
 import io.github.hoaithu842.spotlight_native.navigation.navigateToLibraryScreen
 import io.github.hoaithu842.spotlight_native.navigation.navigateToPremiumScreen
 import io.github.hoaithu842.spotlight_native.navigation.navigateToSearchScreen
-import io.github.hoaithu842.spotlight_native.presentation.component.FullsizePlayer
-import io.github.hoaithu842.spotlight_native.presentation.component.MinimizedPlayer
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.CustomDrawerState
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.HomeScreenDrawer
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightDimens
@@ -72,10 +67,10 @@ import io.github.hoaithu842.spotlight_native.presentation.designsystem.Spotlight
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightNavigationBarItem
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.isOpened
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.opposite
-import io.github.hoaithu842.spotlight_native.presentation.theme.SpotlightTheme
+import io.github.hoaithu842.spotlight_native.presentation.screen.PlayerView
+import io.github.hoaithu842.spotlight_native.presentation.viewmodel.PlayerViewModel
 import io.github.hoaithu842.spotlight_native.service.SpotlightMediaPlaybackService
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import io.github.hoaithu842.spotlight_native.ui.theme.SpotlightTheme
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -111,43 +106,21 @@ fun navigateToTopLevelDestination(
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    // Service
-    private var mediaPlaybackService: SpotlightMediaPlaybackService? = null
-    private var isBound = false
-    private val connection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            mediaPlaybackService =
-                (service as SpotlightMediaPlaybackService.MediaPlaybackBinder).getService()
-            isBound = true
-        }
-
-        override fun onServiceDisconnected(name: ComponentName?) {
-            isBound = false
-        }
-
-    }
-
     @Inject
     lateinit var networkMonitor: NetworkMonitor
-    private val viewModel: MainActivityViewModel by viewModels()
+    private val playerViewModel: PlayerViewModel by viewModels()
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val isPlaying by viewModel.isPlaying.collectAsStateWithLifecycle(initialValue = false)
-            val currentPosition by viewModel.currentPosition.collectAsStateWithLifecycle(
-                initialValue = 0
-            )
-            val currentSong by viewModel.currentSong.collectAsStateWithLifecycle()
             val isOffline by networkMonitor.isOnline.collectAsState(initial = true)
             var isNavBarDisplaying by rememberSaveable { mutableStateOf(true) }
             val density = LocalDensity.current
             val scaffoldState = rememberBottomSheetScaffoldState()
             val navController = rememberNavController()
             var currentDestination by rememberSaveable { mutableStateOf(TopLevelDestination.HOME) }
-            val coroutineScope = rememberCoroutineScope()
             var drawerState by remember { mutableStateOf(CustomDrawerState.Closed) }
             val configuration = LocalConfiguration.current
             val newDensity = LocalDensity.current.density
@@ -168,12 +141,6 @@ class MainActivity : ComponentActivity() {
                 if (scaffoldState.bottomSheetState.currentValue == SheetValue.PartiallyExpanded) {
                     isNavBarDisplaying = true
                 }
-            }
-
-            LaunchedEffect(Unit) {
-                val intent = Intent(this@MainActivity, SpotlightMediaPlaybackService::class.java)
-                startService(intent)
-                bindService(intent, connection, BIND_AUTO_CREATE)
             }
 
             SpotlightTheme {
@@ -239,48 +206,10 @@ class MainActivity : ComponentActivity() {
                                 sheetDragHandle = {},
                                 sheetShadowElevation = 0.dp,
                                 sheetContent = {
-                                    AnimatedContent(
-                                        targetState = scaffoldState.bottomSheetState.currentValue,
-                                        label = "",
-                                    ) {
-                                        when (it) {
-                                            SheetValue.Hidden -> {}
-                                            SheetValue.Expanded -> {
-                                                FullsizePlayer(
-                                                    isPlaying = isPlaying,
-                                                    song = currentSong,
-                                                    currentPosition = currentPosition,
-                                                    duration = viewModel.getDuration(),
-                                                    onMinimizeClick = {
-                                                        coroutineScope.launch {
-                                                            isNavBarDisplaying = true
-                                                            delay(100)
-                                                            scaffoldState.bottomSheetState.partialExpand()
-                                                        }
-                                                    },
-                                                    onPrevClick = viewModel::prev,
-                                                    onMainFunctionClick = viewModel::process,
-                                                    onNextClick = viewModel::next,
-                                                )
-                                            }
-
-                                            SheetValue.PartiallyExpanded -> {
-                                                MinimizedPlayer(
-                                                    isPlaying = isPlaying,
-                                                    song = currentSong,
-                                                    currentPosition = currentPosition,
-                                                    duration = viewModel.getDuration(),
-                                                    onPlayerClick = {
-                                                        coroutineScope.launch {
-                                                            isNavBarDisplaying = false
-                                                            scaffoldState.bottomSheetState.expand()
-                                                        }
-                                                    },
-                                                    onMainFunctionClick = viewModel::process,
-                                                )
-                                            }
-                                        }
-                                    }
+                                    PlayerView(
+                                        scaffoldState = scaffoldState,
+                                        navBarDisplayingChange = { isNavBarDisplaying = it },
+                                    )
                                 },
                                 snackbarHost = { SnackbarHost(snackbarHostState) },
                                 sheetContainerColor = Color.Transparent,
@@ -300,10 +229,24 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        val intent = Intent(this@MainActivity, SpotlightMediaPlaybackService::class.java)
-        stopService(intent)
-        unbindService(connection)
+    override fun onStart() {
+        super.onStart()
+        val sessionToken =
+            SessionToken(this, ComponentName(this, SpotlightMediaPlaybackService::class.java))
+        val controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
+        controllerFuture.addListener(
+            {
+                playerViewModel.setController(controllerFuture.get())
+            },
+            MoreExecutors.directExecutor()
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val sessionToken =
+            SessionToken(this, ComponentName(this, SpotlightMediaPlaybackService::class.java))
+        val controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
+        MediaController.releaseFuture(controllerFuture)
     }
 }

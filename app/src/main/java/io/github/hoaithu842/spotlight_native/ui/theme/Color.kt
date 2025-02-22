@@ -1,4 +1,4 @@
-package io.github.hoaithu842.spotlight_native.presentation.theme
+package io.github.hoaithu842.spotlight_native.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
