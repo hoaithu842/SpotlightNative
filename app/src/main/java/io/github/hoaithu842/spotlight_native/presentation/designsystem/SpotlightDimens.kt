@@ -40,4 +40,7 @@ object SpotlightDimens {
 
     val RecommendationSectionHeight = 260.dp
     val RecommendationSectionThumbnailSize = 152.dp
+
+    val BrowseSectionHeight = 100.dp
+    val BrowseSectionThumbnailSize = 68.dp
 }
