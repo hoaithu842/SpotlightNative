@@ -13,8 +13,12 @@ data object LibraryRoute
 fun NavController.navigateToLibraryScreen(navOptions: NavOptions? = null) =
     navigate(route = LibraryRoute, navOptions = navOptions)
 
-fun NavGraphBuilder.libraryScreen() {
+fun NavGraphBuilder.libraryScreen(
+    onAvatarClick: () -> Unit,
+) {
     composable<LibraryRoute> {
-        LibraryScreen()
+        LibraryScreen(
+            onAvatarClick = onAvatarClick,
+        )
     }
 }

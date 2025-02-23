@@ -1,8 +1,9 @@
 package io.github.hoaithu842.spotlight_native.service
 
 import android.content.Intent
-import android.util.Log
+import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
@@ -44,8 +45,9 @@ class SpotlightMediaPlaybackService : MediaSessionService() {
         return mediaSession
     }
 
+    @OptIn(UnstableApi::class)
     override fun onTaskRemoved(rootIntent: Intent?) {
         super.onTaskRemoved(rootIntent)
-        Log.d("21127176", "onTaskRemoved")
+        pauseAllPlayersAndStopSelf()
     }
 }

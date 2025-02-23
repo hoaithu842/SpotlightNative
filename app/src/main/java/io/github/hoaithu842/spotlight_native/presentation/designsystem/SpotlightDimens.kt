@@ -7,10 +7,11 @@ object SpotlightDimens {
     val NavigationBarIconSize = 24.dp
 
     val TopAppBarHeight = 60.dp
-    val TopAppBarIconSize = 35.dp
+    val TopAppBarIconSize = 30.dp
+    val TopAppBarIconHorizontalPadding = 8.dp
     val TopAppBarOptionHeight = 25.dp
     val TopAppBarOptionPadding = 19.dp
-    val TopAppBarHorizontalPadding = 6.dp
+    val TopAppBarHorizontalPadding = 4.dp
 
     val HomeScreenDrawerHeaderIconSize = 50.dp
     val HomeScreenDrawerHeaderPadding = 15.dp
@@ -32,4 +33,11 @@ object SpotlightDimens {
     val PlayerControllerSmallIconSize = 22.dp
     val PlayerControllerMediumIconSize = 36.dp
     val PlayerControllerLargeIconSize = 67.dp
+
+    val ThumbnailSize = 50.dp
+    val RecommendationPadding = 4.dp
+    val RecommendationTextPadding = 6.dp
+
+    val RecommendationSectionHeight = 260.dp
+    val RecommendationSectionThumbnailSize = 152.dp
 }

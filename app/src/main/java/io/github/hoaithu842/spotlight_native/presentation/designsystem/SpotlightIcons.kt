@@ -24,4 +24,5 @@ object SpotlightIcons {
     val Timer = R.drawable.timer
     val PlayNext = R.drawable.play_next
     val PlayPrevious = R.drawable.play_previous
+    val Add_2 = R.drawable.add_2
 }

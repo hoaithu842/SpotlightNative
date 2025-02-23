@@ -14,8 +14,8 @@ fun SpotlightNavHost(
         startDestination = HomeRoute,
     ) {
         homeScreen(onAvatarClick = onAvatarClick)
-        searchScreen()
-        libraryScreen()
+        searchScreen(onAvatarClick = onAvatarClick)
+        libraryScreen(onAvatarClick = onAvatarClick)
         premiumScreen()
     }
 }

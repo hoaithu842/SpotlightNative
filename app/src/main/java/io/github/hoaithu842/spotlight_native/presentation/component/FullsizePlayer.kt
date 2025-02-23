@@ -7,6 +7,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,14 +34,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.hoaithu842.spotlight_native.R
+import coil.compose.AsyncImagePainter
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import io.github.hoaithu842.spotlight_native.domain.model.Song
 import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
+import io.github.hoaithu842.spotlight_native.extension.shimmerLoadingAnimation
 import io.github.hoaithu842.spotlight_native.extension.toTimeFormat
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.FullsizePlayerTopAppBar
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.PlayerControllerTopAppBar
@@ -60,6 +64,8 @@ fun FullsizePlayer(
     song: Song,
     currentPosition: Long,
     duration: Long,
+    painter: AsyncImagePainter,
+    isLoading: Boolean,
     onMinimizeClick: () -> Unit,
     onPrevClick: () -> Unit,
     onMainFunctionClick: () -> Unit,
@@ -85,7 +91,7 @@ fun FullsizePlayer(
         ) {
             item {
                 FullsizePlayerTopAppBar(
-                    artists = "Đen",
+                    artists = song.artists,
                     onMinimizeClick = onMinimizeClick,
                     modifier = Modifier
                         .statusBarsPadding()
@@ -98,6 +104,8 @@ fun FullsizePlayer(
                     song = song,
                     currentPosition = currentPosition,
                     duration = duration,
+                    painter = painter,
+                    isLoading = isLoading,
                     onPrevClick = onPrevClick,
                     onMainFunctionClick = onMainFunctionClick,
                     onNextClick = onNextClick,
@@ -168,6 +176,8 @@ fun MainPlayerContent(
     song: Song,
     currentPosition: Long,
     duration: Long,
+    painter: AsyncImagePainter,
+    isLoading: Boolean,
     onPrevClick: () -> Unit,
     onMainFunctionClick: () -> Unit,
     onNextClick: () -> Unit,
@@ -181,13 +191,17 @@ fun MainPlayerContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            painter = painterResource(R.drawable.ic_launcher_background),
+            painter = painter,
             contentDescription = "",
             modifier = Modifier
                 .padding(vertical = SpotlightDimens.FullsizePlayerMainContentPadding)
-                .size(SpotlightDimens.FullsizePlayerThumbnailSize),
-            contentScale = ContentScale.Crop, // TODO: replace later
+                .size(SpotlightDimens.FullsizePlayerThumbnailSize)
+                .shimmerLoadingAnimation(
+                    isLoadingCompleted = !isLoading,
+                    isLightModeActive = !isSystemInDarkTheme(),
+                )
         )
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -347,6 +361,12 @@ fun FullsizePlayerPreview() {
             ),
             currentPosition = 0,
             duration = 232155,
+            painter = rememberAsyncImagePainter(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data("https://thantrieu.com/resources/arts/1073419268.webp")
+                    .build()
+            ),
+            isLoading = false,
             onMinimizeClick = {},
             onPrevClick = {},
             onMainFunctionClick = {},

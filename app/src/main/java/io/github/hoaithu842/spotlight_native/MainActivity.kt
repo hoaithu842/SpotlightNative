@@ -120,7 +120,7 @@ class MainActivity : ComponentActivity() {
             val density = LocalDensity.current
             val scaffoldState = rememberBottomSheetScaffoldState()
             val navController = rememberNavController()
-            var currentDestination by rememberSaveable { mutableStateOf(TopLevelDestination.HOME) }
+            var currentDestination by rememberSaveable { mutableStateOf(TopLevelDestination.HOME) } // TODO: replace with automatically update
             var drawerState by remember { mutableStateOf(CustomDrawerState.Closed) }
             val configuration = LocalConfiguration.current
             val newDensity = LocalDensity.current.density
@@ -213,9 +213,7 @@ class MainActivity : ComponentActivity() {
                                 },
                                 snackbarHost = { SnackbarHost(snackbarHostState) },
                                 sheetContainerColor = Color.Transparent,
-                                modifier = Modifier
-                                    .padding(innerPadding)
-                                    .fillMaxSize(),
+                                modifier = Modifier.fillMaxSize(),
                             ) {
                                 SpotlightNavHost(
                                     navHostController = navController,

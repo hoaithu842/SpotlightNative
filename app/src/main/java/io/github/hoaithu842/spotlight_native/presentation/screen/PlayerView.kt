@@ -6,14 +6,19 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import io.github.hoaithu842.spotlight_native.presentation.component.FullsizePlayer
 import io.github.hoaithu842.spotlight_native.presentation.component.MinimizedPlayer
 import io.github.hoaithu842.spotlight_native.presentation.viewmodel.PlayerViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,11 +29,20 @@ fun PlayerView(
     modifier: Modifier = Modifier,
     viewModel: PlayerViewModel = hiltViewModel(),
 ) {
-    val isPlaying by viewModel.isPlayingFlow.collectAsStateWithLifecycle(initialValue = false)
     val currentPosition by viewModel.currentPositionFlow.collectAsStateWithLifecycle(initialValue = 0)
-    val duration by viewModel.durationFlow.collectAsStateWithLifecycle(initialValue = 0)
-    val currentSong by viewModel.currentSong.collectAsStateWithLifecycle()
+    val playerUiState by viewModel.playerUiState.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
+
+    var isLoading by remember { mutableStateOf(true) }
+
+    val painter = rememberAsyncImagePainter(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(playerUiState.currentSong.image)
+            .listener(onSuccess = { _, _ ->
+                isLoading = false
+            })
+            .build()
+    )
 
     AnimatedContent(
         targetState = scaffoldState.bottomSheetState.currentValue,
@@ -38,10 +52,12 @@ fun PlayerView(
             SheetValue.Hidden -> {}
             SheetValue.Expanded -> {
                 FullsizePlayer(
-                    isPlaying = isPlaying,
-                    song = currentSong,
+                    isPlaying = playerUiState.isPlaying,
+                    song = playerUiState.currentSong,
                     currentPosition = currentPosition,
-                    duration = duration,
+                    duration = playerUiState.duration,
+                    isLoading = isLoading,
+                    painter = painter,
                     onMinimizeClick = {
                         coroutineScope.launch {
                             navBarDisplayingChange(true)
@@ -56,10 +72,12 @@ fun PlayerView(
 
             SheetValue.PartiallyExpanded -> {
                 MinimizedPlayer(
-                    isPlaying = isPlaying,
-                    song = currentSong,
+                    isPlaying = playerUiState.isPlaying,
+                    song = playerUiState.currentSong,
                     currentPosition = currentPosition,
-                    duration = duration,
+                    duration = playerUiState.duration,
+                    isLoading = isLoading,
+                    painter = painter,
                     onPlayerClick = {
                         coroutineScope.launch {
                             navBarDisplayingChange(false)

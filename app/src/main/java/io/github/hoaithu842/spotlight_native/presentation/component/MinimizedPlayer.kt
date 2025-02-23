@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,10 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,9 +30,10 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.github.hoaithu842.spotlight_native.R
+import coil.compose.AsyncImagePainter
 import io.github.hoaithu842.spotlight_native.domain.model.Song
 import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
+import io.github.hoaithu842.spotlight_native.extension.shimmerLoadingAnimation
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightIcons
 import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightTextStyle
@@ -42,10 +48,14 @@ fun MinimizedPlayer(
     song: Song,
     currentPosition: Long,
     duration: Long,
+    painter: AsyncImagePainter,
+    isLoading: Boolean,
     onPlayerClick: () -> Unit,
     onMainFunctionClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var isLoading by remember { mutableStateOf(true) }
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -71,11 +81,15 @@ fun MinimizedPlayer(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    painter = painter,
                     contentDescription = "",
                     modifier = Modifier
                         .size(SpotlightDimens.MinimizedPlayerThumbnailSize)
                         .clip(shape = RoundedCornerShape(size = 6.dp))
+                        .shimmerLoadingAnimation(
+                            isLoadingCompleted = !isLoading,
+                            isLightModeActive = !isSystemInDarkTheme(),
+                        )
                 )
 
                 Column(

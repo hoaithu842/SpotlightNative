@@ -29,7 +29,7 @@ fun SpotlightNavigationBar(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .background(MaterialTheme.colorScheme.background),
+            .background(MaterialTheme.colorScheme.surface),
     ) {
         Box(
             modifier = Modifier
