@@ -23,9 +23,9 @@ import androidx.compose.ui.Modifier
 import io.github.hoaithu842.spotlight_native.presentation.component.ArtistRecommendation
 import io.github.hoaithu842.spotlight_native.presentation.component.EPRecommendation
 import io.github.hoaithu842.spotlight_native.presentation.component.RecommendationSection
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.HomeScreenTab
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.HomeTopAppBar
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightDimens
+import io.github.hoaithu842.spotlight_native.ui.designsystem.HomeScreenTab
+import io.github.hoaithu842.spotlight_native.ui.designsystem.HomeTopAppBar
+import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
 
 @Composable
 fun HomeScreen(

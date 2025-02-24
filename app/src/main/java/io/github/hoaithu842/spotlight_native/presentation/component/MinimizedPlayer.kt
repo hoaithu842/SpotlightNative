@@ -34,9 +34,9 @@ import coil.compose.AsyncImagePainter
 import io.github.hoaithu842.spotlight_native.domain.model.Song
 import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
 import io.github.hoaithu842.spotlight_native.extension.shimmerLoadingAnimation
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightDimens
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightIcons
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightTextStyle
+import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
+import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightIcons
+import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
 import io.github.hoaithu842.spotlight_native.ui.theme.MinimizedPlayerBackground
 import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
 import io.github.hoaithu842.spotlight_native.ui.theme.ProgressIndicatorColor

@@ -107,6 +107,34 @@ fun PlaylistThumbnail(
 }
 
 @Composable
+fun LibraryPlaylistThumbnail(
+    imageUrl: String,
+    modifier: Modifier = Modifier,
+) {
+    var isLoading by remember { mutableStateOf(true) }
+
+    val painter = rememberAsyncImagePainter(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(imageUrl)
+            .listener(onSuccess = { _, _ ->
+                isLoading = false
+            })
+            .build()
+    )
+
+    Image(
+        painter = painter,
+        contentDescription = "",
+        modifier = modifier
+            .fillMaxSize()
+            .shimmerLoadingAnimation(
+                isLoadingCompleted = !isLoading,
+                isLightModeActive = !isSystemInDarkTheme(),
+            )
+    )
+}
+
+@Composable
 fun SongThumbnail(
     painter: AsyncImagePainter,
     modifier: Modifier = Modifier,

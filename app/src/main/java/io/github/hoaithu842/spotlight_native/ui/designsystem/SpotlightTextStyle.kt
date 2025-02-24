@@ -1,4 +1,4 @@
-package io.github.hoaithu842.spotlight_native.presentation.designsystem
+package io.github.hoaithu842.spotlight_native.ui.designsystem
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -12,6 +12,10 @@ object SpotlightTextStyle {
     )
     val Text11W600 = TextStyle(
         fontSize = 11.sp,
+        fontWeight = FontWeight.W600,
+    )
+    val Text13W600 = TextStyle(
+        fontSize = 13.sp,
         fontWeight = FontWeight.W600,
     )
     val Text14W400 = TextStyle(

@@ -5,7 +5,6 @@ import androidx.media3.common.Player
 import androidx.media3.common.Tracks
 import androidx.media3.session.MediaController
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.hoaithu842.spotlight_native.domain.model.Song
 import io.github.hoaithu842.spotlight_native.domain.repository.PlayerRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -34,7 +33,13 @@ class PlayerViewModel @Inject constructor(
     }.flowOn(Dispatchers.Main)
 
     private val _playerUiState: MutableStateFlow<PlayerUiState> =
-        MutableStateFlow(PlayerUiState(isPlaying = false, duration = 0, currentSong = Song()))
+        MutableStateFlow(
+            PlayerUiState(
+                isPlaying = false,
+                duration = 0,
+                currentSong = playerRepository.songsList.first()
+            )
+        )
     val playerUiState: StateFlow<PlayerUiState> = _playerUiState.asStateFlow()
 
     fun next() {

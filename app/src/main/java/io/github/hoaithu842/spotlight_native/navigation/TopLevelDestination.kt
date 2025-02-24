@@ -3,7 +3,7 @@ package io.github.hoaithu842.spotlight_native.navigation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import io.github.hoaithu842.spotlight_native.R
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightIcons
+import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightIcons
 import kotlin.reflect.KClass
 
 enum class TopLevelDestination(
@@ -22,13 +22,13 @@ enum class TopLevelDestination(
         unselectedIcon = SpotlightIcons.Search,
         selectedIcon = SpotlightIcons.SearchSelected,
         title = R.string.search,
-        route = SearchRoute::class,
+        route = SearchGraph::class,
     ),
     LIBRARY(
         unselectedIcon = SpotlightIcons.Library,
         selectedIcon = SpotlightIcons.LibrarySelected,
         title = R.string.library,
-        route = LibraryRoute::class,
+        route = LibraryGraph::class,
     ),
     PREMIUM(
         unselectedIcon = SpotlightIcons.Premium,

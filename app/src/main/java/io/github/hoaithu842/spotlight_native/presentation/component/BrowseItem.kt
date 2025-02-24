@@ -1,16 +1,14 @@
 package io.github.hoaithu842.spotlight_native.presentation.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,8 +18,8 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightDimens
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightTextStyle
+import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
+import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
 import io.github.hoaithu842.spotlight_native.ui.theme.SpotlightTheme
 import io.github.hoaithu842.spotlight_native.ui.theme.TopAppBarGray
 
@@ -31,14 +29,12 @@ fun BrowseItem(
     imageUrl: String,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    Box(
         modifier = modifier
-            .wrapContentWidth()
+            .fillMaxWidth()
             .height(SpotlightDimens.BrowseSectionHeight)
             .clip(shape = RoundedCornerShape(size = 6.dp))
             .background(TopAppBarGray),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.Bottom,
     ) {
         Text(
             text = title,
@@ -48,22 +44,23 @@ fun BrowseItem(
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
                 .height(SpotlightDimens.BrowseSectionHeight)
-                .weight(2f)
-                .padding(16.dp)
+                .padding(
+                    top = 16.dp,
+                    start = 16.dp,
+                    end = SpotlightDimens.BrowseSectionThumbnailSize,
+                )
         )
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1f),
-            verticalAlignment = Alignment.Bottom,
-        ) {
-            EPThumbnail(
-                imageUrl = imageUrl,
-                modifier = modifier
-                    .rotate(30f)
-                    .fillMaxSize(),
-            )
-        }
+        EPThumbnail(
+            imageUrl = imageUrl,
+            modifier = modifier
+                .align(Alignment.BottomEnd)
+                .size(SpotlightDimens.BrowseSectionThumbnailSize)
+                .rotate(30f)
+                .offset(
+                    x = SpotlightDimens.BrowseSectionThumbnailXOffset,
+                    y = SpotlightDimens.BrowseSectionThumbnailYOffset,
+                ),
+        )
     }
 }
 

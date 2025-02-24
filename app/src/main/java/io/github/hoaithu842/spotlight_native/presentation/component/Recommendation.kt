@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightDimens
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightTextStyle
+import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
+import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
 import io.github.hoaithu842.spotlight_native.ui.theme.TopAppBarGray
 
 @Composable

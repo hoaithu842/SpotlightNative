@@ -47,8 +47,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.google.common.util.concurrent.MoreExecutors
@@ -57,22 +61,23 @@ import io.github.hoaithu842.spotlight_native.manager.NetworkMonitor
 import io.github.hoaithu842.spotlight_native.navigation.SpotlightNavHost
 import io.github.hoaithu842.spotlight_native.navigation.TopLevelDestination
 import io.github.hoaithu842.spotlight_native.navigation.navigateToHomeScreen
-import io.github.hoaithu842.spotlight_native.navigation.navigateToLibraryScreen
+import io.github.hoaithu842.spotlight_native.navigation.navigateToLibrary
 import io.github.hoaithu842.spotlight_native.navigation.navigateToPremiumScreen
-import io.github.hoaithu842.spotlight_native.navigation.navigateToSearchScreen
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.CustomDrawerState
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.HomeScreenDrawer
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightDimens
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightNavigationBar
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.SpotlightNavigationBarItem
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.isOpened
-import io.github.hoaithu842.spotlight_native.presentation.designsystem.opposite
+import io.github.hoaithu842.spotlight_native.navigation.navigateToSearch
 import io.github.hoaithu842.spotlight_native.presentation.screen.PlayerView
 import io.github.hoaithu842.spotlight_native.presentation.viewmodel.PlayerViewModel
 import io.github.hoaithu842.spotlight_native.service.SpotlightMediaPlaybackService
+import io.github.hoaithu842.spotlight_native.ui.designsystem.CustomDrawerState
+import io.github.hoaithu842.spotlight_native.ui.designsystem.HomeScreenDrawer
+import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
+import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightNavigationBar
+import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightNavigationBarItem
+import io.github.hoaithu842.spotlight_native.ui.designsystem.isOpened
+import io.github.hoaithu842.spotlight_native.ui.designsystem.opposite
 import io.github.hoaithu842.spotlight_native.ui.theme.SpotlightTheme
 import javax.inject.Inject
 import kotlin.math.roundToInt
+import kotlin.reflect.KClass
 
 fun navigateToTopLevelDestination(
     navController: NavHostController,
@@ -90,11 +95,11 @@ fun navigateToTopLevelDestination(
             topLevelNavOptions
         )
 
-        TopLevelDestination.SEARCH -> navController.navigateToSearchScreen(
+        TopLevelDestination.SEARCH -> navController.navigateToSearch(
             topLevelNavOptions
         )
 
-        TopLevelDestination.LIBRARY -> navController.navigateToLibraryScreen(
+        TopLevelDestination.LIBRARY -> navController.navigateToLibrary(
             topLevelNavOptions
         )
 
@@ -103,6 +108,11 @@ fun navigateToTopLevelDestination(
         )
     }
 }
+
+private fun NavDestination?.isRouteInHierarchy(route: KClass<*>) =
+    this?.hierarchy?.any {
+        it.hasRoute(route)
+    } ?: false
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -120,7 +130,8 @@ class MainActivity : ComponentActivity() {
             val density = LocalDensity.current
             val scaffoldState = rememberBottomSheetScaffoldState()
             val navController = rememberNavController()
-            var currentDestination by rememberSaveable { mutableStateOf(TopLevelDestination.HOME) } // TODO: replace with automatically update
+            var currentDestination: NavDestination? =
+                navController.currentBackStackEntryAsState().value?.destination
             var drawerState by remember { mutableStateOf(CustomDrawerState.Closed) }
             val configuration = LocalConfiguration.current
             val newDensity = LocalDensity.current.density
@@ -174,19 +185,18 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 SpotlightNavigationBar {
                                     TopLevelDestination.entries.forEach { destination ->
+                                        val selected =
+                                            currentDestination.isRouteInHierarchy(destination.route)
                                         SpotlightNavigationBarItem(
                                             title = stringResource(destination.title),
-                                            selected = currentDestination == destination,
+                                            selected = selected,
                                             icon = destination.unselectedIcon,
                                             selectedIcon = destination.selectedIcon,
                                             onClick = {
-                                                if (currentDestination != destination) {
-                                                    navigateToTopLevelDestination(
-                                                        navController = navController,
-                                                        topLevelDestination = destination,
-                                                    )
-                                                    currentDestination = destination
-                                                }
+                                                navigateToTopLevelDestination(
+                                                    navController = navController,
+                                                    topLevelDestination = destination,
+                                                )
                                             },
                                         )
                                     }
