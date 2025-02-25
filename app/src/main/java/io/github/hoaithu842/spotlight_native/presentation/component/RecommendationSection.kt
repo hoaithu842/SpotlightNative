@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
 import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
@@ -22,6 +23,7 @@ import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
 @Composable
 fun RecommendationSection(
     title: String,
+    onRecommendedPlaylistClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -45,26 +47,32 @@ fun RecommendationSection(
             RecommendationItem(
                 imageUrl = "https://thantrieu.com/resources/arts/1078245023.webp",
                 description = "The Weeknd, Lady Gaga, JENNIE, Charlie Puth, yung kai, Dhruv",
+                onRecommendedPlaylistClick = { onRecommendedPlaylistClick() },
             )
             RecommendationItem(
                 imageUrl = "https://thantrieu.com/resources/arts/1078245023.webp",
                 description = "The Weeknd, Lady Gaga, JENNIE, Charlie Puth, yung kai, Dhruv",
+                onRecommendedPlaylistClick = { onRecommendedPlaylistClick() },
             )
             RecommendationItem(
                 imageUrl = "https://thantrieu.com/resources/arts/1078245023.webp",
                 description = "The Weeknd, Lady Gaga, JENNIE, Charlie Puth, yung kai, Dhruv",
+                onRecommendedPlaylistClick = { onRecommendedPlaylistClick() },
             )
             RecommendationItem(
                 imageUrl = "https://thantrieu.com/resources/arts/1078245023.webp",
                 description = "The Weeknd, Lady Gaga, JENNIE, Charlie Puth, yung kai, Dhruv",
+                onRecommendedPlaylistClick = { onRecommendedPlaylistClick() },
             )
             RecommendationItem(
                 imageUrl = "https://thantrieu.com/resources/arts/1078245023.webp",
                 description = "The Weeknd, Lady Gaga, JENNIE, Charlie Puth, yung kai, Dhruv",
+                onRecommendedPlaylistClick = { onRecommendedPlaylistClick() },
             )
             RecommendationItem(
                 imageUrl = "https://thantrieu.com/resources/arts/1078245023.webp",
                 description = "The Weeknd, Lady Gaga, JENNIE, Charlie Puth, yung kai, Dhruv",
+                onRecommendedPlaylistClick = { onRecommendedPlaylistClick() },
             )
         }
     }
@@ -74,10 +82,15 @@ fun RecommendationSection(
 fun RecommendationItem(
     imageUrl: String,
     description: String,
+    onRecommendedPlaylistClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(8.dp),
+        modifier = modifier
+            .padding(8.dp)
+            .noRippleClickable {
+                onRecommendedPlaylistClick()
+            },
     ) {
         PlaylistThumbnail(
             imageUrl = imageUrl,

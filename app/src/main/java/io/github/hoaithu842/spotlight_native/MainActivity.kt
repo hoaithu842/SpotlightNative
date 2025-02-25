@@ -60,7 +60,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.github.hoaithu842.spotlight_native.manager.NetworkMonitor
 import io.github.hoaithu842.spotlight_native.navigation.SpotlightNavHost
 import io.github.hoaithu842.spotlight_native.navigation.TopLevelDestination
-import io.github.hoaithu842.spotlight_native.navigation.navigateToHomeScreen
+import io.github.hoaithu842.spotlight_native.navigation.navigateToHome
 import io.github.hoaithu842.spotlight_native.navigation.navigateToLibrary
 import io.github.hoaithu842.spotlight_native.navigation.navigateToPremiumScreen
 import io.github.hoaithu842.spotlight_native.navigation.navigateToSearch
@@ -91,7 +91,7 @@ fun navigateToTopLevelDestination(
         restoreState = true
     }
     when (topLevelDestination) {
-        TopLevelDestination.HOME -> navController.navigateToHomeScreen(
+        TopLevelDestination.HOME -> navController.navigateToHome(
             topLevelNavOptions
         )
 
@@ -223,6 +223,7 @@ class MainActivity : ComponentActivity() {
                                 },
                                 snackbarHost = { SnackbarHost(snackbarHostState) },
                                 sheetContainerColor = Color.Transparent,
+                                sheetMaxWidth = configuration.screenWidthDp.dp,
                                 modifier = Modifier.fillMaxSize(),
                             ) {
                                 SpotlightNavHost(

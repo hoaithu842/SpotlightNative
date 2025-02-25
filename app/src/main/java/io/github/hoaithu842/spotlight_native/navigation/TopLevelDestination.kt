@@ -16,7 +16,7 @@ enum class TopLevelDestination(
         unselectedIcon = SpotlightIcons.Home,
         selectedIcon = SpotlightIcons.HomeSelected,
         title = R.string.home,
-        route = HomeRoute::class,
+        route = HomeGraph::class,
     ),
     SEARCH(
         unselectedIcon = SpotlightIcons.Search,

@@ -12,9 +12,13 @@ fun SpotlightNavHost(
 ) {
     NavHost(
         navController = navHostController,
-        startDestination = HomeRoute,
+        startDestination = HomeGraph,
     ) {
-        homeScreen(onAvatarClick = onAvatarClick)
+        homeGraph(
+            onAvatarClick = onAvatarClick,
+            onRecommendedPlaylistClick = navHostController::navigateToRecommendationScreen,
+            onBackClick = navHostController::popBackStack,
+        )
         searchGraph(
             onAvatarClick = onAvatarClick,
             onCancelClick = navHostController::popBackStack,

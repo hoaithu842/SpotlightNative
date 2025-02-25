@@ -56,4 +56,7 @@ object SpotlightDimens {
     val SearchTopAppBarPadding = 10.dp
     val SearchBarHeight = 45.dp
     val SearchBarTopPadding = 30.dp
+
+    val RecommendationScreenThumbnailMaxSize = 250.dp
+    val SongItemIconSize = 18.dp
 }

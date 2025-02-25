@@ -1,6 +1,5 @@
 package io.github.hoaithu842.spotlight_native.presentation.screen
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -13,7 +12,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,10 +32,6 @@ fun SearchScreen(
     val searchQuery by remember { mutableStateOf("") }
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-
-    LaunchedEffect(scrollBehavior) {
-        Log.d("Rachel", scrollBehavior.isPinned.toString())
-    }
 
     Column(
         modifier = Modifier

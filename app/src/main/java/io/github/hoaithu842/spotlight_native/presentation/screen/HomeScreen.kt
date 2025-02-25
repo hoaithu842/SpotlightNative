@@ -30,6 +30,7 @@ import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
 @Composable
 fun HomeScreen(
     onAvatarClick: () -> Unit,
+    onRecommendedPlaylistClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -52,7 +53,9 @@ fun HomeScreen(
         )
 
         when (currentTab) {
-            HomeScreenTab.All -> AllTab()
+            HomeScreenTab.All -> AllTab(
+                onRecommendedPlaylistClick = onRecommendedPlaylistClick,
+            )
 
             HomeScreenTab.Music -> Text(
                 text = "Home - Music",
@@ -68,6 +71,7 @@ fun HomeScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AllTab(
+    onRecommendedPlaylistClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -128,15 +132,18 @@ fun AllTab(
         }
 
         RecommendationSection(
-            title = "Today's biggest hits"
+            title = "Today's biggest hits",
+            onRecommendedPlaylistClick = onRecommendedPlaylistClick,
         )
 
         RecommendationSection(
-            title = "Popular albums and singles"
+            title = "Popular albums and singles",
+            onRecommendedPlaylistClick = onRecommendedPlaylistClick,
         )
 
         RecommendationSection(
-            title = "Charts"
+            title = "Charts",
+            onRecommendedPlaylistClick = onRecommendedPlaylistClick,
         )
 
         Spacer(

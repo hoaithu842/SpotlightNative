@@ -25,4 +25,7 @@ object SpotlightIcons {
     val PlayNext = R.drawable.play_next
     val PlayPrevious = R.drawable.play_previous
     val Add_2 = R.drawable.add_2
+    val Download = R.drawable.download
+    val Filter = R.drawable.filter
+    val GridView = R.drawable.grid_view
 }

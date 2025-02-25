@@ -12,9 +12,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import io.github.hoaithu842.spotlight_native.extension.shimmerLoadingAnimation
@@ -136,14 +136,30 @@ fun LibraryPlaylistThumbnail(
 
 @Composable
 fun SongThumbnail(
-    painter: AsyncImagePainter,
+    imageUrl: String,
     modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Fit,
 ) {
+    var isLoading by remember { mutableStateOf(true) }
+
+    val painter = rememberAsyncImagePainter(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(imageUrl)
+            .listener(onSuccess = { _, _ ->
+                isLoading = false
+            })
+            .build()
+    )
+
     Image(
         painter = painter,
         contentDescription = "",
         modifier = modifier
             .fillMaxSize()
-            .clip(shape = RoundedCornerShape(size = 6.dp))
+            .shimmerLoadingAnimation(
+                isLoadingCompleted = !isLoading,
+                isLightModeActive = !isSystemInDarkTheme(),
+            ),
+        contentScale = contentScale,
     )
 }

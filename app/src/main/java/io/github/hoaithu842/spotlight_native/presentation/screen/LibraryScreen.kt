@@ -134,9 +134,10 @@ fun SortAndViewBar(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                painter = painterResource(SpotlightIcons.Search),
+                painter = painterResource(SpotlightIcons.Filter),
                 contentDescription = "",
                 modifier = Modifier.size(SpotlightDimens.LibraryFunctionBarIconSize),
+                tint = MaterialTheme.colorScheme.onBackground,
             )
             Text(
                 text = stringResource(R.string.recents),
@@ -146,9 +147,10 @@ fun SortAndViewBar(
             )
         }
         Icon(
-            painter = painterResource(SpotlightIcons.Search),
+            painter = painterResource(SpotlightIcons.GridView),
             contentDescription = "",
             modifier = Modifier.size(SpotlightDimens.LibraryFunctionBarIconSize),
+            tint = MaterialTheme.colorScheme.onBackground,
         )
     }
 }
