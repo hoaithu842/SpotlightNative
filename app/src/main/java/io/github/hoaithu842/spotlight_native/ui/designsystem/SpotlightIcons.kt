@@ -28,4 +28,5 @@ object SpotlightIcons {
     val Download = R.drawable.download
     val Filter = R.drawable.filter
     val GridView = R.drawable.grid_view
+    val ListView = R.drawable.list_view
 }

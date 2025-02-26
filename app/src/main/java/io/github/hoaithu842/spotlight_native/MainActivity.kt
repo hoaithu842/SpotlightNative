@@ -69,6 +69,7 @@ import io.github.hoaithu842.spotlight_native.presentation.viewmodel.PlayerViewMo
 import io.github.hoaithu842.spotlight_native.service.SpotlightMediaPlaybackService
 import io.github.hoaithu842.spotlight_native.ui.designsystem.CustomDrawerState
 import io.github.hoaithu842.spotlight_native.ui.designsystem.HomeScreenDrawer
+import io.github.hoaithu842.spotlight_native.ui.designsystem.NoNetworkDialog
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightNavigationBar
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightNavigationBarItem
@@ -144,9 +145,6 @@ class MainActivity : ComponentActivity() {
                 label = "",
             )
             val snackbarHostState = remember { SnackbarHostState() }
-            LaunchedEffect(isOffline) {
-                snackbarHostState.showSnackbar(isOffline.toString())
-            }
 
             LaunchedEffect(scaffoldState.bottomSheetState.currentValue) {
                 if (scaffoldState.bottomSheetState.currentValue == SheetValue.PartiallyExpanded) {
@@ -232,6 +230,14 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         }
+                    }
+                    if (!isOffline) {
+                        NoNetworkDialog(
+                            title = "No internet",
+                            message = "Something went wrong! You're offline.",
+                            backgroundColor = MaterialTheme.colorScheme.surface,
+                            onDismissRequest = {},
+                        )
                     }
                 }
             }

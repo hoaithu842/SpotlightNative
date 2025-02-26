@@ -52,6 +52,9 @@ object SpotlightDimens {
     val LibraryFunctionBarIconSize = 18.dp
     val LibraryItemHeight = 60.dp
     val LibraryTextPadding = 10.dp
+    val LibraryItemListThumbnailSize = 100.dp
+    val LibraryItemListWidth = 100.dp
+    val LibraryItemListMaxHeight = 140.dp
 
     val SearchTopAppBarPadding = 10.dp
     val SearchBarHeight = 45.dp
