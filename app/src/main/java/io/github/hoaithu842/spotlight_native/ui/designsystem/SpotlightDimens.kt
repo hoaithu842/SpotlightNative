@@ -62,4 +62,6 @@ object SpotlightDimens {
 
     val RecommendationScreenThumbnailMaxSize = 250.dp
     val SongItemIconSize = 18.dp
+    val RecentSectionThumbnailSize = 90.dp
+    val RecentSectionHeight = 208.dp
 }

@@ -1,165 +1,454 @@
 package io.github.hoaithu842.spotlight_native.presentation.component
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
-import io.github.hoaithu842.spotlight_native.extension.shimmerLoadingAnimation
+import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
+import io.github.hoaithu842.spotlight_native.ui.designsystem.OuterBox
+import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
+import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
+import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
+import io.github.hoaithu842.spotlight_native.ui.theme.SpotlightTheme
+import io.github.hoaithu842.spotlight_native.ui.theme.TopAppBarGray
 
 @Composable
-fun ArtistThumbnail(
-    imageUrl: String,
-    modifier: Modifier = Modifier,
-) {
-    var isLoading by remember { mutableStateOf(true) }
+fun VerticalThumbnail() {
 
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
-            .listener(onSuccess = { _, _ ->
-                isLoading = false
-            })
-            .build()
-    )
-
-    Image(
-        painter = painter,
-        contentDescription = "",
-        modifier = modifier
-            .fillMaxSize()
-            .clip(CircleShape)
-            .shimmerLoadingAnimation(
-                isLoadingCompleted = !isLoading,
-                isLightModeActive = !isSystemInDarkTheme(),
-            )
-    )
 }
 
 @Composable
-fun EPThumbnail(
+fun VerticalRoundedCornerThumbnail(
+    imageUrl: String,
+    description: String,
+    onClick: () -> Unit,
+    onLongPress: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    OuterBox(
+        onLongPress = onLongPress,
+        onClick = onClick,
+        modifier = modifier,
+    ) {
+        Column(
+            modifier = Modifier.padding(8.dp),
+        ) {
+            RoundedCornerCover(
+                imageUrl = imageUrl,
+                modifier = Modifier.size(SpotlightDimens.RecommendationSectionThumbnailSize)
+            )
+
+            Text(
+                text = description,
+                style = SpotlightTextStyle.Text11W400,
+                color = NavigationGray,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .width(SpotlightDimens.RecommendationSectionThumbnailSize)
+            )
+        }
+    }
+}
+
+@Composable
+fun VerticalWithTitleThumbnail(
+    imageUrl: String,
+    title: String,
+    description: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .noRippleClickable {
+                onClick()
+            },
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Cover(
+            imageUrl = imageUrl,
+            modifier = Modifier.size(SpotlightDimens.RecentSectionThumbnailSize)
+        )
+
+        Text(
+            text = title,
+            style = SpotlightTextStyle.Text12W600,
+            color = MaterialTheme.colorScheme.onBackground,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.width(SpotlightDimens.RecentSectionThumbnailSize)
+        )
+
+        Text(
+            text = description,
+            style = SpotlightTextStyle.Text11W400,
+            color = NavigationGray,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.width(SpotlightDimens.RecentSectionThumbnailSize)
+        )
+    }
+}
+
+@Composable
+fun VerticalRoundedCornerWithTitleThumbnail(
+    imageUrl: String,
+    title: String,
+    description: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .padding(8.dp)
+            .noRippleClickable {
+                onClick()
+            },
+    ) {
+        Cover(
+            imageUrl = imageUrl,
+            modifier = Modifier.size(SpotlightDimens.RecentSectionThumbnailSize)
+        )
+
+        Text(
+            text = title,
+            style = SpotlightTextStyle.Text12W600,
+            color = MaterialTheme.colorScheme.onBackground,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.width(SpotlightDimens.RecentSectionThumbnailSize)
+        )
+
+        Text(
+            text = description,
+            style = SpotlightTextStyle.Text11W400,
+            color = NavigationGray,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.width(SpotlightDimens.RecentSectionThumbnailSize)
+        )
+    }
+}
+
+@Composable
+fun VerticalCircularWithTitleThumbnail(
+    imageUrl: String,
+    title: String,
+    description: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .noRippleClickable {
+                onClick()
+            },
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        CircularCover(
+            imageUrl = imageUrl,
+            modifier = Modifier.size(SpotlightDimens.RecentSectionThumbnailSize),
+            contentScale = ContentScale.Crop,
+        )
+
+        Text(
+            text = title,
+            style = SpotlightTextStyle.Text12W600,
+            color = MaterialTheme.colorScheme.onBackground,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.width(SpotlightDimens.RecentSectionThumbnailSize)
+        )
+
+        Text(
+            text = description,
+            style = SpotlightTextStyle.Text11W400,
+            color = NavigationGray,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.width(SpotlightDimens.RecentSectionThumbnailSize)
+        )
+    }
+}
+
+@Composable
+fun HorizontalCircularThumbnail(
+    imageUrl: String,
+    artist: String,
+    onLongPress: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    OuterBox(
+        onLongPress = onLongPress,
+        modifier = modifier,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.ThumbnailSize)
+                .clip(shape = RoundedCornerShape(size = 6.dp))
+                .background(TopAppBarGray),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            CircularCover(
+                imageUrl = imageUrl,
+                modifier = Modifier
+                    .size(SpotlightDimens.ThumbnailSize)
+                    .clip(shape = RoundedCornerShape(size = 6.dp))
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(1.dp)
+            )
+            Text(
+                text = artist,
+                style = SpotlightTextStyle.Text11W600,
+                color = MaterialTheme.colorScheme.onBackground,
+                maxLines = 1,
+                modifier = Modifier
+                    .padding(horizontal = SpotlightDimens.RecommendationTextPadding)
+                    .fillMaxWidth()
+            )
+        }
+    }
+}
+
+@Composable
+fun HorizontalRoundedCornerThumbnail(
+    imageUrl: String,
+    artist: String,
+    onLongPress: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    OuterBox(
+        onLongPress = onLongPress,
+        modifier = modifier,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.ThumbnailSize)
+                .clip(shape = RoundedCornerShape(size = 6.dp))
+                .background(TopAppBarGray),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            RoundedCornerCover(
+                imageUrl = imageUrl,
+                modifier = Modifier.size(SpotlightDimens.ThumbnailSize)
+            )
+            Text(
+                text = artist,
+                style = SpotlightTextStyle.Text11W600,
+                color = MaterialTheme.colorScheme.onBackground,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .padding(horizontal = SpotlightDimens.RecommendationTextPadding)
+                    .fillMaxWidth()
+            )
+        }
+    }
+}
+
+@Composable
+fun HorizontalWithTitleThumbnail(
+    imageUrl: String,
+    title: String,
+    description: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(SpotlightDimens.LibraryItemHeight)
+            .noRippleClickable(onClick)
+    ) {
+        Cover(
+            imageUrl = imageUrl,
+            modifier = Modifier.size(SpotlightDimens.LibraryItemHeight)
+        )
+        Column(
+            modifier = Modifier
+                .padding(horizontal = SpotlightDimens.LibraryTextPadding)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                text = title,
+                style = SpotlightTextStyle.Text16W400,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
+            Text(
+                text = description,
+                style = SpotlightTextStyle.Text11W400,
+                color = NavigationGray,
+                modifier = Modifier.padding(top = SpotlightDimens.LibraryTextPadding.times(0.5f))
+            )
+        }
+    }
+}
+
+@Composable
+fun HorizontalCircularWithTitleThumbnail(
+    imageUrl: String,
+    title: String,
+    description: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(SpotlightDimens.LibraryItemHeight)
+            .noRippleClickable(onClick)
+    ) {
+        CircularCover(
+            imageUrl = imageUrl,
+            modifier = Modifier.size(SpotlightDimens.LibraryItemHeight)
+        )
+        Column(
+            modifier = Modifier
+                .padding(horizontal = SpotlightDimens.LibraryTextPadding)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                text = title,
+                style = SpotlightTextStyle.Text16W400,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
+            Text(
+                text = description,
+                style = SpotlightTextStyle.Text11W400,
+                color = NavigationGray,
+                modifier = Modifier.padding(top = SpotlightDimens.LibraryTextPadding.times(0.5f))
+            )
+        }
+    }
+}
+
+@Composable
+fun BrowseThumbnail(
+    title: String,
     imageUrl: String,
     modifier: Modifier = Modifier,
 ) {
-    var isLoading by remember { mutableStateOf(true) }
-
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
-            .listener(onSuccess = { _, _ ->
-                isLoading = false
-            })
-            .build()
-    )
-
-    Image(
-        painter = painter,
-        contentDescription = "",
+    Box(
         modifier = modifier
-            .fillMaxSize()
+            .fillMaxWidth()
+            .height(SpotlightDimens.BrowseSectionHeight)
             .clip(shape = RoundedCornerShape(size = 6.dp))
-            .shimmerLoadingAnimation(
-                isLoadingCompleted = !isLoading,
-                isLightModeActive = !isSystemInDarkTheme(),
-            )
-    )
+            .background(TopAppBarGray),
+    ) {
+        Text(
+            text = title,
+            style = SpotlightTextStyle.Text16W600,
+            color = MaterialTheme.colorScheme.onBackground,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .height(SpotlightDimens.BrowseSectionHeight)
+                .padding(
+                    top = 16.dp,
+                    start = 16.dp,
+                    end = SpotlightDimens.BrowseSectionThumbnailSize,
+                )
+        )
+        RoundedCornerCover(
+            imageUrl = imageUrl,
+            modifier = modifier
+                .align(Alignment.BottomEnd)
+                .size(SpotlightDimens.BrowseSectionThumbnailSize)
+                .rotate(30f)
+                .offset(
+                    x = SpotlightDimens.BrowseSectionThumbnailXOffset,
+                    y = SpotlightDimens.BrowseSectionThumbnailYOffset,
+                ),
+        )
+    }
 }
 
+@Preview
 @Composable
-fun PlaylistThumbnail(
-    imageUrl: String,
-    modifier: Modifier = Modifier,
-) {
-    var isLoading by remember { mutableStateOf(true) }
+fun AllThumbnailPreviews() {
+    SpotlightTheme {
+        Column {
+            val imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp"
+            val artist = "Justatee"
+            val description = "The Weeknd, Lady Gaga, JENNIE, Charlie Puth, yung kai, Dhruv"
 
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
-            .listener(onSuccess = { _, _ ->
-                isLoading = false
-            })
-            .build()
-    )
-
-    Image(
-        painter = painter,
-        contentDescription = "",
-        modifier = modifier
-            .fillMaxSize()
-            .clip(shape = RoundedCornerShape(size = 6.dp))
-            .shimmerLoadingAnimation(
-                isLoadingCompleted = !isLoading,
-                isLightModeActive = !isSystemInDarkTheme(),
+            VerticalRoundedCornerThumbnail(
+                imageUrl = imageUrl,
+                description = description,
+                onClick = {},
+                onLongPress = {},
             )
-    )
+
+            VerticalWithTitleThumbnail(
+                imageUrl = imageUrl,
+                title = "Yen",
+                description = description,
+                onClick = {},
+            )
+
+            VerticalRoundedCornerWithTitleThumbnail(
+                imageUrl = imageUrl,
+                title = "Yen",
+                description = description,
+                onClick = {},
+            )
+
+            VerticalCircularWithTitleThumbnail(
+                imageUrl = imageUrl,
+                title = "Yen",
+                description = description,
+                onClick = {},
+            )
+
+            HorizontalCircularThumbnail(
+                imageUrl = imageUrl,
+                artist = artist,
+                onLongPress = {},
+            )
+
+            HorizontalRoundedCornerThumbnail(
+                imageUrl = imageUrl,
+                artist = artist,
+                onLongPress = {},
+            )
+        }
+    }
 }
 
+@Preview
 @Composable
-fun LibraryPlaylistThumbnail(
-    imageUrl: String,
-    modifier: Modifier = Modifier,
-) {
-    var isLoading by remember { mutableStateOf(true) }
-
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
-            .listener(onSuccess = { _, _ ->
-                isLoading = false
-            })
-            .build()
-    )
-
-    Image(
-        painter = painter,
-        contentDescription = "",
-        modifier = modifier
-            .fillMaxSize()
-            .shimmerLoadingAnimation(
-                isLoadingCompleted = !isLoading,
-                isLightModeActive = !isSystemInDarkTheme(),
-            )
-    )
-}
-
-@Composable
-fun SongThumbnail(
-    imageUrl: String,
-    modifier: Modifier = Modifier,
-    contentScale: ContentScale = ContentScale.Fit,
-) {
-    var isLoading by remember { mutableStateOf(true) }
-
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
-            .listener(onSuccess = { _, _ ->
-                isLoading = false
-            })
-            .build()
-    )
-
-    Image(
-        painter = painter,
-        contentDescription = "",
-        modifier = modifier
-            .fillMaxSize()
-            .shimmerLoadingAnimation(
-                isLoadingCompleted = !isLoading,
-                isLightModeActive = !isSystemInDarkTheme(),
-            ),
-        contentScale = contentScale,
-    )
+fun Preview() {
+    SpotlightTheme {
+        BrowseThumbnail(
+            title = "Musics",
+            imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
+            modifier = Modifier
+        )
+    }
 }

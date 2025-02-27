@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -20,18 +21,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import io.github.hoaithu842.spotlight_native.presentation.component.ArtistRecommendation
-import io.github.hoaithu842.spotlight_native.presentation.component.EPRecommendation
-import io.github.hoaithu842.spotlight_native.presentation.component.RecommendationSection
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import io.github.hoaithu842.spotlight_native.presentation.component.HorizontalCircularThumbnail
+import io.github.hoaithu842.spotlight_native.presentation.component.HorizontalRoundedCornerThumbnail
+import io.github.hoaithu842.spotlight_native.presentation.component.PlaylistBottomSheet
+import io.github.hoaithu842.spotlight_native.presentation.component.VerticalRoundedCornerThumbnail
+import io.github.hoaithu842.spotlight_native.presentation.component.VerticalRoundedCornerWithTitleThumbnail
 import io.github.hoaithu842.spotlight_native.ui.designsystem.HomeScreenTab
 import io.github.hoaithu842.spotlight_native.ui.designsystem.HomeTopAppBar
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
+import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
 
 @Composable
 fun HomeScreen(
     onAvatarClick: () -> Unit,
-    onRecommendedPlaylistClick: () -> Unit,
+    onRecommendedPlaylistClick: (Int) -> Unit,
 ) {
+    var showBottomSheet by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,6 +62,7 @@ fun HomeScreen(
         when (currentTab) {
             HomeScreenTab.All -> AllTab(
                 onRecommendedPlaylistClick = onRecommendedPlaylistClick,
+                onLongPress = { showBottomSheet = true }
             )
 
             HomeScreenTab.Music -> Text(
@@ -66,12 +74,20 @@ fun HomeScreen(
             )
         }
     }
+    if (showBottomSheet) {
+        PlaylistBottomSheet(
+            onDismissRequest = {
+                showBottomSheet = false
+            }
+        )
+    }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AllTab(
-    onRecommendedPlaylistClick: () -> Unit,
+    onRecommendedPlaylistClick: (Int) -> Unit,
+    onLongPress: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -84,47 +100,50 @@ fun AllTab(
             maxItemsInEachRow = 2,
             modifier = Modifier.padding(SpotlightDimens.RecommendationPadding)
         ) {
-            ArtistRecommendation(
+            HorizontalCircularThumbnail(
                 artist = "Justatee",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
+                onLongPress = {},
                 modifier = Modifier
                     .padding(SpotlightDimens.RecommendationPadding)
                     .weight(1f),
             )
-
-            EPRecommendation(
+            HorizontalRoundedCornerThumbnail(
                 artist = "Justatee",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
+                onLongPress = {},
                 modifier = Modifier
                     .padding(SpotlightDimens.RecommendationPadding)
                     .weight(1f),
             )
-            ArtistRecommendation(
+            HorizontalCircularThumbnail(
                 artist = "Justatee",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
+                onLongPress = {},
                 modifier = Modifier
                     .padding(SpotlightDimens.RecommendationPadding)
                     .weight(1f),
             )
-
-            EPRecommendation(
+            HorizontalRoundedCornerThumbnail(
                 artist = "Justatee",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
+                onLongPress = {},
                 modifier = Modifier
                     .padding(SpotlightDimens.RecommendationPadding)
                     .weight(1f),
             )
-            ArtistRecommendation(
+            HorizontalCircularThumbnail(
                 artist = "Justatee",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
+                onLongPress = {},
                 modifier = Modifier
                     .padding(SpotlightDimens.RecommendationPadding)
                     .weight(1f),
             )
-
-            EPRecommendation(
+            HorizontalRoundedCornerThumbnail(
                 artist = "Justatee",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
+                onLongPress = {},
                 modifier = Modifier
                     .padding(SpotlightDimens.RecommendationPadding)
                     .weight(1f),
@@ -134,16 +153,24 @@ fun AllTab(
         RecommendationSection(
             title = "Today's biggest hits",
             onRecommendedPlaylistClick = onRecommendedPlaylistClick,
+            onLongPress = onLongPress,
         )
 
         RecommendationSection(
             title = "Popular albums and singles",
+            onRecommendedPlaylistClick = onRecommendedPlaylistClick,
+            onLongPress = onLongPress,
+        )
+
+        RecentSection(
+            title = "Recents",
             onRecommendedPlaylistClick = onRecommendedPlaylistClick,
         )
 
         RecommendationSection(
             title = "Charts",
             onRecommendedPlaylistClick = onRecommendedPlaylistClick,
+            onLongPress = onLongPress,
         )
 
         Spacer(
@@ -151,5 +178,76 @@ fun AllTab(
                 .fillMaxWidth()
                 .height(SpotlightDimens.MinimizedPlayerHeight)
         )
+    }
+}
+
+@Composable
+fun RecommendationSection(
+    title: String,
+    onRecommendedPlaylistClick: (Int) -> Unit,
+    onLongPress: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(SpotlightDimens.RecommendationSectionHeight)
+    ) {
+        Text(
+            text = title,
+            style = SpotlightTextStyle.Text22W700,
+            color = MaterialTheme.colorScheme.onBackground,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(10.dp)
+        )
+
+        LazyRow(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(6) {
+                VerticalRoundedCornerThumbnail(
+                    imageUrl = "https://thantrieu.com/resources/arts/1078245023.webp",
+                    description = "The Weeknd, Lady Gaga, JENNIE, Charlie Puth, yung kai, Dhruv",
+                    onClick = { onRecommendedPlaylistClick(it) },
+                    onLongPress = onLongPress,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun RecentSection(
+    title: String,
+    onRecommendedPlaylistClick: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(SpotlightDimens.RecentSectionHeight)
+    ) {
+        Text(
+            text = title,
+            style = SpotlightTextStyle.Text22W700,
+            color = MaterialTheme.colorScheme.onBackground,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(10.dp)
+        )
+
+        LazyRow(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(6) {
+                VerticalRoundedCornerWithTitleThumbnail(
+                    imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
+                    title = "Yen",
+                    description = "The Weeknd, Lady Gaga, JENNIE, Charlie Puth, yung kai, Dhruv",
+                    onClick = { onRecommendedPlaylistClick(it) },
+                )
+            }
+        }
     }
 }

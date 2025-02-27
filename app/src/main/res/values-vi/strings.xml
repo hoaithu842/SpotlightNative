@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    // Entry
+    <string name="app_name">VN Spotlight</string>
+    <string name="home">VN Home</string>
+    <string name="search">VN Search</string>
+    <string name="library">VN Your Library</string>
+    <string name="premium">VN Premium</string>
+
+    // Home
+    <string name="all">VN All</string>
+    <string name="music">VN Music</string>
+    <string name="podcasts">VN Podcasts</string>
+
+    // Drawer
+    <string name="view_profile">VN View profile</string>
+    <string name="add_account">VN Add account</string>
+    <string name="whats_new">VN What\'s new</string>
+    <string name="recents">VN Recents</string>
+    <string name="settings_and_privacy">VN Settings and privacy</string>
+
+    // Search
+    <string name="cancel">VN Cancel</string>
+    <string name="what_do_you_want_to_listen">VN What do you want to listen to?</string>
+</resources>

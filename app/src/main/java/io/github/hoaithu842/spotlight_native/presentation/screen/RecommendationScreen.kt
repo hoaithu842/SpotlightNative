@@ -66,9 +66,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import io.github.hoaithu842.spotlight_native.R
 import io.github.hoaithu842.spotlight_native.extension.singleClickable
-import io.github.hoaithu842.spotlight_native.presentation.component.LibraryPlaylistThumbnail
+import io.github.hoaithu842.spotlight_native.presentation.component.Cover
 import io.github.hoaithu842.spotlight_native.presentation.component.SongItem
-import io.github.hoaithu842.spotlight_native.presentation.component.SongThumbnail
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightIcons
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
@@ -77,6 +76,7 @@ import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
 
 @Composable
 fun RecommendationScreen(
+    id: Int,
     imageUrl: String,
     onBackClick: () -> Unit,
     maxImageSize: Dp = SpotlightDimens.RecommendationScreenThumbnailMaxSize,
@@ -148,7 +148,7 @@ fun RecommendationScreen(
             }
         }
 
-        LibraryPlaylistThumbnail(
+        Cover(
             imageUrl = imageUrl,
             modifier = Modifier
                 .size(maxImageSize)
@@ -192,7 +192,7 @@ fun RecommendationScreen(
                 ),
             ) {
                 Text(
-                    text = "Daily Mix 1", // TODO: replace,
+                    text = "Daily Mix $id", // TODO: replace,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = SpotlightTextStyle.Text16W600,
@@ -330,7 +330,7 @@ fun FirstRecommendationPreview(
     modifier: Modifier = Modifier,
 ) {
     CardWithAnimatedBorder(modifier = modifier) {
-        SongThumbnail(
+        Cover(
             imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
             contentScale = ContentScale.Crop,
         )

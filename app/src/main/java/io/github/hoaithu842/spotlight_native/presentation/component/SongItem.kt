@@ -31,7 +31,7 @@ fun SongItem(
             .fillMaxWidth()
             .height(SpotlightDimens.FullsizePlayerTopAppBarHeight),
     ) {
-        SongThumbnail(
+        Cover(
             imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
             modifier = Modifier
                 .size(SpotlightDimens.FullsizePlayerTopAppBarHeight)

@@ -66,16 +66,17 @@ fun LibraryScreen(
 
         LazyVerticalGrid(
             modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
+                .padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding * 2)
+                .fillMaxSize(),
             columns = if (isInGridView) GridCells.Adaptive(100.dp) else GridCells.Fixed(1),
+            verticalArrangement = Arrangement.SpaceAround,
         ) {
             item {
                 LibraryArtistItem(
                     artist = "Justatee",
                     imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                    modifier = Modifier.padding(SpotlightDimens.TopAppBarHorizontalPadding * 2),
                     isInGridView = isInGridView,
+                    modifier = Modifier.padding(4.dp),
                 )
             }
 
@@ -83,8 +84,8 @@ fun LibraryScreen(
                 LibraryArtistItem(
                     artist = "Noo Phuoc Thinh",
                     imageUrl = "https://thantrieu.com/resources/arts/1078245023.webp",
-                    modifier = Modifier.padding(SpotlightDimens.TopAppBarHorizontalPadding * 2),
                     isInGridView = isInGridView,
+                    modifier = Modifier.padding(4.dp),
                 )
             }
 
@@ -92,8 +93,8 @@ fun LibraryScreen(
                 LibraryPlaylistItem(
                     creator = "User",
                     imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                    modifier = Modifier.padding(SpotlightDimens.TopAppBarHorizontalPadding * 2),
                     isInGridView = isInGridView,
+                    modifier = Modifier.padding(4.dp),
                 )
             }
 
@@ -101,8 +102,8 @@ fun LibraryScreen(
                 LibraryArtistItem(
                     artist = "Justatee",
                     imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                    modifier = Modifier.padding(SpotlightDimens.TopAppBarHorizontalPadding * 2),
                     isInGridView = isInGridView,
+                    modifier = Modifier.padding(4.dp),
                 )
             }
 
@@ -110,8 +111,8 @@ fun LibraryScreen(
                 LibraryArtistItem(
                     artist = "Justatee",
                     imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                    modifier = Modifier.padding(SpotlightDimens.TopAppBarHorizontalPadding * 2),
                     isInGridView = isInGridView,
+                    modifier = Modifier.padding(4.dp),
                 )
             }
 

@@ -16,7 +16,7 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) =
 
 fun NavGraphBuilder.homeGraph(
     onAvatarClick: () -> Unit,
-    onRecommendedPlaylistClick: () -> Unit,
+    onRecommendedPlaylistClick: (Int) -> Unit,
     onBackClick: () -> Unit,
 ) {
     navigation<HomeGraph>(
@@ -38,7 +38,7 @@ data object HomeRoute
 
 fun NavGraphBuilder.homeScreen(
     onAvatarClick: () -> Unit,
-    onRecommendedPlaylistClick: () -> Unit,
+    onRecommendedPlaylistClick: (Int) -> Unit,
 ) {
     composable<HomeRoute> {
         HomeScreen(

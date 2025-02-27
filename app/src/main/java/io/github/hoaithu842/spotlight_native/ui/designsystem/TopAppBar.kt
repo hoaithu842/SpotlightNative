@@ -283,7 +283,7 @@ fun LibrarySearchTopAppBar(
 
             BasicTextField(
                 value = searchQuery,
-//                textStyle = WordbookSearchTextStyle.copy(color = MaterialTheme.colorScheme.inverseSurface),
+                textStyle = SpotlightTextStyle.Text13W600.copy(color = MaterialTheme.colorScheme.onBackground),
                 onValueChange = {
                     if ("\n" !in it) onSearchQueryChanged(it)
                 },
