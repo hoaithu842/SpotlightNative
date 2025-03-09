@@ -64,4 +64,12 @@ object SpotlightDimens {
     val SongItemIconSize = 18.dp
     val RecentSectionThumbnailSize = 90.dp
     val RecentSectionHeight = 208.dp
+
+    val ModalBottomSheetOptionHeight = 60.dp
+    val ModalBottomSheetOptionIconSize = 24.dp
+    val ModalBottomSheetOptionTextPadding = 10.dp
+
+    val LyricsCardHeight = 300.dp
+    val ArtistCardHeight = 300.dp
+    val CreditCardHeight = 200.dp
 }

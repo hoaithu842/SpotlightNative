@@ -111,42 +111,6 @@ fun FullsizePlayer(
                     onNextClick = onNextClick,
                 )
             }
-
-            item {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(
-                        text = "Some text",
-                        modifier = Modifier.padding(vertical = SpotlightDimens.MinimizedPlayerHeight)
-                    )
-                    Text(
-                        text = "Some text",
-                        modifier = Modifier.padding(vertical = SpotlightDimens.MinimizedPlayerHeight)
-                    )
-                    Text(
-                        text = "Some text",
-                        modifier = Modifier.padding(vertical = SpotlightDimens.MinimizedPlayerHeight)
-                    )
-                    Text(
-                        text = "Some text",
-                        modifier = Modifier.padding(vertical = SpotlightDimens.MinimizedPlayerHeight)
-                    )
-                    Text(
-                        text = "Some text",
-                        modifier = Modifier.padding(vertical = SpotlightDimens.MinimizedPlayerHeight)
-                    )
-                    Text(
-                        text = "Some text",
-                        modifier = Modifier.padding(vertical = SpotlightDimens.MinimizedPlayerHeight)
-                    )
-                    Text(
-                        text = "Some text",
-                        modifier = Modifier.padding(vertical = SpotlightDimens.MinimizedPlayerHeight)
-                    )
-                }
-            }
         }
 
         AnimatedVisibility(
@@ -185,7 +149,7 @@ fun MainPlayerContent(
 ) {
     Column(
         modifier = modifier
-            .padding(horizontal = SpotlightDimens.FullsizePlayerMainContentHorizontalPadding)
+//            .padding(horizontal = SpotlightDimens.FullsizePlayerMainContentHorizontalPadding)
             .fillMaxWidth()
             .wrapContentHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,

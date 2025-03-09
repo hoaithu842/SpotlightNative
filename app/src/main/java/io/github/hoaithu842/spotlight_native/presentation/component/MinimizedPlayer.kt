@@ -67,7 +67,7 @@ fun MinimizedPlayer(
             .clickable {
                 onPlayerClick()
             }
-            .padding(bottom = 2.dp)
+//            .padding(bottom = 2.dp)
     ) {
         Box(
             modifier = Modifier

@@ -26,7 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.auth0.android.result.UserProfile
 import io.github.hoaithu842.spotlight_native.R
+import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
+import io.github.hoaithu842.spotlight_native.presentation.component.CircularCover
 import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
 import io.github.hoaithu842.spotlight_native.ui.theme.SpotlightTheme
 import io.github.hoaithu842.spotlight_native.ui.theme.TopAppBarGray
@@ -47,6 +50,9 @@ fun CustomDrawerState.opposite(): CustomDrawerState {
 
 @Composable
 fun HomeScreenDrawer(
+    userProfile: UserProfile?,
+    onProfileClick: () -> Unit,
+    onLoginClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -56,8 +62,9 @@ fun HomeScreenDrawer(
             .safeDrawingPadding()
     ) {
         HomeScreenDrawerHeader(
-            username = "Hoai Thu",
-            onAvatarClick = {},
+            userProfile = userProfile,
+            onProfileClick = onProfileClick,
+            onLoginClick = onLoginClick,
             modifier = Modifier.padding(vertical = SpotlightDimens.HomeScreenDrawerHeaderVerticalPadding)
         )
 
@@ -95,8 +102,9 @@ fun HomeScreenDrawer(
 
 @Composable
 fun HomeScreenDrawerHeader(
-    username: String,
-    onAvatarClick: () -> Unit,
+    userProfile: UserProfile?,
+    onProfileClick: () -> Unit,
+    onLoginClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -106,33 +114,51 @@ fun HomeScreenDrawerHeader(
             .height(SpotlightDimens.TopAppBarHeight),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background),
-            contentDescription = "",
-            modifier = Modifier
-                .size(SpotlightDimens.HomeScreenDrawerHeaderIconSize)
-                .clip(shape = CircleShape)
-                .clickable { onAvatarClick() }
-        )
+        if (userProfile == null) {
+            Text(
+                text = "Login",
+                modifier = Modifier.noRippleClickable(onLoginClick)
+            )
+        } else {
+            if (userProfile.pictureURL != null) {
+                CircularCover(
+                    imageUrl = userProfile.pictureURL!!,
+                    modifier = Modifier
+                        .size(SpotlightDimens.HomeScreenDrawerHeaderIconSize)
+                        .clickable { onProfileClick() }
+                )
 
-        Column(
-            modifier = Modifier.padding(start = SpotlightDimens.HomeScreenDrawerHeaderPadding),
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Text(
-                text = username,
-                style = SpotlightTextStyle.Text18W700,
-                overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onBackground,
-                maxLines = 1,
-            )
-            Text(
-                text = stringResource(R.string.view_profile),
-                style = SpotlightTextStyle.Text11W400,
-                overflow = TextOverflow.Ellipsis,
-                color = NavigationGray,
-                maxLines = 1,
-            )
+            } else {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(SpotlightDimens.HomeScreenDrawerHeaderIconSize)
+                        .clip(shape = CircleShape)
+                        .clickable { onProfileClick() }
+                )
+            }
+
+            Column(
+                modifier = Modifier.padding(start = SpotlightDimens.HomeScreenDrawerHeaderPadding),
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Text(
+                    text = userProfile.name ?: "undefined name",
+                    style = SpotlightTextStyle.Text18W700,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    maxLines = 1,
+                )
+                Text(
+                    text = stringResource(R.string.view_profile),
+                    style = SpotlightTextStyle.Text11W400,
+                    overflow = TextOverflow.Ellipsis,
+                    color = NavigationGray,
+                    maxLines = 1,
+                    modifier = Modifier.noRippleClickable(onProfileClick)
+                )
+            }
         }
     }
 }
@@ -172,6 +198,10 @@ fun HomeScreenDrawerOption(
 @Composable
 fun HomeScreenDrawerPreview() {
     SpotlightTheme {
-        HomeScreenDrawer()
+        HomeScreenDrawer(
+            userProfile = null,
+            onProfileClick = {},
+            onLoginClick = {},
+        )
     }
 }

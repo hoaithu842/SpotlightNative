@@ -1,14 +1,7 @@
 package io.github.hoaithu842.spotlight_native
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -32,7 +25,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -44,6 +36,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.auth0.android.result.UserProfile
 import io.github.hoaithu842.spotlight_native.navigation.SpotlightNavHost
 import io.github.hoaithu842.spotlight_native.navigation.TopLevelDestination
 import io.github.hoaithu842.spotlight_native.navigation.navigateToTopLevelDestination
@@ -68,13 +61,15 @@ private fun NavDestination?.isRouteInHierarchy(route: KClass<*>) =
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpotlightContent(
+    userProfile: UserProfile?,
     isOffline: Boolean,
+    onAvatarClick: () -> Unit,
+    onLoginClick: () -> Unit,
 ) {
     var isNavBarDisplaying by rememberSaveable { mutableStateOf(true) }
-    val density = LocalDensity.current
     val scaffoldState = rememberBottomSheetScaffoldState()
     val navController = rememberNavController()
-    var currentDestination: NavDestination? =
+    val currentDestination: NavDestination? =
         navController.currentBackStackEntryAsState().value?.destination
     var drawerState by remember { mutableStateOf(CustomDrawerState.Closed) }
     val configuration = LocalConfiguration.current
@@ -82,28 +77,38 @@ fun SpotlightContent(
     val screenWidth = remember {
         derivedStateOf { (configuration.screenWidthDp * newDensity).roundToInt() }
     }
-    val offsetValue by remember { derivedStateOf { (screenWidth.value / 4.5).dp } }
+    val offsetValue by remember { derivedStateOf { (screenWidth.value / 3.5).dp } }
     val animatedOffset by animateDpAsState(
         targetValue = if (drawerState.isOpened()) offsetValue else 0.dp,
         label = "",
     )
     val snackbarHostState = remember { SnackbarHostState() }
+    var currentYOffset by remember { mutableStateOf(0.dp) }
+    var previousDelta: Float? = remember { null }
 
     LaunchedEffect(scaffoldState.bottomSheetState.currentValue) {
         if (scaffoldState.bottomSheetState.currentValue == SheetValue.PartiallyExpanded) {
             isNavBarDisplaying = true
+        } else if (scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+            isNavBarDisplaying = false
         }
     }
+
     BackHandler(enabled = drawerState.isOpened()) {
         drawerState = CustomDrawerState.Closed
     }
+
     Box(
         Modifier
             .background(MaterialTheme.colorScheme.surface)
             .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f))
             .fillMaxSize()
     ) {
-        HomeScreenDrawer()
+        HomeScreenDrawer(
+            userProfile = userProfile,
+            onProfileClick = onAvatarClick,
+            onLoginClick = onLoginClick,
+        )
         Scaffold(
             modifier = Modifier
                 .offset(x = animatedOffset)
@@ -111,18 +116,10 @@ fun SpotlightContent(
                     drawerState = CustomDrawerState.Closed
                 },
             bottomBar = {
-                AnimatedVisibility(
-                    visible = isNavBarDisplaying,
-                    enter = slideInVertically {
-                        with(density) { -40.dp.roundToPx() }
-                    } + expandVertically(
-                        expandFrom = Alignment.Top
-                    ) + fadeIn(
-                        initialAlpha = 0.3f
-                    ),
-                    exit = slideOutVertically() + shrinkVertically() + fadeOut()
-                ) {
-                    SpotlightNavigationBar {
+                if (isNavBarDisplaying) {
+                    SpotlightNavigationBar(
+                        modifier = Modifier.offset(0.dp, currentYOffset),
+                    ) {
                         TopLevelDestination.entries.forEach { destination ->
                             val selected =
                                 currentDestination.isRouteInHierarchy(destination.route)
@@ -157,12 +154,38 @@ fun SpotlightContent(
                     sheetContent = {
                         PlayerView(
                             scaffoldState = scaffoldState,
-                            navBarDisplayingChange = { isNavBarDisplaying = it },
+                            changeNavBarDisplay = {
+                                isNavBarDisplaying = !isNavBarDisplaying
+                                previousDelta = null
+                            },
+                            onScrollProvider = {
+                                try {
+                                    scaffoldState.bottomSheetState.requireOffset()
+                                } catch (_: Exception) {
+                                    0f
+                                }
+                            },
+                            updateDelta = {
+                                if (it in -5.1..-4.0) {
+                                    if (previousDelta == null) {
+                                        previousDelta = it
+                                    } else {
+                                        isNavBarDisplaying = if (it > previousDelta!!) {
+                                            true
+                                        } else {
+                                            false
+                                        }
+                                        previousDelta = null
+                                    }
+                                }
+                                currentYOffset =
+                                    ((1 - it) * SpotlightDimens.NavigationBarHeight.value).dp
+                            }
                         )
                     },
                     snackbarHost = { SnackbarHost(snackbarHostState) },
                     sheetContainerColor = Color.Transparent,
-                    sheetMaxWidth = configuration.screenWidthDp.dp,
+                    sheetMaxWidth = configuration.screenWidthDp.dp + 1.dp,
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     SpotlightNavHost(

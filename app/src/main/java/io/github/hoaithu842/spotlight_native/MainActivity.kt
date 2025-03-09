@@ -23,14 +23,24 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var networkMonitor: NetworkMonitor
     private val playerViewModel: PlayerViewModel by viewModels()
-
+    private val mainViewModel: MainActivityViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mainViewModel.setContext(this)
         enableEdgeToEdge()
         setContent {
             val isOffline by networkMonitor.isOnline.collectAsState(initial = true)
+            val profile by mainViewModel.profile.collectAsState()
             SpotlightTheme {
-                SpotlightContent(isOffline = isOffline)
+                SpotlightContent(
+                    userProfile = profile,
+                    isOffline = isOffline,
+                    onAvatarClick = {
+                    },
+                    onLoginClick = {
+                        mainViewModel.login()
+                    }
+                )
             }
         }
     }

@@ -19,6 +19,22 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders.put("auth0Domain", "dev-0lpzh4dn570bx2hg.us.auth0.com")
+        manifestPlaceholders.put("auth0Scheme", "app")
+
+        buildConfigField(
+            "String", "auth0ClientId", providers.gradleProperty("auth0ClientId").get()
+        )
+        buildConfigField(
+            "String", "auth0Domain", providers.gradleProperty("auth0Domain").get()
+        )
+        buildConfigField(
+            "String", "auth0Scheme", providers.gradleProperty("auth0Scheme").get()
+        )
+
+        buildFeatures {
+            buildConfig = true
+        }
     }
 
     buildTypes {
@@ -72,6 +88,14 @@ dependencies {
 
     // Coil
     implementation(libs.coil.compose)
+
+    // Retrofit & Gson
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    // Auth0
+    implementation(libs.auth0)
+    implementation(libs.jwtdecode)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
