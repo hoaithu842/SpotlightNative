@@ -1,67 +1,91 @@
 package io.github.hoaithu842.spotlight_native.manager
 
+import android.content.Context
 import android.util.Log
-import io.github.hoaithu842.spotlight_native.domain.model.ApiResponse
-import io.github.hoaithu842.spotlight_native.domain.model.UserProfile
+import com.auth0.android.Auth0
+import com.auth0.android.authentication.AuthenticationException
+import com.auth0.android.callback.Callback
+import com.auth0.android.provider.WebAuthProvider
+import com.auth0.android.result.Credentials
+import io.github.hoaithu842.spotlight_native.BuildConfig
 import io.github.hoaithu842.spotlight_native.domain.repository.PreferencesRepository
-import io.github.hoaithu842.spotlight_native.domain.repository.UserRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 
 class SpotlightAccountManager @Inject constructor(
     private val preferencesRepository: PreferencesRepository,
-    private val userRepository: UserRepository,
 ) : AccountManager {
-    override val isLoggedIn: Flow<Boolean> = preferencesRepository.getLoggedIn()
+    override val account: Auth0 by lazy {
+        Auth0.getInstance(
+            clientId = BuildConfig.auth0ClientId,
+            domain = BuildConfig.auth0Domain,
+        )
+    }
 
-    private val _currentUserProfile: MutableStateFlow<UserProfile?> = MutableStateFlow(null)
-    override val currentUserProfile: StateFlow<UserProfile?> = _currentUserProfile.asStateFlow()
-
-    override fun reloadCredentials() {
-        val coroutineScope = CoroutineScope(Job())
-        coroutineScope.launch {
-            if (isLoggedIn.first()) {
-                val expiresAt = preferencesRepository.getExpiresAt().first()
-                val formatter =
-                    DateTimeFormatter.ofPattern("EEE MMM d HH:mm:ss z yyyy", Locale.ENGLISH)
-                if (expiresAt != null) {
-                    val expirationDate = ZonedDateTime.parse(expiresAt, formatter)
-                    val now = ZonedDateTime.now()
-                    if (now.isAfter(expirationDate)) {
-                        Log.d("Rachel", "Session expired")
-                    } else {
-                        Log.d("Rachel", "Session is still valid")
-                        val response = userRepository.getSessionUser()
-                        when (response) {
-                            is ApiResponse.Error -> Log.d(
-                                "Rachel",
-                                ("Error: " + response.message) ?: ""
-                            )
-
-                            is ApiResponse.Exception -> Log.d(
-                                "Rachel",
-                                ("Exception: " + response.e.message) ?: ""
-                            )
-
-                            is ApiResponse.Success -> Log.d(
-                                "Rachel",
-                                "Success" + response.data.toString()
-                            )
-                        }
+    override suspend fun webAuthProviderLogin(context: Context): Result<Credentials> {
+        return suspendCoroutine { cont ->
+            WebAuthProvider
+                .login(account)
+                .withScheme(BuildConfig.auth0Scheme)
+                .withAudience(audience = BuildConfig.auth0Audience)
+                .start(context, object : Callback<Credentials, AuthenticationException> {
+                    override fun onFailure(error: AuthenticationException) {
+                        // The user either pressed the “Cancel” button
+                        // on the Universal Login screen or something
+                        // unusual happened.
+                        Log.e("Rachel", "Error occurred in login(): $error")
+                        cont.resume(Result.failure(Throwable(error.message)))
                     }
-                }
-            }
+
+                    override fun onSuccess(result: Credentials) {
+                        // The user successfully logged in.
+                        cont.resume(Result.success(result))
+                    }
+                })
         }
+    }
+
+    override suspend fun login(context: Context) {
+        webAuthProviderLogin(context)
+            .onSuccess {
+                preferencesRepository.setLoggedIn(true)
+                preferencesRepository.setAccessToken(it.accessToken)
+                preferencesRepository.setExpiresAt(it.expiresAt.toString())
+            }
+            .onFailure {
+                Log.d("Rachel", "Fail with exception: ${it.message}")
+            }
+    }
+
+    override suspend fun webAuthProviderLogout(context: Context): Result<Unit> {
+        return suspendCoroutine { cont ->
+            WebAuthProvider
+                .logout(account)
+                .withScheme(BuildConfig.auth0Scheme)
+                .start(context, object : Callback<Void?, AuthenticationException> {
+
+                    override fun onFailure(error: AuthenticationException) {
+                        // For some reason, logout failed.
+                        Log.e("Rachel", "Error occurred in logout(): $error")
+                        cont.resume(Result.failure(Exception(error.message)))
+                    }
+
+                    override fun onSuccess(result: Void?) {
+                        // The user successfully logged out.
+                        cont.resume(Result.success(Unit))
+                    }
+                })
+        }
+    }
+
+    override suspend fun logout(context: Context) {
+        webAuthProviderLogout(context)
+            .onSuccess {
+                preferencesRepository.setLoggedIn(false)
+                preferencesRepository.setAccessToken("")
+                preferencesRepository.setExpiresAt("")
+            }
     }
 }

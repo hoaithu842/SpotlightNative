@@ -2,12 +2,10 @@ package io.github.hoaithu842.spotlight_native
 
 import android.content.ComponentName
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -33,18 +31,12 @@ class MainActivity : ComponentActivity() {
     private val mainViewModel: MainActivityViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainViewModel.setContext(this)
+// mainViewModel.setContext(this)
         enableEdgeToEdge()
         setContent {
-            val currentUserProfile by accountManager.currentUserProfile.collectAsState(initial = null)
             val isOffline by networkMonitor.isOnline.collectAsState(initial = true)
-            val profile by mainViewModel.profile.collectAsState()
+            val profile by mainViewModel.userProfile.collectAsState()
             val loginLoading by mainViewModel.loginLoading.collectAsStateWithLifecycle()
-
-            LaunchedEffect(Unit) {
-                Log.d("Rachel", "Fetching")
-                accountManager.reloadCredentials()
-            }
 
             SpotlightTheme {
                 SpotlightContent(
@@ -54,10 +46,10 @@ class MainActivity : ComponentActivity() {
                     onAvatarClick = {
                     },
                     onLoginClick = {
-                        mainViewModel.login()
+                        mainViewModel.login(this)
                     },
                     onLogoutClick = {
-                        mainViewModel.logout()
+                        mainViewModel.logout(this)
                     }
                 )
             }

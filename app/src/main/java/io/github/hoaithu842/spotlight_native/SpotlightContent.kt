@@ -36,7 +36,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.auth0.android.result.UserProfile
+import io.github.hoaithu842.spotlight_native.domain.model.UserProfile
 import io.github.hoaithu842.spotlight_native.navigation.SpotlightNavHost
 import io.github.hoaithu842.spotlight_native.navigation.TopLevelDestination
 import io.github.hoaithu842.spotlight_native.navigation.navigateToTopLevelDestination
