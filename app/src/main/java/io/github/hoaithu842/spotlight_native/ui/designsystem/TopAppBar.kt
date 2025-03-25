@@ -153,9 +153,9 @@ fun HomeTopAppBarOption(
             .wrapContentWidth()
             .height(SpotlightDimens.TopAppBarOptionHeight)
             .clip(shape = CircleShape)
-            .background(if (selected) MaterialTheme.colorScheme.primary else TopAppBarGray)
+            .background(if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary)
             .padding(horizontal = SpotlightDimens.TopAppBarOptionPadding)
-            .clickable {
+            .noRippleClickable {
                 onOptionClick()
             }
     ) {
@@ -377,7 +377,7 @@ fun SearchResultTopAppBar(
 
             BasicTextField(
                 value = searchQuery,
-//                textStyle = WordbookSearchTextStyle.copy(color = MaterialTheme.colorScheme.inverseSurface),
+// textStyle = WordbookSearchTextStyle.copy(color = MaterialTheme.colorScheme.inverseSurface),
                 onValueChange = {
                     if ("\n" !in it) onSearchQueryChanged(it)
                 },
@@ -540,7 +540,7 @@ fun LibraryTopAppBarOption(
             .wrapContentWidth()
             .height(SpotlightDimens.TopAppBarOptionHeight)
             .clip(shape = CircleShape)
-            .background(if (selected) MaterialTheme.colorScheme.primary else TopAppBarGray)
+            .background(if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary)
             .padding(horizontal = SpotlightDimens.TopAppBarOptionPadding)
             .noRippleClickable {
                 onOptionClick()

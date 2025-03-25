@@ -27,7 +27,6 @@ import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
 import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
 import io.github.hoaithu842.spotlight_native.ui.theme.SpotlightTheme
-import io.github.hoaithu842.spotlight_native.ui.theme.TopAppBarGray
 
 @Composable
 fun VerticalThumbnail() {
@@ -206,7 +205,7 @@ fun HorizontalCircularThumbnail(
                 .fillMaxWidth()
                 .height(SpotlightDimens.ThumbnailSize)
                 .clip(shape = RoundedCornerShape(size = 6.dp))
-                .background(TopAppBarGray),
+                .background(MaterialTheme.colorScheme.secondary),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             CircularCover(
@@ -246,7 +245,7 @@ fun HorizontalRoundedCornerThumbnail(
                 .fillMaxWidth()
                 .height(SpotlightDimens.ThumbnailSize)
                 .clip(shape = RoundedCornerShape(size = 6.dp))
-                .background(TopAppBarGray),
+                .background(MaterialTheme.colorScheme.secondary),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             RoundedCornerCover(

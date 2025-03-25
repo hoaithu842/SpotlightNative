@@ -61,10 +61,12 @@ private fun NavDestination?.isRouteInHierarchy(route: KClass<*>) =
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpotlightContent(
+    loginLoading: Boolean,
     userProfile: UserProfile?,
     isOffline: Boolean,
     onAvatarClick: () -> Unit,
     onLoginClick: () -> Unit,
+    onLogoutClick: () -> Unit,
 ) {
     var isNavBarDisplaying by rememberSaveable { mutableStateOf(true) }
     val scaffoldState = rememberBottomSheetScaffoldState()
@@ -108,6 +110,7 @@ fun SpotlightContent(
             userProfile = userProfile,
             onProfileClick = onAvatarClick,
             onLoginClick = onLoginClick,
+            onLogoutClick = onLogoutClick,
         )
         Scaffold(
             modifier = Modifier
@@ -199,6 +202,14 @@ fun SpotlightContent(
             NoNetworkDialog(
                 title = "No internet",
                 message = "Something went wrong! You're offline.",
+                backgroundColor = MaterialTheme.colorScheme.surface,
+                onDismissRequest = {},
+            )
+        }
+        if (loginLoading) {
+            NoNetworkDialog(
+                title = "Loading",
+                message = "In progress, please wait!",
                 backgroundColor = MaterialTheme.colorScheme.surface,
                 onDismissRequest = {},
             )

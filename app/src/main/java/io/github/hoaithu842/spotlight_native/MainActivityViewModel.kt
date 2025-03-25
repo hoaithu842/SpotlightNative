@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.auth0.android.Auth0
 import com.auth0.android.authentication.AuthenticationException
 import com.auth0.android.callback.Callback
@@ -13,14 +14,21 @@ import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
 import com.auth0.android.result.UserProfile
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.hoaithu842.spotlight_native.domain.repository.PreferencesRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor() : ViewModel() {
+class MainActivityViewModel @Inject constructor(
+    private val preferencesRepository: PreferencesRepository,
+) : ViewModel() {
+    private val _loginLoading = MutableStateFlow(false)
+    val loginLoading: StateFlow<Boolean> = _loginLoading
+
     var appJustLaunched by mutableStateOf(true)
     var userIsAuthenticated by mutableStateOf(false)
     private var _profile: MutableStateFlow<UserProfile?> = MutableStateFlow(null)
@@ -34,6 +42,7 @@ class MainActivityViewModel @Inject constructor() : ViewModel() {
         WebAuthProvider
             .login(account)
             .withScheme(BuildConfig.auth0Scheme)
+            .withAudience(audience = BuildConfig.auth0Audience)
             .start(context, object : Callback<Credentials, AuthenticationException> {
 
                 override fun onFailure(error: AuthenticationException) {
@@ -41,23 +50,30 @@ class MainActivityViewModel @Inject constructor() : ViewModel() {
                     // on the Universal Login screen or something
                     // unusual happened.
                     Log.e(TAG, "Error occurred in login(): $error")
+                    _loginLoading.value = false
                 }
 
                 override fun onSuccess(result: Credentials) {
                     // The user successfully logged in.
-                    val idToken = result.idToken
+                    Log.d(TAG, "Access Token: ${result.accessToken}")
+                    Log.d(TAG, "Expire: ${result.expiresAt}")
 
-                    // TODO: REMOVE BEFORE GOING TO PRODUCTION!
-                    Log.d(TAG, "ID token: $idToken")
+                    viewModelScope.launch {
+                        preferencesRepository.setLoggedIn(true)
+                        preferencesRepository.setAccessToken(result.accessToken)
+                        preferencesRepository.setExpiresAt(result.expiresAt.toString())
+                    }
 
                     userIsAuthenticated = true
                     appJustLaunched = false
                     _profile.update {
                         result.user
                     }
+                    _loginLoading.value = false
                 }
 
             })
+        _loginLoading.value = true
     }
 
     fun logout() {

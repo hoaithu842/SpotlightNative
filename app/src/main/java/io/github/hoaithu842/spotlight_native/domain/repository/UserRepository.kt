@@ -1,11 +1,9 @@
-package io.github.hoaithu842.spotlight_native.data.network
+package io.github.hoaithu842.spotlight_native.domain.repository
 
 import io.github.hoaithu842.spotlight_native.data.network.dto.SuccessBodyDto
 import io.github.hoaithu842.spotlight_native.data.network.dto.UserProfileDto
 import io.github.hoaithu842.spotlight_native.domain.model.ApiResponse
-import retrofit2.http.GET
 
-interface SpotlightApiService {
-    @GET("auth/session-user")
+interface UserRepository {
     suspend fun getSessionUser(): ApiResponse<SuccessBodyDto<UserProfileDto>>
 }

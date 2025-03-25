@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -98,7 +98,7 @@ fun MinimizedPlayer(
                     Text(
                         text = song.title,
                         style = SpotlightTextStyle.Text11W400,
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = Color.White,
                         maxLines = 1,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -117,7 +117,7 @@ fun MinimizedPlayer(
             Icon(
                 painter = painterResource(if (isPlaying) SpotlightIcons.Pause else SpotlightIcons.Play),
                 contentDescription = "",
-                tint = MaterialTheme.colorScheme.onBackground,
+                tint = Color.White,
                 modifier = Modifier
                     .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
                     .align(Alignment.CenterEnd)

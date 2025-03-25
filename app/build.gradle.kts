@@ -19,11 +19,14 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders.put("auth0Domain", "dev-0lpzh4dn570bx2hg.us.auth0.com")
+        manifestPlaceholders.put("auth0Domain", "dev-m0yd4mk6eil86rrc.us.auth0.com")
         manifestPlaceholders.put("auth0Scheme", "app")
 
         buildConfigField(
             "String", "auth0ClientId", providers.gradleProperty("auth0ClientId").get()
+        )
+        buildConfigField(
+            "String", "auth0Audience", providers.gradleProperty("auth0Audience").get()
         )
         buildConfigField(
             "String", "auth0Domain", providers.gradleProperty("auth0Domain").get()
@@ -96,6 +99,9 @@ dependencies {
     // Auth0
     implementation(libs.auth0)
     implementation(libs.jwtdecode)
+
+    // Datastore
+    implementation(libs.androidx.datastore.preferences)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

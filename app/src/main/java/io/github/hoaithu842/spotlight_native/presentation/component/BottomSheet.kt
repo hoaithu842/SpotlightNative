@@ -47,6 +47,7 @@ fun PlaylistBottomSheet(
                 userProfile = null,
                 onProfileClick = {},
                 onLoginClick = {},
+                onLogoutClick = {},
             )
 
             HorizontalDivider(

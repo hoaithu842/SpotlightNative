@@ -5,9 +5,11 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.hoaithu842.spotlight_native.data.repository.PlayerRepositoryImpl
-import io.github.hoaithu842.spotlight_native.data.repository.SongRepositoryImpl
+import io.github.hoaithu842.spotlight_native.data.repository.PreferencesRepositoryImpl
+import io.github.hoaithu842.spotlight_native.data.repository.UserRepositoryImpl
 import io.github.hoaithu842.spotlight_native.domain.repository.PlayerRepository
-import io.github.hoaithu842.spotlight_native.domain.repository.SongRepository
+import io.github.hoaithu842.spotlight_native.domain.repository.PreferencesRepository
+import io.github.hoaithu842.spotlight_native.domain.repository.UserRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -18,7 +20,12 @@ abstract class RepositoryModule {
     ): PlayerRepository
 
     @Binds
-    internal abstract fun bindsSongRepository(
-        songRepository: SongRepositoryImpl
-    ): SongRepository
+    internal abstract fun bindsUserRepository(
+        userRepository: UserRepositoryImpl
+    ): UserRepository
+
+    @Binds
+    internal abstract fun bindsPreferencesRepository(
+        preferencesRepository: PreferencesRepositoryImpl
+    ): PreferencesRepository
 }

@@ -46,7 +46,7 @@ fun BrowseCard(
             .fillMaxWidth()
             .height(SpotlightDimens.BrowseSectionHeight)
             .clip(shape = RoundedCornerShape(size = 6.dp))
-            .background(TopAppBarGray),
+            .background(MaterialTheme.colorScheme.secondary),
     ) {
         Text(
             text = title,

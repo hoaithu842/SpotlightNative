@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -53,6 +55,7 @@ fun HomeScreenDrawer(
     userProfile: UserProfile?,
     onProfileClick: () -> Unit,
     onLoginClick: () -> Unit,
+    onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -65,6 +68,7 @@ fun HomeScreenDrawer(
             userProfile = userProfile,
             onProfileClick = onProfileClick,
             onLoginClick = onLoginClick,
+            onLogoutClick = onLogoutClick,
             modifier = Modifier.padding(vertical = SpotlightDimens.HomeScreenDrawerHeaderVerticalPadding)
         )
 
@@ -105,6 +109,7 @@ fun HomeScreenDrawerHeader(
     userProfile: UserProfile?,
     onProfileClick: () -> Unit,
     onLoginClick: () -> Unit,
+    onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -117,7 +122,8 @@ fun HomeScreenDrawerHeader(
         if (userProfile == null) {
             Text(
                 text = "Login",
-                modifier = Modifier.noRippleClickable(onLoginClick)
+                modifier = Modifier.noRippleClickable(onLoginClick),
+                color = MaterialTheme.colorScheme.onBackground,
             )
         } else {
             if (userProfile.pictureURL != null) {
@@ -159,6 +165,15 @@ fun HomeScreenDrawerHeader(
                     modifier = Modifier.noRippleClickable(onProfileClick)
                 )
             }
+
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding)
+                    .noRippleClickable(onLogoutClick),
+            )
         }
     }
 }
@@ -202,6 +217,7 @@ fun HomeScreenDrawerPreview() {
             userProfile = null,
             onProfileClick = {},
             onLoginClick = {},
+            onLogoutClick = {},
         )
     }
 }
