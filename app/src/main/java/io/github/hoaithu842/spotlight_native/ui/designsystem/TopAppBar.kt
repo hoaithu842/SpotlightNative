@@ -57,7 +57,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.hoaithu842.spotlight_native.R
-import io.github.hoaithu842.spotlight_native.domain.model.Song
+import io.github.hoaithu842.spotlight_native.domain.model.SongDetails
 import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
 import io.github.hoaithu842.spotlight_native.extension.singleClickable
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens.TopAppBarHorizontalPadding
@@ -643,7 +643,7 @@ fun FullsizePlayerTopAppBar(
 @Composable
 fun PlayerControllerTopAppBar(
     isPlaying: Boolean,
-    song: Song,
+    song: SongDetails,
     currentPosition: Long,
     duration: Long,
     onPlayerClick: () -> Unit,
@@ -734,7 +734,7 @@ fun TopAppBarPreview() {
             )
 
             PlayerControllerTopAppBar(
-                song = Song(
+                song = SongDetails(
                     title = "Preview",
                     artists = "Preview",
                 ),

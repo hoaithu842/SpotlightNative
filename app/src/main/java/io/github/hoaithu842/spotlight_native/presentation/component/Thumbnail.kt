@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
 import io.github.hoaithu842.spotlight_native.ui.designsystem.OuterBox
@@ -27,6 +28,11 @@ import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
 import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
 import io.github.hoaithu842.spotlight_native.ui.theme.SpotlightTheme
+
+enum class ThumbnailCoverSize(val size: Dp) {
+    MEDIUM(size = SpotlightDimens.RecentSectionThumbnailSize),
+    LARGE(size = SpotlightDimens.RecommendationSectionThumbnailSize),
+}
 
 @Composable
 fun VerticalThumbnail() {
@@ -40,6 +46,7 @@ fun VerticalRoundedCornerThumbnail(
     onClick: () -> Unit,
     onLongPress: () -> Unit,
     modifier: Modifier = Modifier,
+    thumbnailCoverSize: ThumbnailCoverSize = ThumbnailCoverSize.LARGE,
 ) {
     OuterBox(
         onLongPress = onLongPress,
@@ -51,7 +58,7 @@ fun VerticalRoundedCornerThumbnail(
         ) {
             RoundedCornerCover(
                 imageUrl = imageUrl,
-                modifier = Modifier.size(SpotlightDimens.RecommendationSectionThumbnailSize)
+                modifier = Modifier.size(thumbnailCoverSize.size)
             )
 
             Text(
@@ -62,7 +69,7 @@ fun VerticalRoundedCornerThumbnail(
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .padding(top = 8.dp)
-                    .width(SpotlightDimens.RecommendationSectionThumbnailSize)
+                    .width(thumbnailCoverSize.size)
             )
         }
     }
@@ -75,17 +82,19 @@ fun VerticalWithTitleThumbnail(
     description: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    thumbnailCoverSize: ThumbnailCoverSize = ThumbnailCoverSize.LARGE,
 ) {
     Column(
         modifier = modifier
             .noRippleClickable {
                 onClick()
-            },
+            }
+            .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Cover(
             imageUrl = imageUrl,
-            modifier = Modifier.size(SpotlightDimens.RecentSectionThumbnailSize)
+            modifier = Modifier.size(thumbnailCoverSize.size)
         )
 
         Text(
@@ -94,7 +103,7 @@ fun VerticalWithTitleThumbnail(
             color = MaterialTheme.colorScheme.onBackground,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(SpotlightDimens.RecentSectionThumbnailSize)
+            modifier = Modifier.width(thumbnailCoverSize.size)
         )
 
         Text(
@@ -103,7 +112,7 @@ fun VerticalWithTitleThumbnail(
             color = NavigationGray,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(SpotlightDimens.RecentSectionThumbnailSize)
+            modifier = Modifier.width(thumbnailCoverSize.size)
         )
     }
 }
@@ -115,6 +124,7 @@ fun VerticalRoundedCornerWithTitleThumbnail(
     description: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    thumbnailCoverSize: ThumbnailCoverSize = ThumbnailCoverSize.LARGE,
 ) {
     Column(
         modifier = modifier
@@ -125,7 +135,7 @@ fun VerticalRoundedCornerWithTitleThumbnail(
     ) {
         Cover(
             imageUrl = imageUrl,
-            modifier = Modifier.size(SpotlightDimens.RecentSectionThumbnailSize)
+            modifier = Modifier.size(thumbnailCoverSize.size)
         )
 
         Text(
@@ -134,7 +144,7 @@ fun VerticalRoundedCornerWithTitleThumbnail(
             color = MaterialTheme.colorScheme.onBackground,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(SpotlightDimens.RecentSectionThumbnailSize)
+            modifier = Modifier.width(thumbnailCoverSize.size)
         )
 
         Text(
@@ -143,7 +153,7 @@ fun VerticalRoundedCornerWithTitleThumbnail(
             color = NavigationGray,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(SpotlightDimens.RecentSectionThumbnailSize)
+            modifier = Modifier.width(thumbnailCoverSize.size)
         )
     }
 }
@@ -155,9 +165,11 @@ fun VerticalCircularWithTitleThumbnail(
     description: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    thumbnailCoverSize: ThumbnailCoverSize = ThumbnailCoverSize.LARGE,
 ) {
     Column(
         modifier = modifier
+            .padding(8.dp)
             .noRippleClickable {
                 onClick()
             },
@@ -165,7 +177,7 @@ fun VerticalCircularWithTitleThumbnail(
     ) {
         CircularCover(
             imageUrl = imageUrl,
-            modifier = Modifier.size(SpotlightDimens.RecentSectionThumbnailSize),
+            modifier = Modifier.size(thumbnailCoverSize.size),
             contentScale = ContentScale.Crop,
         )
 
@@ -175,7 +187,7 @@ fun VerticalCircularWithTitleThumbnail(
             color = MaterialTheme.colorScheme.onBackground,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(SpotlightDimens.RecentSectionThumbnailSize)
+            modifier = Modifier.width(thumbnailCoverSize.size)
         )
 
         Text(
@@ -184,7 +196,7 @@ fun VerticalCircularWithTitleThumbnail(
             color = NavigationGray,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(SpotlightDimens.RecentSectionThumbnailSize)
+            modifier = Modifier.width(thumbnailCoverSize.size)
         )
     }
 }

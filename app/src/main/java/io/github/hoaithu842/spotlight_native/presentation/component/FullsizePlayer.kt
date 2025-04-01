@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import io.github.hoaithu842.spotlight_native.domain.model.Song
+import io.github.hoaithu842.spotlight_native.domain.model.SongDetails
 import io.github.hoaithu842.spotlight_native.extension.noRippleClickable
 import io.github.hoaithu842.spotlight_native.extension.shimmerLoadingAnimation
 import io.github.hoaithu842.spotlight_native.extension.toTimeFormat
@@ -61,7 +61,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun FullsizePlayer(
     isPlaying: Boolean,
-    song: Song,
+    song: SongDetails,
     currentPosition: Long,
     duration: Long,
     painter: AsyncImagePainter,
@@ -137,7 +137,7 @@ fun FullsizePlayer(
 @Composable
 fun MainPlayerContent(
     isPlaying: Boolean,
-    song: Song,
+    song: SongDetails,
     currentPosition: Long,
     duration: Long,
     painter: AsyncImagePainter,
@@ -319,7 +319,7 @@ fun FullsizePlayerPreview() {
     SpotlightTheme {
         FullsizePlayer(
             isPlaying = true,
-            song = Song(
+            song = SongDetails(
                 title = "Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
                 artists = "Grissini Project"
             ),

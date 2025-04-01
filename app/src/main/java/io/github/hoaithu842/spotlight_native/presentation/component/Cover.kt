@@ -23,7 +23,7 @@ import io.github.hoaithu842.spotlight_native.extension.shimmerLoadingAnimation
 fun Cover(
     imageUrl: String,
     modifier: Modifier = Modifier,
-    contentScale: ContentScale = ContentScale.Fit,
+    contentScale: ContentScale = ContentScale.Crop,
 ) {
     var isLoading by remember { mutableStateOf(true) }
 
@@ -53,7 +53,7 @@ fun Cover(
 fun CircularCover(
     imageUrl: String,
     modifier: Modifier = Modifier,
-    contentScale: ContentScale = ContentScale.Fit,
+    contentScale: ContentScale = ContentScale.Crop,
 ) {
     var isLoading by remember { mutableStateOf(true) }
 
@@ -84,7 +84,7 @@ fun CircularCover(
 fun RoundedCornerCover(
     imageUrl: String,
     modifier: Modifier = Modifier,
-    contentScale: ContentScale = ContentScale.Fit,
+    contentScale: ContentScale = ContentScale.Crop,
 ) {
     var isLoading by remember { mutableStateOf(true) }
 

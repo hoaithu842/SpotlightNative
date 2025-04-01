@@ -25,6 +25,7 @@ fun LibraryArtistItem(
             description = "abc",
             onClick = {},
             modifier = modifier,
+            thumbnailCoverSize = ThumbnailCoverSize.MEDIUM,
         )
     }
 }
@@ -51,6 +52,7 @@ fun LibraryPlaylistItem(
             description = "abc",
             onClick = {},
             modifier = modifier,
+            thumbnailCoverSize = ThumbnailCoverSize.MEDIUM,
         )
     }
 }

@@ -10,12 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,11 +23,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import io.github.hoaithu842.spotlight_native.domain.model.HomeSection
 import io.github.hoaithu842.spotlight_native.presentation.component.HorizontalCircularThumbnail
 import io.github.hoaithu842.spotlight_native.presentation.component.HorizontalRoundedCornerThumbnail
 import io.github.hoaithu842.spotlight_native.presentation.component.PlaylistBottomSheet
+import io.github.hoaithu842.spotlight_native.presentation.component.VerticalCircularWithTitleThumbnail
 import io.github.hoaithu842.spotlight_native.presentation.component.VerticalRoundedCornerThumbnail
-import io.github.hoaithu842.spotlight_native.presentation.component.VerticalRoundedCornerWithTitleThumbnail
+import io.github.hoaithu842.spotlight_native.presentation.viewmodel.HomeUiState
+import io.github.hoaithu842.spotlight_native.presentation.viewmodel.HomeViewModel
 import io.github.hoaithu842.spotlight_native.ui.designsystem.HomeScreenTab
 import io.github.hoaithu842.spotlight_native.ui.designsystem.HomeTopAppBar
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
@@ -36,8 +40,12 @@ import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
 @Composable
 fun HomeScreen(
     onAvatarClick: () -> Unit,
+    onArtistClick: (String) -> Unit,
     onRecommendedPlaylistClick: (Int) -> Unit,
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.homeUiState.collectAsState()
+
     var showBottomSheet by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
@@ -61,6 +69,8 @@ fun HomeScreen(
 
         when (currentTab) {
             HomeScreenTab.All -> AllTab(
+                uiState = uiState,
+                onArtistClick = onArtistClick,
                 onRecommendedPlaylistClick = onRecommendedPlaylistClick,
                 onLongPress = { showBottomSheet = true }
             )
@@ -86,104 +96,91 @@ fun HomeScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AllTab(
+    uiState: HomeUiState,
+    onArtistClick: (String) -> Unit,
     onRecommendedPlaylistClick: (Int) -> Unit,
     onLongPress: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
     ) {
-        // Recently Group
-        FlowRow(
-            maxItemsInEachRow = 2,
-            modifier = Modifier.padding(SpotlightDimens.RecommendationPadding)
-        ) {
-            HorizontalCircularThumbnail(
-                artist = "Justatee",
-                imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                onLongPress = {},
+        when (uiState) {
+            is HomeUiState.Error -> {
+                item {
+                    Text(text = "Error")
+                }
+            }
+
+            is HomeUiState.Loading -> {
+                item {
+                    Text(text = "Loading")
+                }
+            }
+
+            is HomeUiState.Success -> {
+                if (uiState.contents.isNotEmpty()) {
+                    item {
+                        FlowRow(
+                            maxItemsInEachRow = 2,
+                            modifier = Modifier.padding(SpotlightDimens.RecommendationPadding)
+                        ) {
+                            uiState.contents.first().items.forEach {
+                                if (it.type == "artist") {
+                                    HorizontalCircularThumbnail(
+                                        artist = it.name,
+                                        imageUrl = it.image?.url ?: "",
+                                        onLongPress = {},
+                                        modifier = Modifier
+                                            .padding(SpotlightDimens.RecommendationPadding)
+                                            .weight(1f),
+                                    )
+                                } else {
+                                    HorizontalRoundedCornerThumbnail(
+                                        artist = it.name,
+                                        imageUrl = it.image?.url ?: "",
+                                        onLongPress = {},
+                                        modifier = Modifier
+                                            .padding(SpotlightDimens.RecommendationPadding)
+                                            .weight(1f),
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    items(uiState.contents.size) { index ->
+                        if (index != 0) {
+                            HomeSectionDisplay(
+                                uiState.contents[index],
+                                onArtistClick = onArtistClick,
+                                onRecommendedPlaylistClick = onRecommendedPlaylistClick,
+                                onLongPress = {},
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        item {
+            Spacer(
                 modifier = Modifier
-                    .padding(SpotlightDimens.RecommendationPadding)
-                    .weight(1f),
-            )
-            HorizontalRoundedCornerThumbnail(
-                artist = "Justatee",
-                imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                onLongPress = {},
-                modifier = Modifier
-                    .padding(SpotlightDimens.RecommendationPadding)
-                    .weight(1f),
-            )
-            HorizontalCircularThumbnail(
-                artist = "Justatee",
-                imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                onLongPress = {},
-                modifier = Modifier
-                    .padding(SpotlightDimens.RecommendationPadding)
-                    .weight(1f),
-            )
-            HorizontalRoundedCornerThumbnail(
-                artist = "Justatee",
-                imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                onLongPress = {},
-                modifier = Modifier
-                    .padding(SpotlightDimens.RecommendationPadding)
-                    .weight(1f),
-            )
-            HorizontalCircularThumbnail(
-                artist = "Justatee",
-                imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                onLongPress = {},
-                modifier = Modifier
-                    .padding(SpotlightDimens.RecommendationPadding)
-                    .weight(1f),
-            )
-            HorizontalRoundedCornerThumbnail(
-                artist = "Justatee",
-                imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                onLongPress = {},
-                modifier = Modifier
-                    .padding(SpotlightDimens.RecommendationPadding)
-                    .weight(1f),
+                    .fillMaxWidth()
+                    .height(SpotlightDimens.MinimizedPlayerHeight)
             )
         }
-
-        RecommendationSection(
-            title = "Today's biggest hits",
-            onRecommendedPlaylistClick = onRecommendedPlaylistClick,
-            onLongPress = onLongPress,
-        )
-
-        RecommendationSection(
-            title = "Popular albums and singles",
-            onRecommendedPlaylistClick = onRecommendedPlaylistClick,
-            onLongPress = onLongPress,
-        )
-
-        RecentSection(
-            title = "Recents",
-            onRecommendedPlaylistClick = onRecommendedPlaylistClick,
-        )
-
-        RecommendationSection(
-            title = "Charts",
-            onRecommendedPlaylistClick = onRecommendedPlaylistClick,
-            onLongPress = onLongPress,
-        )
-
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(SpotlightDimens.MinimizedPlayerHeight)
-        )
     }
+
+    Spacer(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(SpotlightDimens.MinimizedPlayerHeight)
+    )
 }
 
 @Composable
-fun RecommendationSection(
-    title: String,
+fun HomeSectionDisplay(
+    homeSection: HomeSection,
+    onArtistClick: (String) -> Unit,
     onRecommendedPlaylistClick: (Int) -> Unit,
     onLongPress: () -> Unit,
     modifier: Modifier = Modifier,
@@ -194,7 +191,7 @@ fun RecommendationSection(
             .height(SpotlightDimens.RecommendationSectionHeight)
     ) {
         Text(
-            text = title,
+            text = homeSection.name,
             style = SpotlightTextStyle.Text22W700,
             color = MaterialTheme.colorScheme.onBackground,
             maxLines = 1,
@@ -203,50 +200,26 @@ fun RecommendationSection(
         )
 
         LazyRow(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
-            items(6) {
-                VerticalRoundedCornerThumbnail(
-                    imageUrl = "https://thantrieu.com/resources/arts/1078245023.webp",
-                    description = "The Weeknd, Lady Gaga, JENNIE, Charlie Puth, yung kai, Dhruv",
-                    onClick = { onRecommendedPlaylistClick(it) },
-                    onLongPress = onLongPress,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun RecentSection(
-    title: String,
-    onRecommendedPlaylistClick: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.RecentSectionHeight)
-    ) {
-        Text(
-            text = title,
-            style = SpotlightTextStyle.Text22W700,
-            color = MaterialTheme.colorScheme.onBackground,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(10.dp)
-        )
-
-        LazyRow(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            items(6) {
-                VerticalRoundedCornerWithTitleThumbnail(
-                    imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                    title = "Yen",
-                    description = "The Weeknd, Lady Gaga, JENNIE, Charlie Puth, yung kai, Dhruv",
-                    onClick = { onRecommendedPlaylistClick(it) },
-                )
+            items(homeSection.items.size) { index ->
+                if (homeSection.items[index].type == "artist") {
+                    val artist = homeSection.items[index]
+                    VerticalCircularWithTitleThumbnail(
+                        imageUrl = artist.image?.url ?: "",
+                        title = artist.name,
+                        description = artist.type,
+                        onClick = { onArtistClick(artist.id) },
+                    )
+                } else {
+                    VerticalRoundedCornerThumbnail(
+                        imageUrl = homeSection.items[index].image?.url ?: "",
+                        description = homeSection.items[index].artists?.joinToString { it.name }
+                            ?: "",
+                        onClick = { onRecommendedPlaylistClick(index) },
+                        onLongPress = onLongPress,
+                    )
+                }
             }
         }
     }

@@ -47,6 +47,7 @@ fun SpotlightNavHost(
     ) {
         homeGraph(
             onAvatarClick = onAvatarClick,
+            onArtistClick = navHostController::navigateToArtistScreen,
             onRecommendedPlaylistClick = navHostController::navigateToRecommendationScreen,
             onBackClick = navHostController::popBackStack,
         )
