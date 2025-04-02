@@ -1,7 +1,9 @@
 package io.github.hoaithu842.spotlight_native.presentation.component
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun LibraryArtistItem(
@@ -16,7 +18,7 @@ fun LibraryArtistItem(
             title = artist,
             description = "abc",
             onClick = {},
-            modifier = modifier,
+            modifier = modifier.padding(vertical = 5.dp),
         )
     } else {
         VerticalCircularWithTitleThumbnail(
@@ -32,6 +34,8 @@ fun LibraryArtistItem(
 
 @Composable
 fun LibraryPlaylistItem(
+    name: String,
+    type: String,
     creator: String,
     imageUrl: String,
     modifier: Modifier = Modifier,
@@ -40,16 +44,16 @@ fun LibraryPlaylistItem(
     if (!isInGridView) {
         HorizontalWithTitleThumbnail(
             imageUrl = imageUrl,
-            title = creator,
-            description = "abc",
+            title = name,
+            description = "$type • $creator",
             onClick = {},
-            modifier = modifier,
+            modifier = modifier.padding(vertical = 5.dp),
         )
     } else {
         VerticalWithTitleThumbnail(
             imageUrl = imageUrl,
-            title = creator,
-            description = "abc",
+            title = name,
+            description = "$type • $creator",
             onClick = {},
             modifier = modifier,
             thumbnailCoverSize = ThumbnailCoverSize.MEDIUM,

@@ -1,12 +1,16 @@
 package io.github.hoaithu842.spotlight_native.data.network.dto
 
+import android.util.Log
 import io.github.hoaithu842.spotlight_native.domain.model.Artist
 import io.github.hoaithu842.spotlight_native.domain.model.ArtistCategory
 import io.github.hoaithu842.spotlight_native.domain.model.ArtistCategoryItem
 import io.github.hoaithu842.spotlight_native.domain.model.ArtistDetails
+import io.github.hoaithu842.spotlight_native.domain.model.Creator
 import io.github.hoaithu842.spotlight_native.domain.model.HomeSection
 import io.github.hoaithu842.spotlight_native.domain.model.HomeSectionItem
 import io.github.hoaithu842.spotlight_native.domain.model.Image
+import io.github.hoaithu842.spotlight_native.domain.model.LibraryContents
+import io.github.hoaithu842.spotlight_native.domain.model.LibraryItem
 import io.github.hoaithu842.spotlight_native.domain.model.Song
 import io.github.hoaithu842.spotlight_native.domain.model.UserProfile
 
@@ -36,7 +40,7 @@ fun ArtistCategoryItemDto?.toDomain(): ArtistCategoryItem = ArtistCategoryItem(
 
 fun ArtistCategoryDto?.toDomain(): ArtistCategory = ArtistCategory(
     id = this?.id ?: "",
-    name = this?.id ?: "",
+    name = this?.name ?: "",
     items = this?.items?.map { it.toDomain() } ?: listOf(),
 )
 
@@ -73,4 +77,29 @@ fun HomeSectionDto.toDomain(): HomeSection = HomeSection(
     id = this.id ?: "",
     name = this.name ?: "",
     items = this.items?.map { it.toDomain() } ?: listOf(),
+)
+
+fun CreatorDto?.toDomain(): Creator = Creator(
+    id = this?.id ?: "",
+    name = this?.name ?: "",
+)
+
+fun LibraryItemDto.toDomain(): LibraryItem = LibraryItem(
+    id = this.id ?: "",
+    name = this.name ?: "",
+    description = this.description ?: "",
+    image = this.image.toDomain(),
+    creator = this.creator.toDomain(),
+    color = this.color ?: "#ffffff",
+    isPublic = this.isPublic ?: false,
+    inLibrary = this.inLibrary ?: false,
+    createdAt = this.createdAt ?: "",
+)
+
+fun LibraryContentsDto.toDomain(): LibraryContents = LibraryContents(
+    items = this.items?.map {
+        it.toDomain().also {
+            Log.d("Rachel", it.name)
+        }
+    } ?: listOf()
 )
