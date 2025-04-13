@@ -12,12 +12,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RecommendationRoute(val id: Int)
 
-fun NavController.navigateToRecommendationScreen(id: Int, navOptions: NavOptions? = null) =
-    navigate(route = RecommendationRoute(id), navOptions = navOptions)
+fun NavController.navigateToRecommendationScreen(
+    id: Int,
+    navOptions: NavOptions? = null,
+) = navigate(route = RecommendationRoute(id), navOptions = navOptions)
 
-fun NavGraphBuilder.recommendationScreen(
-    onBackClick: () -> Unit,
-) {
+fun NavGraphBuilder.recommendationScreen(onBackClick: () -> Unit) {
     composable<RecommendationRoute> { backStackEntry ->
         val recommendationRoute: RecommendationRoute = backStackEntry.toRoute()
 
@@ -32,12 +32,12 @@ fun NavGraphBuilder.recommendationScreen(
 @Serializable
 data class ArtistRoute(val id: String)
 
-fun NavController.navigateToArtistScreen(id: String, navOptions: NavOptions? = null) =
-    navigate(route = ArtistRoute(id), navOptions = navOptions)
+fun NavController.navigateToArtistScreen(
+    id: String,
+    navOptions: NavOptions? = null,
+) = navigate(route = ArtistRoute(id), navOptions = navOptions)
 
-fun NavGraphBuilder.artistScreen(
-    onBackClick: () -> Unit,
-) {
+fun NavGraphBuilder.artistScreen(onBackClick: () -> Unit) {
     composable<ArtistRoute> { backStackEntry ->
         val artistRoute: ArtistRoute = backStackEntry.toRoute()
 

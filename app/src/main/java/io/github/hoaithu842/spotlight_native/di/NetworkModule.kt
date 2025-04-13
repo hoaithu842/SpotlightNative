@@ -24,19 +24,19 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providesAuthorizationInterceptor(
-        spotlightPreferences: SpotlightPreferences,
-    ): Interceptor {
+    fun providesAuthorizationInterceptor(spotlightPreferences: SpotlightPreferences): Interceptor {
         return Interceptor { chain ->
-            val token = runBlocking {
-                spotlightPreferences.accessTokenFlow.firstOrNull() ?: ""
-            }
+            val token =
+                runBlocking {
+                    spotlightPreferences.accessTokenFlow.firstOrNull() ?: ""
+                }
 
             Log.d("Rachel", "Fetching with $token")
 
-            val request = chain.request().newBuilder().addHeader("accept", "application/json")
-                .addHeader("Authorization", "Bearer $token")
-                .build()
+            val request =
+                chain.request().newBuilder().addHeader("accept", "application/json")
+                    .addHeader("Authorization", "Bearer $token")
+                    .build()
 
             chain.proceed(request)
         }
@@ -44,9 +44,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providesDictionaryOkHttp(
-        authorizationInterceptor: Interceptor,
-    ): OkHttpClient {
+    fun providesDictionaryOkHttp(authorizationInterceptor: Interceptor): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor().apply { setLevel(HttpLoggingInterceptor.Level.BODY) }
         return OkHttpClient()
             .newBuilder()
@@ -57,9 +55,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(
-        okHttpClient: OkHttpClient
-    ): Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)

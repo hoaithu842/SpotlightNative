@@ -27,26 +27,27 @@ fun OuterBox(
     val progressAnimationValue = remember { Animatable(1f) }
 
     Box(
-        modifier = modifier
-            .graphicsLayer {
-                scaleX = progressAnimationValue.value
-                scaleY = progressAnimationValue.value
-                transformOrigin = TransformOrigin.Center
-            }
-            .wrapContentSize()
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onLongPress = {
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        scope.launch {
-                            progressAnimationValue.animateTo(targetValue = 0.95f)
-                            progressAnimationValue.animateTo(targetValue = 1f)
-                        }
-                        onLongPress()
-                    },
-                    onTap = { onClick() },
-                )
-            }
+        modifier =
+            modifier
+                .graphicsLayer {
+                    scaleX = progressAnimationValue.value
+                    scaleY = progressAnimationValue.value
+                    transformOrigin = TransformOrigin.Center
+                }
+                .wrapContentSize()
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onLongPress = {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            scope.launch {
+                                progressAnimationValue.animateTo(targetValue = 0.95f)
+                                progressAnimationValue.animateTo(targetValue = 1f)
+                            }
+                            onLongPress()
+                        },
+                        onTap = { onClick() },
+                    )
+                },
     ) {
         content()
     }

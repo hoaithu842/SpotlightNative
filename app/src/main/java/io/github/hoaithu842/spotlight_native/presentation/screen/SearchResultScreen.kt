@@ -12,26 +12,25 @@ import io.github.hoaithu842.spotlight_native.ui.designsystem.SearchResultTopAppB
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
 
 @Composable
-fun SearchResultScreen(
-    onCancelClick: () -> Unit,
-) {
+fun SearchResultScreen(onCancelClick: () -> Unit) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         SearchResultTopAppBar(
             searchQuery = "",
             onCancelClick = onCancelClick,
             onSearchQueryChanged = {},
-            modifier = Modifier
-                .statusBarsPadding()
-                .height(SpotlightDimens.TopAppBarHeight),
+            modifier =
+                Modifier
+                    .statusBarsPadding()
+                    .height(SpotlightDimens.TopAppBarHeight),
         )
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
         ) {
-
         }
     }
 }

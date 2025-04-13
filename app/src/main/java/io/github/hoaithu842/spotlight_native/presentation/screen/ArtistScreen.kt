@@ -48,7 +48,6 @@ import io.github.hoaithu842.spotlight_native.presentation.viewmodel.ArtistViewMo
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArtistScreen(
@@ -61,30 +60,34 @@ fun ArtistScreen(
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
     val displayMetrics: DisplayMetrics = LocalContext.current.resources.displayMetrics
-    val dpWidth = remember {
-        displayMetrics.widthPixels / displayMetrics.density
-    }
+    val dpWidth =
+        remember {
+            displayMetrics.widthPixels / displayMetrics.density
+        }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection)
-            .background(MaterialTheme.colorScheme.surface),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .background(MaterialTheme.colorScheme.surface),
     ) {
         when (uiState) {
             ArtistUiState.Error -> Text("Error")
             ArtistUiState.Loading -> {
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
                 ) {
                     RoundedCornerCover(
                         imageUrl = "",
                         contentScale = ContentScale.FillWidth,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(dpWidth.dp * (1 - scrollBehavior.state.collapsedFraction))
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .height(dpWidth.dp * (1 - scrollBehavior.state.collapsedFraction)),
                     )
                     ArtistBanner(
                         artistName = "",
@@ -104,17 +107,20 @@ fun ArtistScreen(
 
             is ArtistUiState.Success -> {
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
                 ) {
                     RoundedCornerCover(
-                        imageUrl = (uiState as ArtistUiState.Success).artistDetails.image?.url
-                            ?: "",
+                        imageUrl =
+                            (uiState as ArtistUiState.Success).artistDetails.image?.url
+                                ?: "",
                         contentScale = ContentScale.FillWidth,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(dpWidth.dp * (1 - scrollBehavior.state.collapsedFraction))
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .height(dpWidth.dp * (1 - scrollBehavior.state.collapsedFraction)),
                     )
                     ArtistBanner(
                         artistName = (uiState as ArtistUiState.Success).artistDetails.name,
@@ -126,7 +132,8 @@ fun ArtistScreen(
                 LazyColumn {
                     items(
                         (uiState as ArtistUiState.Success).artistDetails.categories.size,
-                        key = { it }) {
+                        key = { it },
+                    ) {
                         ArtistSectionDisplay(
                             artistCategory = (uiState as ArtistUiState.Success).artistDetails.categories[it],
                             onArtistClick = {},
@@ -170,13 +177,14 @@ fun ArtistBanner(
                 )
             }
         },
-        colors = TopAppBarDefaults.largeTopAppBarColors(
-            containerColor = Color.Transparent,
-            scrolledContainerColor = MaterialTheme.colorScheme.surface,
-            navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
-            titleContentColor = MaterialTheme.colorScheme.onSurface,
-            actionIconContentColor = MaterialTheme.colorScheme.onSurface,
-        ),
+        colors =
+            TopAppBarDefaults.largeTopAppBarColors(
+                containerColor = Color.Transparent,
+                scrolledContainerColor = MaterialTheme.colorScheme.surface,
+                navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+                titleContentColor = MaterialTheme.colorScheme.onSurface,
+                actionIconContentColor = MaterialTheme.colorScheme.onSurface,
+            ),
         scrollBehavior = scrollBehavior,
         expandedHeight = expandedHeight,
         collapsedHeight = 0.3 * 100.dp,
@@ -192,9 +200,10 @@ fun ArtistSectionDisplay(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.RecommendationSectionHeight)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.RecommendationSectionHeight),
     ) {
         Text(
             text = artistCategory.name,
@@ -202,7 +211,7 @@ fun ArtistSectionDisplay(
             color = MaterialTheme.colorScheme.onBackground,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.padding(10.dp),
         )
 
         LazyRow(

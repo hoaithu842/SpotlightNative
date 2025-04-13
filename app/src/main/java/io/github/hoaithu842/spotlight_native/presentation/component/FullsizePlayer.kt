@@ -81,9 +81,10 @@ fun FullsizePlayer(
     val scope = rememberCoroutineScope()
 
     Box(
-        modifier = modifier
-            .background(MinimizedPlayerBackground)
-            .statusBarsPadding()
+        modifier =
+            modifier
+                .background(MinimizedPlayerBackground)
+                .statusBarsPadding(),
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -93,9 +94,10 @@ fun FullsizePlayer(
                 FullsizePlayerTopAppBar(
                     artists = song.artists,
                     onMinimizeClick = onMinimizeClick,
-                    modifier = Modifier
-                        .statusBarsPadding()
-                        .padding(horizontal = SpotlightDimens.FullsizePlayerTopAppBarPadding)
+                    modifier =
+                        Modifier
+                            .statusBarsPadding()
+                            .padding(horizontal = SpotlightDimens.FullsizePlayerTopAppBarPadding),
                 )
             }
             item {
@@ -148,42 +150,47 @@ fun MainPlayerContent(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
+        modifier =
+            modifier
 //            .padding(horizontal = SpotlightDimens.FullsizePlayerMainContentHorizontalPadding)
-            .fillMaxWidth()
-            .wrapContentHeight(),
+                .fillMaxWidth()
+                .wrapContentHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             painter = painter,
             contentDescription = "",
-            modifier = Modifier
-                .padding(vertical = SpotlightDimens.FullsizePlayerMainContentPadding)
-                .size(SpotlightDimens.FullsizePlayerThumbnailSize)
-                .shimmerLoadingAnimation(
-                    isLoadingCompleted = !isLoading,
-                    isLightModeActive = !isSystemInDarkTheme(),
-                )
+            modifier =
+                Modifier
+                    .padding(vertical = SpotlightDimens.FullsizePlayerMainContentPadding)
+                    .size(SpotlightDimens.FullsizePlayerThumbnailSize)
+                    .shimmerLoadingAnimation(
+                        isLoadingCompleted = !isLoading,
+                        isLightModeActive = !isSystemInDarkTheme(),
+                    ),
         )
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
         ) {
             Column(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .padding(end = SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize.times(2))
+                modifier =
+                    Modifier
+                        .wrapContentHeight()
+                        .padding(end = SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize.times(2)),
             ) {
                 Text(
                     text = song.title,
                     style = SpotlightTextStyle.Text22W400,
                     color = MaterialTheme.colorScheme.onBackground,
                     maxLines = 1,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .basicMarquee()
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .basicMarquee(),
                 )
                 Text(
                     text = song.artists,
@@ -191,7 +198,7 @@ fun MainPlayerContent(
                     overflow = TextOverflow.Ellipsis,
                     color = NavigationGray,
                     maxLines = 1,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
 
@@ -199,28 +206,31 @@ fun MainPlayerContent(
                 painter = painterResource(SpotlightIcons.Heart),
                 contentDescription = "",
                 tint = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
-                    .align(Alignment.CenterEnd)
-                    .noRippleClickable { }
+                modifier =
+                    Modifier
+                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
+                        .align(Alignment.CenterEnd)
+                        .noRippleClickable { },
             )
         }
 
         LinearProgressIndicator(
             progress = { if (duration.toInt() == 0) 0f else (currentPosition * 1.0 / duration).toFloat() },
-            modifier = Modifier
-                .padding(top = 15.dp)
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .padding(top = 15.dp)
+                    .fillMaxWidth(),
             color = ProgressIndicatorTrackColor,
             trackColor = ProgressIndicatorColor,
             strokeCap = StrokeCap.Round,
         )
 
         Row(
-            modifier = Modifier
-                .padding(top = 6.dp)
-                .fillMaxWidth()
-                .wrapContentHeight(),
+            modifier =
+                Modifier
+                    .padding(top = 6.dp)
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
@@ -241,7 +251,7 @@ fun MainPlayerContent(
             onPrevClick = onPrevClick,
             onMainFunctionClick = onMainFunctionClick,
             onNextClick = onNextClick,
-            modifier = Modifier.padding(vertical = 14.dp)
+            modifier = Modifier.padding(vertical = 14.dp),
         )
     }
 }
@@ -255,9 +265,10 @@ fun PlayerController(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
@@ -265,50 +276,55 @@ fun PlayerController(
             painter = painterResource(SpotlightIcons.Shuffle),
             contentDescription = "",
             tint = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier
-                .size(SpotlightDimens.PlayerControllerSmallIconSize)
-                .noRippleClickable { },
+            modifier =
+                Modifier
+                    .size(SpotlightDimens.PlayerControllerSmallIconSize)
+                    .noRippleClickable { },
         )
         Icon(
             painter = painterResource(SpotlightIcons.PlayPrevious),
             contentDescription = "",
             tint = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier
-                .size(SpotlightDimens.PlayerControllerMediumIconSize)
-                .noRippleClickable {
-                    onPrevClick()
-                },
+            modifier =
+                Modifier
+                    .size(SpotlightDimens.PlayerControllerMediumIconSize)
+                    .noRippleClickable {
+                        onPrevClick()
+                    },
         )
         Icon(
             painter = painterResource(if (isPlaying) SpotlightIcons.Pause else SpotlightIcons.Play),
             contentDescription = "",
             tint = MinimizedPlayerBackground,
-            modifier = Modifier
-                .size(SpotlightDimens.PlayerControllerLargeIconSize)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.onBackground)
-                .padding((SpotlightDimens.PlayerControllerLargeIconSize - SpotlightDimens.PlayerControllerMediumIconSize) / 2)
-                .noRippleClickable {
-                    onMainFunctionClick()
-                },
+            modifier =
+                Modifier
+                    .size(SpotlightDimens.PlayerControllerLargeIconSize)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.onBackground)
+                    .padding((SpotlightDimens.PlayerControllerLargeIconSize - SpotlightDimens.PlayerControllerMediumIconSize) / 2)
+                    .noRippleClickable {
+                        onMainFunctionClick()
+                    },
         )
         Icon(
             painter = painterResource(SpotlightIcons.PlayNext),
             contentDescription = "",
             tint = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier
-                .size(SpotlightDimens.PlayerControllerMediumIconSize)
-                .noRippleClickable {
-                    onNextClick()
-                },
+            modifier =
+                Modifier
+                    .size(SpotlightDimens.PlayerControllerMediumIconSize)
+                    .noRippleClickable {
+                        onNextClick()
+                    },
         )
         Icon(
             painter = painterResource(SpotlightIcons.Timer),
             contentDescription = "",
             tint = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier
-                .size(SpotlightDimens.PlayerControllerSmallIconSize)
-                .noRippleClickable { },
+            modifier =
+                Modifier
+                    .size(SpotlightDimens.PlayerControllerSmallIconSize)
+                    .noRippleClickable { },
         )
     }
 }
@@ -319,17 +335,20 @@ fun FullsizePlayerPreview() {
     SpotlightTheme {
         FullsizePlayer(
             isPlaying = true,
-            song = SongDetails(
-                title = "Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
-                artists = "Grissini Project"
-            ),
+            song =
+                SongDetails(
+                    title = "Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
+                    artists = "Grissini Project",
+                ),
             currentPosition = 0,
             duration = 232155,
-            painter = rememberAsyncImagePainter(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data("https://thantrieu.com/resources/arts/1073419268.webp")
-                    .build()
-            ),
+            painter =
+                rememberAsyncImagePainter(
+                    model =
+                        ImageRequest.Builder(LocalContext.current)
+                            .data("https://thantrieu.com/resources/arts/1073419268.webp")
+                            .build(),
+                ),
             isLoading = false,
             onMinimizeClick = {},
             onPrevClick = {},

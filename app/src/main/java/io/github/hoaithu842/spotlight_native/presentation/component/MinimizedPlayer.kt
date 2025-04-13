@@ -57,52 +57,57 @@ fun MinimizedPlayer(
     var isLoading by remember { mutableStateOf(true) }
 
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.MinimizedPlayerHeight)
-            .clip(
-                shape = RoundedCornerShape(size = 12.dp)
-            )
-            .background(MinimizedPlayerBackground)
-            .clickable {
-                onPlayerClick()
-            }
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.MinimizedPlayerHeight)
+                .clip(
+                    shape = RoundedCornerShape(size = 12.dp),
+                )
+                .background(MinimizedPlayerBackground)
+                .clickable {
+                    onPlayerClick()
+                },
 //            .padding(bottom = 2.dp)
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = SpotlightDimens.MinimizedPlayerThumbnailPaddingStart),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = SpotlightDimens.MinimizedPlayerThumbnailPaddingStart),
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(end = SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize.times(2)),
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(end = SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize.times(2)),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(
                     painter = painter,
                     contentDescription = "",
-                    modifier = Modifier
-                        .size(SpotlightDimens.MinimizedPlayerThumbnailSize)
-                        .clip(shape = RoundedCornerShape(size = 6.dp))
-                        .shimmerLoadingAnimation(
-                            isLoadingCompleted = !isLoading,
-                            isLightModeActive = !isSystemInDarkTheme(),
-                        )
+                    modifier =
+                        Modifier
+                            .size(SpotlightDimens.MinimizedPlayerThumbnailSize)
+                            .clip(shape = RoundedCornerShape(size = 6.dp))
+                            .shimmerLoadingAnimation(
+                                isLoadingCompleted = !isLoading,
+                                isLightModeActive = !isSystemInDarkTheme(),
+                            ),
                 )
 
                 Column(
-                    modifier = Modifier.padding(start = SpotlightDimens.MinimizedPlayerInfoPaddingStart)
+                    modifier = Modifier.padding(start = SpotlightDimens.MinimizedPlayerInfoPaddingStart),
                 ) {
                     Text(
                         text = song.title,
                         style = SpotlightTextStyle.Text11W400,
                         color = Color.White,
                         maxLines = 1,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .basicMarquee()
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .basicMarquee(),
                     )
                     Text(
                         text = song.artists,
@@ -118,21 +123,23 @@ fun MinimizedPlayer(
                 painter = painterResource(if (isPlaying) SpotlightIcons.Pause else SpotlightIcons.Play),
                 contentDescription = "",
                 tint = Color.White,
-                modifier = Modifier
-                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
-                    .align(Alignment.CenterEnd)
-                    .noRippleClickable {
-                        onMainFunctionClick()
-                    },
+                modifier =
+                    Modifier
+                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
+                        .align(Alignment.CenterEnd)
+                        .noRippleClickable {
+                            onMainFunctionClick()
+                        },
             )
         }
 
         LinearProgressIndicator(
             progress = { if (duration.toInt() == 0) 0f else (currentPosition * 1.0 / duration).toFloat() },
-            modifier = Modifier
-                .padding(horizontal = SpotlightDimens.MinimizedPlayerProgressIndicatorPadding)
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter),
+            modifier =
+                Modifier
+                    .padding(horizontal = SpotlightDimens.MinimizedPlayerProgressIndicatorPadding)
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter),
             color = ProgressIndicatorTrackColor,
             trackColor = ProgressIndicatorColor,
             strokeCap = StrokeCap.Round,

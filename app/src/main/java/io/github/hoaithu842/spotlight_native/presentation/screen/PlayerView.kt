@@ -60,14 +60,16 @@ fun PlayerView(
     val coroutineScope = rememberCoroutineScope()
 
     var isLoading by remember { mutableStateOf(true) }
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(playerUiState.currentSong.image)
-            .listener(onSuccess = { _, _ ->
-                isLoading = false
-            })
-            .build()
-    )
+    val painter =
+        rememberAsyncImagePainter(
+            model =
+                ImageRequest.Builder(LocalContext.current)
+                    .data(playerUiState.currentSong.image)
+                    .listener(onSuccess = { _, _ ->
+                        isLoading = false
+                    })
+                    .build(),
+        )
     val lazyListState = rememberLazyListState()
     val shouldDisplayTopAppBar by remember {
         derivedStateOf {
@@ -85,15 +87,17 @@ fun PlayerView(
     }
 
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(if (currentAlpha != 1f) MinimizedPlayerBackground else Color.Transparent)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(if (currentAlpha != 1f) MinimizedPlayerBackground else Color.Transparent),
     ) {
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-                .padding(horizontal = SpotlightDimens.FullsizePlayerMainContentHorizontalPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .statusBarsPadding()
+                    .padding(horizontal = SpotlightDimens.FullsizePlayerMainContentHorizontalPadding),
             state = lazyListState,
         ) {
             item {
@@ -105,7 +109,7 @@ fun PlayerView(
                             scaffoldState.bottomSheetState.partialExpand()
                         }
                     },
-                    modifier = Modifier.statusBarsPadding()
+                    modifier = Modifier.statusBarsPadding(),
                 )
             }
             item {
@@ -124,24 +128,25 @@ fun PlayerView(
 
             item {
                 LyricsCard(
-                    modifier = Modifier.padding(vertical = 10.dp)
+                    modifier = Modifier.padding(vertical = 10.dp),
                 )
             }
 
             item {
                 ArtistCard(
                     imageUrl = playerUiState.currentSong.image,
-                    modifier = Modifier.padding(vertical = 10.dp)
+                    modifier = Modifier.padding(vertical = 10.dp),
                 )
             }
 
             item {
                 CreditCard(
-                    creditsList = listOf(
-                        Pair(first = "Jax", second = "Main Artist, Writer"),
-                        Pair(first = "Billy Gerrity", second = "Producer"),
-                        Pair(first = "Wayne Wilkins", second = "Producer, Writer"),
-                    ),
+                    creditsList =
+                        listOf(
+                            Pair(first = "Jax", second = "Main Artist, Writer"),
+                            Pair(first = "Billy Gerrity", second = "Producer"),
+                            Pair(first = "Wayne Wilkins", second = "Producer, Writer"),
+                        ),
                     modifier = Modifier.padding(vertical = 10.dp),
                 )
             }
@@ -181,24 +186,25 @@ fun PlayerView(
                 }
             },
             onMainFunctionClick = viewModel::playOrPause,
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .graphicsLayer {
-                    val scrollOffset = onScrollProvider()
+            modifier =
+                Modifier
+                    .align(Alignment.TopCenter)
+                    .graphicsLayer {
+                        val scrollOffset = onScrollProvider()
 
-                    if (!hasInit) {
-                        hasInit = true
-                        initialOffset = scrollOffset
+                        if (!hasInit) {
+                            hasInit = true
+                            initialOffset = scrollOffset
+                        }
+
+                        val sizeDelta =
+                            1 - (initialOffset - scrollOffset).dp / SpotlightDimens.MinimizedPlayerHeight
+
+                        updateDelta(sizeDelta)
+                        currentAlpha = sizeDelta.coerceIn(0f, 1f)
                     }
-
-                    val sizeDelta =
-                        1 - (initialOffset - scrollOffset).dp / SpotlightDimens.MinimizedPlayerHeight
-
-                    updateDelta(sizeDelta)
-                    currentAlpha = sizeDelta.coerceIn(0f, 1f)
-                }
-                .alpha(currentAlpha)
-                .gesturesDisabled(disabled = !shouldBeClickable)
+                    .alpha(currentAlpha)
+                    .gesturesDisabled(disabled = !shouldBeClickable),
         )
     }
 }

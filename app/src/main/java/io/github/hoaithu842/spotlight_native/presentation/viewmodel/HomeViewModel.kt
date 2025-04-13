@@ -13,19 +13,21 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val homeRepository: HomeRepository,
-) : ViewModel() {
-    private val _homeUiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState.Loading)
-    val homeUiState: StateFlow<HomeUiState> = _homeUiState.asStateFlow()
+class HomeViewModel
+    @Inject
+    constructor(
+        private val homeRepository: HomeRepository,
+    ) : ViewModel() {
+        private val _homeUiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState.Loading)
+        val homeUiState: StateFlow<HomeUiState> = _homeUiState.asStateFlow()
 
-    init {
-        viewModelScope.launch {
-            when (val response = homeRepository.getHomeContents()) {
-                is ApiResponse.Error -> _homeUiState.update { HomeUiState.Error }
-                is ApiResponse.Exception -> _homeUiState.update { HomeUiState.Error }
-                is ApiResponse.Success -> _homeUiState.update { HomeUiState.Success(response.data.contents) }
+        init {
+            viewModelScope.launch {
+                when (val response = homeRepository.getHomeContents()) {
+                    is ApiResponse.Error -> _homeUiState.update { HomeUiState.Error }
+                    is ApiResponse.Exception -> _homeUiState.update { HomeUiState.Error }
+                    is ApiResponse.Success -> _homeUiState.update { HomeUiState.Success(response.data.contents) }
+                }
             }
         }
     }
-}

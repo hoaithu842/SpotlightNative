@@ -13,12 +13,8 @@ import io.github.hoaithu842.spotlight_native.manager.SpotlightConnectivityManage
 @InstallIn(SingletonComponent::class)
 abstract class ServiceModule {
     @Binds
-    internal abstract fun bindsNetworkMonitor(
-        networkMonitor: SpotlightConnectivityManager
-    ): NetworkMonitor
+    internal abstract fun bindsNetworkMonitor(networkMonitor: SpotlightConnectivityManager): NetworkMonitor
 
     @Binds
-    internal abstract fun bindsAccountManager(
-        accountManager: SpotlightAccountManager
-    ): AccountManager
+    internal abstract fun bindsAccountManager(accountManager: SpotlightAccountManager): AccountManager
 }

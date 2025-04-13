@@ -5,9 +5,7 @@ import retrofit2.HttpException
 import retrofit2.Response
 
 object CallAdapterUtils {
-    fun <T : Any> handleApi(
-        execute: () -> Response<T>
-    ): ApiResponse<T> {
+    fun <T : Any> handleApi(execute: () -> Response<T>): ApiResponse<T> {
         return try {
             val response = execute()
             val body = response.body()
@@ -23,4 +21,3 @@ object CallAdapterUtils {
         }
     }
 }
-

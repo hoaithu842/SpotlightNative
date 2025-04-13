@@ -23,30 +23,32 @@ import io.github.hoaithu842.spotlight_native.ui.theme.NavigationGray
 import io.github.hoaithu842.spotlight_native.ui.theme.SpotlightTheme
 
 @Composable
-fun SongItem(
-    modifier: Modifier = Modifier,
-) {
+fun SongItem(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.FullsizePlayerTopAppBarHeight),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.FullsizePlayerTopAppBarHeight),
     ) {
         Cover(
             imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-            modifier = Modifier
-                .size(SpotlightDimens.FullsizePlayerTopAppBarHeight)
-                .align(Alignment.CenterStart),
+            modifier =
+                Modifier
+                    .size(SpotlightDimens.FullsizePlayerTopAppBarHeight)
+                    .align(Alignment.CenterStart),
         )
 
         Column(
-            modifier = Modifier
-                .padding(horizontal = SpotlightDimens.FullsizePlayerTopAppBarHeight)
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .padding(horizontal = SpotlightDimens.FullsizePlayerTopAppBarHeight)
+                    .fillMaxWidth(),
         ) {
             Column(
-                modifier = Modifier
-                    .padding(horizontal = SpotlightDimens.LibraryTextPadding)
-                    .fillMaxSize(),
+                modifier =
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.LibraryTextPadding)
+                        .fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
             ) {
                 Text(
@@ -58,22 +60,24 @@ fun SongItem(
                     text = "abc",
                     style = SpotlightTextStyle.Text11W400,
                     color = NavigationGray,
-                    modifier = Modifier.padding(top = SpotlightDimens.LibraryTextPadding.times(0.5f))
+                    modifier = Modifier.padding(top = SpotlightDimens.LibraryTextPadding.times(0.5f)),
                 )
             }
         }
         Box(
-            modifier = Modifier
-                .size(SpotlightDimens.FullsizePlayerTopAppBarHeight)
-                .align(Alignment.CenterEnd)
+            modifier =
+                Modifier
+                    .size(SpotlightDimens.FullsizePlayerTopAppBarHeight)
+                    .align(Alignment.CenterEnd),
         ) {
             Icon(
                 imageVector = Icons.Filled.MoreVert,
                 tint = MaterialTheme.colorScheme.onBackground,
                 contentDescription = "",
-                modifier = Modifier
-                    .size(SpotlightDimens.SongItemIconSize)
-                    .align(Alignment.Center)
+                modifier =
+                    Modifier
+                        .size(SpotlightDimens.SongItemIconSize)
+                        .align(Alignment.Center),
             )
         }
     }

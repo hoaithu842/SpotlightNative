@@ -46,8 +46,11 @@ fun CustomDrawerState.isOpened(): Boolean {
 }
 
 fun CustomDrawerState.opposite(): CustomDrawerState {
-    return if (this == CustomDrawerState.Opened) CustomDrawerState.Closed
-    else CustomDrawerState.Opened
+    return if (this == CustomDrawerState.Opened) {
+        CustomDrawerState.Closed
+    } else {
+        CustomDrawerState.Opened
+    }
 }
 
 @Composable
@@ -59,17 +62,18 @@ fun HomeScreenDrawer(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(TopAppBarGray)
-            .safeDrawingPadding()
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(TopAppBarGray)
+                .safeDrawingPadding(),
     ) {
         HomeScreenDrawerHeader(
             userProfile = userProfile,
             onProfileClick = onProfileClick,
             onLoginClick = onLoginClick,
             onLogoutClick = onLogoutClick,
-            modifier = Modifier.padding(vertical = SpotlightDimens.HomeScreenDrawerHeaderVerticalPadding)
+            modifier = Modifier.padding(vertical = SpotlightDimens.HomeScreenDrawerHeaderVerticalPadding),
         )
 
         HorizontalDivider(
@@ -113,10 +117,11 @@ fun HomeScreenDrawerHeader(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .padding(horizontal = SpotlightDimens.HomeScreenDrawerHeaderPadding)
-            .fillMaxWidth()
-            .height(SpotlightDimens.TopAppBarHeight),
+        modifier =
+            modifier
+                .padding(horizontal = SpotlightDimens.HomeScreenDrawerHeaderPadding)
+                .fillMaxWidth()
+                .height(SpotlightDimens.TopAppBarHeight),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (userProfile == null) {
@@ -129,19 +134,20 @@ fun HomeScreenDrawerHeader(
             if (userProfile.pictureURL != null) {
                 CircularCover(
                     imageUrl = userProfile.pictureURL!!,
-                    modifier = Modifier
-                        .size(SpotlightDimens.HomeScreenDrawerHeaderIconSize)
-                        .clickable { onProfileClick() }
+                    modifier =
+                        Modifier
+                            .size(SpotlightDimens.HomeScreenDrawerHeaderIconSize)
+                            .clickable { onProfileClick() },
                 )
-
             } else {
                 Image(
                     painter = painterResource(id = R.drawable.ic_launcher_background),
                     contentDescription = "",
-                    modifier = Modifier
-                        .size(SpotlightDimens.HomeScreenDrawerHeaderIconSize)
-                        .clip(shape = CircleShape)
-                        .clickable { onProfileClick() }
+                    modifier =
+                        Modifier
+                            .size(SpotlightDimens.HomeScreenDrawerHeaderIconSize)
+                            .clip(shape = CircleShape)
+                            .clickable { onProfileClick() },
                 )
             }
 
@@ -162,7 +168,7 @@ fun HomeScreenDrawerHeader(
                     overflow = TextOverflow.Ellipsis,
                     color = NavigationGray,
                     maxLines = 1,
-                    modifier = Modifier.noRippleClickable(onProfileClick)
+                    modifier = Modifier.noRippleClickable(onProfileClick),
                 )
             }
 
@@ -170,9 +176,10 @@ fun HomeScreenDrawerHeader(
                 imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding)
-                    .noRippleClickable(onLogoutClick),
+                modifier =
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding)
+                        .noRippleClickable(onLogoutClick),
             )
         }
     }
@@ -186,10 +193,11 @@ fun HomeScreenDrawerOption(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .padding(SpotlightDimens.HomeScreenDrawerHeaderPadding)
-            .fillMaxWidth()
-            .height(SpotlightDimens.HomeScreenDrawerHeaderOptionHeight),
+        modifier =
+            modifier
+                .padding(SpotlightDimens.HomeScreenDrawerHeaderPadding)
+                .fillMaxWidth()
+                .height(SpotlightDimens.HomeScreenDrawerHeaderOptionHeight),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(

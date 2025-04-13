@@ -29,6 +29,7 @@ class MainActivity : ComponentActivity() {
     lateinit var networkMonitor: NetworkMonitor
     private val playerViewModel: PlayerViewModel by viewModels()
     private val mainViewModel: MainActivityViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 // mainViewModel.setContext(this)
@@ -50,7 +51,7 @@ class MainActivity : ComponentActivity() {
                     },
                     onLogoutClick = {
                         mainViewModel.logout(this)
-                    }
+                    },
                 )
             }
         }
@@ -65,7 +66,7 @@ class MainActivity : ComponentActivity() {
             {
                 playerViewModel.setController(controllerFuture.get())
             },
-            MoreExecutors.directExecutor()
+            MoreExecutors.directExecutor(),
         )
     }
 

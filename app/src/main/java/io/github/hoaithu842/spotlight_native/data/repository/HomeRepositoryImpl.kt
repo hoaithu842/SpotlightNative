@@ -8,11 +8,13 @@ import io.github.hoaithu842.spotlight_native.domain.model.HomeContents
 import io.github.hoaithu842.spotlight_native.domain.repository.HomeRepository
 import javax.inject.Inject
 
-class HomeRepositoryImpl @Inject constructor(
-    private val apiService: SpotlightApiService,
-) : HomeRepository {
-    override suspend fun getHomeContents(): ApiResponse<HomeContents> {
-        // TODO: return from ApiService
-        return ApiResponse.Success(HomeContents(contents = homeFakeData.map { it.toDomain() }))
+class HomeRepositoryImpl
+    @Inject
+    constructor(
+        private val apiService: SpotlightApiService,
+    ) : HomeRepository {
+        override suspend fun getHomeContents(): ApiResponse<HomeContents> {
+            // TODO: return from ApiService
+            return ApiResponse.Success(HomeContents(contents = homeFakeData.map { it.toDomain() }))
+        }
     }
-}

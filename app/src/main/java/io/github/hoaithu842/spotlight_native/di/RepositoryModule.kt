@@ -21,32 +21,20 @@ import io.github.hoaithu842.spotlight_native.domain.repository.UserRepository
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
     @Binds
-    internal abstract fun bindsPlayerRepository(
-        playerRepository: PlayerRepositoryImpl
-    ): PlayerRepository
+    internal abstract fun bindsPlayerRepository(playerRepository: PlayerRepositoryImpl): PlayerRepository
 
     @Binds
-    internal abstract fun bindsUserRepository(
-        userRepository: UserRepositoryImpl
-    ): UserRepository
+    internal abstract fun bindsUserRepository(userRepository: UserRepositoryImpl): UserRepository
 
     @Binds
-    internal abstract fun bindsPreferencesRepository(
-        preferencesRepository: PreferencesRepositoryImpl
-    ): PreferencesRepository
+    internal abstract fun bindsPreferencesRepository(preferencesRepository: PreferencesRepositoryImpl): PreferencesRepository
 
     @Binds
-    internal abstract fun bindsHomeRepository(
-        homeRepository: HomeRepositoryImpl
-    ): HomeRepository
+    internal abstract fun bindsHomeRepository(homeRepository: HomeRepositoryImpl): HomeRepository
 
     @Binds
-    internal abstract fun bindsArtistRepository(
-        artistRepository: ArtistRepositoryImpl
-    ): ArtistRepository
+    internal abstract fun bindsArtistRepository(artistRepository: ArtistRepositoryImpl): ArtistRepository
 
     @Binds
-    internal abstract fun bindsLibraryRepository(
-        libraryRepository: LibraryRepositoryImpl
-    ): LibraryRepository
+    internal abstract fun bindsLibraryRepository(libraryRepository: LibraryRepositoryImpl): LibraryRepository
 }

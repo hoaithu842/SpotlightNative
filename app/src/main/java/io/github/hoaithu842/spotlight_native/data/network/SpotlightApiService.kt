@@ -17,7 +17,9 @@ interface SpotlightApiService {
     suspend fun getHomeContents(): ApiResponse<SuccessBodyDto<HomeContentsDto>>
 
     @GET("artists/{id}")
-    suspend fun getArtist(@Path("id") id: String): ApiResponse<SuccessBodyDto<ArtistDetailsDto>>
+    suspend fun getArtist(
+        @Path("id") id: String,
+    ): ApiResponse<SuccessBodyDto<ArtistDetailsDto>>
 
     @GET("playlists")
     suspend fun getPlaylists(): ApiResponse<SuccessBodyDto<LibraryContentsDto>>

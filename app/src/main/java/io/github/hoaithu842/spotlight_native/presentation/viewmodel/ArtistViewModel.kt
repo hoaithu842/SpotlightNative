@@ -13,22 +13,23 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class ArtistViewModel @Inject constructor(
-    private val artistRepository: ArtistRepository,
-) : ViewModel() {
-
-    val artistUiState: StateFlow<ArtistUiState> =
-        flow {
-            emit(artistRepository.getArtist())
-        }.map {
-            when (it) {
-                is ApiResponse.Error -> ArtistUiState.Error
-                is ApiResponse.Exception -> ArtistUiState.Error
-                is ApiResponse.Success -> ArtistUiState.Success(it.data)
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = ArtistUiState.Loading
-        )
-}
+class ArtistViewModel
+    @Inject
+    constructor(
+        private val artistRepository: ArtistRepository,
+    ) : ViewModel() {
+        val artistUiState: StateFlow<ArtistUiState> =
+            flow {
+                emit(artistRepository.getArtist())
+            }.map {
+                when (it) {
+                    is ApiResponse.Error -> ArtistUiState.Error
+                    is ApiResponse.Exception -> ArtistUiState.Error
+                    is ApiResponse.Success -> ArtistUiState.Success(it.data)
+                }
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = ArtistUiState.Loading,
+            )
+    }

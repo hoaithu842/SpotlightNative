@@ -10,8 +10,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object PremiumRoute
 
-fun NavController.navigateToPremiumScreen(navOptions: NavOptions? = null) =
-    navigate(route = PremiumRoute, navOptions = navOptions)
+fun NavController.navigateToPremiumScreen(navOptions: NavOptions? = null) = navigate(route = PremiumRoute, navOptions = navOptions)
 
 fun NavGraphBuilder.premiumScreen() {
     composable<PremiumRoute> {

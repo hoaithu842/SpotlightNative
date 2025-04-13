@@ -36,7 +36,6 @@ enum class ThumbnailCoverSize(val size: Dp) {
 
 @Composable
 fun VerticalThumbnail() {
-
 }
 
 @Composable
@@ -58,7 +57,7 @@ fun VerticalRoundedCornerThumbnail(
         ) {
             RoundedCornerCover(
                 imageUrl = imageUrl,
-                modifier = Modifier.size(thumbnailCoverSize.size)
+                modifier = Modifier.size(thumbnailCoverSize.size),
             )
 
             Text(
@@ -67,9 +66,10 @@ fun VerticalRoundedCornerThumbnail(
                 color = NavigationGray,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .width(thumbnailCoverSize.size)
+                modifier =
+                    Modifier
+                        .padding(top = 8.dp)
+                        .width(thumbnailCoverSize.size),
             )
         }
     }
@@ -85,16 +85,17 @@ fun VerticalWithTitleThumbnail(
     thumbnailCoverSize: ThumbnailCoverSize = ThumbnailCoverSize.LARGE,
 ) {
     Column(
-        modifier = modifier
-            .noRippleClickable {
-                onClick()
-            }
-            .padding(8.dp),
+        modifier =
+            modifier
+                .noRippleClickable {
+                    onClick()
+                }
+                .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Cover(
             imageUrl = imageUrl,
-            modifier = Modifier.size(thumbnailCoverSize.size)
+            modifier = Modifier.size(thumbnailCoverSize.size),
         )
 
         Text(
@@ -103,7 +104,7 @@ fun VerticalWithTitleThumbnail(
             color = MaterialTheme.colorScheme.onBackground,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(thumbnailCoverSize.size)
+            modifier = Modifier.width(thumbnailCoverSize.size),
         )
 
         Text(
@@ -112,7 +113,7 @@ fun VerticalWithTitleThumbnail(
             color = NavigationGray,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(thumbnailCoverSize.size)
+            modifier = Modifier.width(thumbnailCoverSize.size),
         )
     }
 }
@@ -127,15 +128,16 @@ fun VerticalRoundedCornerWithTitleThumbnail(
     thumbnailCoverSize: ThumbnailCoverSize = ThumbnailCoverSize.LARGE,
 ) {
     Column(
-        modifier = modifier
-            .padding(8.dp)
-            .noRippleClickable {
-                onClick()
-            },
+        modifier =
+            modifier
+                .padding(8.dp)
+                .noRippleClickable {
+                    onClick()
+                },
     ) {
         Cover(
             imageUrl = imageUrl,
-            modifier = Modifier.size(thumbnailCoverSize.size)
+            modifier = Modifier.size(thumbnailCoverSize.size),
         )
 
         Text(
@@ -144,7 +146,7 @@ fun VerticalRoundedCornerWithTitleThumbnail(
             color = MaterialTheme.colorScheme.onBackground,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(thumbnailCoverSize.size)
+            modifier = Modifier.width(thumbnailCoverSize.size),
         )
 
         Text(
@@ -153,7 +155,7 @@ fun VerticalRoundedCornerWithTitleThumbnail(
             color = NavigationGray,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(thumbnailCoverSize.size)
+            modifier = Modifier.width(thumbnailCoverSize.size),
         )
     }
 }
@@ -168,11 +170,12 @@ fun VerticalCircularWithTitleThumbnail(
     thumbnailCoverSize: ThumbnailCoverSize = ThumbnailCoverSize.LARGE,
 ) {
     Column(
-        modifier = modifier
-            .padding(8.dp)
-            .noRippleClickable {
-                onClick()
-            },
+        modifier =
+            modifier
+                .padding(8.dp)
+                .noRippleClickable {
+                    onClick()
+                },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CircularCover(
@@ -187,7 +190,7 @@ fun VerticalCircularWithTitleThumbnail(
             color = MaterialTheme.colorScheme.onBackground,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(thumbnailCoverSize.size)
+            modifier = Modifier.width(thumbnailCoverSize.size),
         )
 
         Text(
@@ -196,7 +199,7 @@ fun VerticalCircularWithTitleThumbnail(
             color = NavigationGray,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.width(thumbnailCoverSize.size)
+            modifier = Modifier.width(thumbnailCoverSize.size),
         )
     }
 }
@@ -213,29 +216,32 @@ fun HorizontalCircularThumbnail(
         modifier = modifier,
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(SpotlightDimens.ThumbnailSize)
-                .clip(shape = RoundedCornerShape(size = 6.dp))
-                .background(MaterialTheme.colorScheme.secondary),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(SpotlightDimens.ThumbnailSize)
+                    .clip(shape = RoundedCornerShape(size = 6.dp))
+                    .background(MaterialTheme.colorScheme.secondary),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             CircularCover(
                 imageUrl = imageUrl,
-                modifier = Modifier
-                    .size(SpotlightDimens.ThumbnailSize)
-                    .clip(shape = RoundedCornerShape(size = 6.dp))
-                    .background(MaterialTheme.colorScheme.background)
-                    .padding(1.dp)
+                modifier =
+                    Modifier
+                        .size(SpotlightDimens.ThumbnailSize)
+                        .clip(shape = RoundedCornerShape(size = 6.dp))
+                        .background(MaterialTheme.colorScheme.background)
+                        .padding(1.dp),
             )
             Text(
                 text = artist,
                 style = SpotlightTextStyle.Text11W600,
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 1,
-                modifier = Modifier
-                    .padding(horizontal = SpotlightDimens.RecommendationTextPadding)
-                    .fillMaxWidth()
+                modifier =
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.RecommendationTextPadding)
+                        .fillMaxWidth(),
             )
         }
     }
@@ -253,16 +259,17 @@ fun HorizontalRoundedCornerThumbnail(
         modifier = modifier,
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(SpotlightDimens.ThumbnailSize)
-                .clip(shape = RoundedCornerShape(size = 6.dp))
-                .background(MaterialTheme.colorScheme.secondary),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(SpotlightDimens.ThumbnailSize)
+                    .clip(shape = RoundedCornerShape(size = 6.dp))
+                    .background(MaterialTheme.colorScheme.secondary),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             RoundedCornerCover(
                 imageUrl = imageUrl,
-                modifier = Modifier.size(SpotlightDimens.ThumbnailSize)
+                modifier = Modifier.size(SpotlightDimens.ThumbnailSize),
             )
             Text(
                 text = artist,
@@ -270,9 +277,10 @@ fun HorizontalRoundedCornerThumbnail(
                 color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .padding(horizontal = SpotlightDimens.RecommendationTextPadding)
-                    .fillMaxWidth()
+                modifier =
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.RecommendationTextPadding)
+                        .fillMaxWidth(),
             )
         }
     }
@@ -287,19 +295,21 @@ fun HorizontalWithTitleThumbnail(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.LibraryItemHeight)
-            .noRippleClickable(onClick)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.LibraryItemHeight)
+                .noRippleClickable(onClick),
     ) {
         Cover(
             imageUrl = imageUrl,
-            modifier = Modifier.size(SpotlightDimens.LibraryItemHeight)
+            modifier = Modifier.size(SpotlightDimens.LibraryItemHeight),
         )
         Column(
-            modifier = Modifier
-                .padding(horizontal = SpotlightDimens.LibraryTextPadding)
-                .fillMaxSize(),
+            modifier =
+                Modifier
+                    .padding(horizontal = SpotlightDimens.LibraryTextPadding)
+                    .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
         ) {
             Text(
@@ -311,7 +321,7 @@ fun HorizontalWithTitleThumbnail(
                 text = description,
                 style = SpotlightTextStyle.Text11W400,
                 color = NavigationGray,
-                modifier = Modifier.padding(top = SpotlightDimens.LibraryTextPadding.times(0.5f))
+                modifier = Modifier.padding(top = SpotlightDimens.LibraryTextPadding.times(0.5f)),
             )
         }
     }
@@ -326,19 +336,21 @@ fun HorizontalCircularWithTitleThumbnail(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.LibraryItemHeight)
-            .noRippleClickable(onClick)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.LibraryItemHeight)
+                .noRippleClickable(onClick),
     ) {
         CircularCover(
             imageUrl = imageUrl,
-            modifier = Modifier.size(SpotlightDimens.LibraryItemHeight)
+            modifier = Modifier.size(SpotlightDimens.LibraryItemHeight),
         )
         Column(
-            modifier = Modifier
-                .padding(horizontal = SpotlightDimens.LibraryTextPadding)
-                .fillMaxSize(),
+            modifier =
+                Modifier
+                    .padding(horizontal = SpotlightDimens.LibraryTextPadding)
+                    .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
         ) {
             Text(
@@ -350,7 +362,7 @@ fun HorizontalCircularWithTitleThumbnail(
                 text = description,
                 style = SpotlightTextStyle.Text11W400,
                 color = NavigationGray,
-                modifier = Modifier.padding(top = SpotlightDimens.LibraryTextPadding.times(0.5f))
+                modifier = Modifier.padding(top = SpotlightDimens.LibraryTextPadding.times(0.5f)),
             )
         }
     }

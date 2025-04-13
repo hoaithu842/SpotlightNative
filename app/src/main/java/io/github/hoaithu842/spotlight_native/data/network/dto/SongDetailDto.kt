@@ -5,13 +5,10 @@ import com.google.gson.annotations.SerializedName
 data class SongDetailDto(
     @SerializedName("id")
     val id: String,
-
     @SerializedName("name")
     val name: String,
-
     @SerializedName("in_library")
     val inLibrary: String,
-
     @SerializedName("image")
     val image: ImageDto,
 ) {

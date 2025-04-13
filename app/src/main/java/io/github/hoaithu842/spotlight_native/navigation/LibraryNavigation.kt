@@ -12,8 +12,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object LibraryGraph
 
-fun NavController.navigateToLibrary(navOptions: NavOptions? = null) =
-    navigate(route = LibraryGraph, navOptions = navOptions)
+fun NavController.navigateToLibrary(navOptions: NavOptions? = null) = navigate(route = LibraryGraph, navOptions = navOptions)
 
 fun NavGraphBuilder.libraryGraph(
     onAvatarClick: () -> Unit,
@@ -54,12 +53,10 @@ data object LibrarySearchRoute
 fun NavController.navigateToLibrarySearchScreen(navOptions: NavOptions? = null) =
     navigate(route = LibrarySearchRoute, navOptions = navOptions)
 
-fun NavGraphBuilder.librarySearchScreen(
-    onCancelClick: () -> Unit,
-) {
+fun NavGraphBuilder.librarySearchScreen(onCancelClick: () -> Unit) {
     composable<LibrarySearchRoute> {
         LibrarySearchScreen(
-            onCancelClick = onCancelClick
+            onCancelClick = onCancelClick,
         )
     }
 }

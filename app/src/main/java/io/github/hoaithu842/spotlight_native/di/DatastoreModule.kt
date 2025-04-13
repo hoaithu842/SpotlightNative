@@ -23,8 +23,9 @@ object DatastoreModule {
         @ApplicationContext context: Context,
         @Dispatcher(SpotlightDispatchers.IO) ioDispatcher: CoroutineDispatcher,
         @ApplicationScope scope: CoroutineScope,
-    ): DataStore<Preferences> = PreferenceDataStoreFactory.create(
-        scope = CoroutineScope(scope.coroutineContext + ioDispatcher),
-        produceFile = { context.preferencesDataStoreFile("spotlight_preferences") }
-    )
+    ): DataStore<Preferences> =
+        PreferenceDataStoreFactory.create(
+            scope = CoroutineScope(scope.coroutineContext + ioDispatcher),
+            produceFile = { context.preferencesDataStoreFile("spotlight_preferences") },
+        )
 }

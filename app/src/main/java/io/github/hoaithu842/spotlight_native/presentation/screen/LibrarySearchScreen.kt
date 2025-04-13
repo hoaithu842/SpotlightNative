@@ -16,30 +16,30 @@ import io.github.hoaithu842.spotlight_native.ui.designsystem.LibrarySearchTopApp
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightDimens
 
 @Composable
-fun LibrarySearchScreen(
-    onCancelClick: () -> Unit,
-) {
+fun LibrarySearchScreen(onCancelClick: () -> Unit) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface),
     ) {
         var searchQuery by remember { mutableStateOf("") }
         LibrarySearchTopAppBar(
             searchQuery = searchQuery,
             onCancelClick = onCancelClick,
             onSearchQueryChanged = { searchQuery = it },
-            modifier = Modifier
-                .statusBarsPadding()
-                .height(SpotlightDimens.TopAppBarHeight),
+            modifier =
+                Modifier
+                    .statusBarsPadding()
+                    .height(SpotlightDimens.TopAppBarHeight),
         )
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
         ) {
-
         }
     }
 }

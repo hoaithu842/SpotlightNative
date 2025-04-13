@@ -11,8 +11,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object HomeGraph
 
-fun NavController.navigateToHome(navOptions: NavOptions? = null) =
-    navigate(route = HomeGraph, navOptions = navOptions)
+fun NavController.navigateToHome(navOptions: NavOptions? = null) = navigate(route = HomeGraph, navOptions = navOptions)
 
 fun NavGraphBuilder.homeGraph(
     onAvatarClick: () -> Unit,
@@ -34,7 +33,7 @@ fun NavGraphBuilder.homeGraph(
         )
 
         artistScreen(
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
         )
     }
 }

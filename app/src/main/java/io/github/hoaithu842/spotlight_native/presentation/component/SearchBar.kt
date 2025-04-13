@@ -24,24 +24,24 @@ import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightIcons
 import io.github.hoaithu842.spotlight_native.ui.designsystem.SpotlightTextStyle
 
 @Composable
-fun SearchBar(
-    modifier: Modifier = Modifier,
-) {
+fun SearchBar(modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.SearchBarHeight)
-            .clip(shape = RoundedCornerShape(size = 6.dp))
-            .background(MaterialTheme.colorScheme.onBackground),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.SearchBarHeight)
+                .clip(shape = RoundedCornerShape(size = 6.dp))
+                .background(MaterialTheme.colorScheme.onBackground),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            modifier = Modifier
-                .padding(
-                    start = SpotlightDimens.TopAppBarIconHorizontalPadding.times(1.5f),
-                    end = SpotlightDimens.TopAppBarIconHorizontalPadding,
-                )
-                .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
+            modifier =
+                Modifier
+                    .padding(
+                        start = SpotlightDimens.TopAppBarIconHorizontalPadding.times(1.5f),
+                        end = SpotlightDimens.TopAppBarIconHorizontalPadding,
+                    )
+                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
             imageVector = ImageVector.vectorResource(SpotlightIcons.Search),
             tint = MaterialTheme.colorScheme.surface,
             contentDescription = "",

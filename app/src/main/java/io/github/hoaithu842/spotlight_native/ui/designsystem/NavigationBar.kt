@@ -26,15 +26,17 @@ fun SpotlightNavigationBar(
     content: @Composable RowScope.() -> Unit,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(MaterialTheme.colorScheme.surface),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(MaterialTheme.colorScheme.surface),
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(SpotlightDimens.NavigationBarHeight)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(SpotlightDimens.NavigationBarHeight),
         )
         NavigationBar(
             modifier = Modifier.fillMaxWidth(),
@@ -78,15 +80,16 @@ fun RowScope.SpotlightNavigationBarItem(
                 overflow = TextOverflow.Ellipsis,
             )
         },
-        colors = NavigationBarItemColors(
-            selectedIndicatorColor = Color.Transparent,
-            selectedIconColor = MaterialTheme.colorScheme.onBackground,
-            selectedTextColor = MaterialTheme.colorScheme.onBackground,
-            unselectedIconColor = NavigationGray,
-            unselectedTextColor = NavigationGray,
-            disabledIconColor = NavigationGray,
-            disabledTextColor = NavigationGray,
-        ),
+        colors =
+            NavigationBarItemColors(
+                selectedIndicatorColor = Color.Transparent,
+                selectedIconColor = MaterialTheme.colorScheme.onBackground,
+                selectedTextColor = MaterialTheme.colorScheme.onBackground,
+                unselectedIconColor = NavigationGray,
+                unselectedTextColor = NavigationGray,
+                disabledIconColor = NavigationGray,
+                disabledTextColor = NavigationGray,
+            ),
         modifier = modifier,
     )
 }

@@ -88,30 +88,34 @@ fun RecommendationScreen(
     var currentImageAlpha by remember { mutableFloatStateOf(maxAlpha) }
     var imageScale by remember { mutableFloatStateOf(1f) }
 
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                // Calculate the change in image size based on scroll delta
-                val delta = available.y
-                val newImageSize = currentImageSize + delta.dp
-                val previousImageSize = currentImageSize
+    val nestedScrollConnection =
+        remember {
+            object : NestedScrollConnection {
+                override fun onPreScroll(
+                    available: Offset,
+                    source: NestedScrollSource,
+                ): Offset {
+                    // Calculate the change in image size based on scroll delta
+                    val delta = available.y
+                    val newImageSize = currentImageSize + delta.dp
+                    val previousImageSize = currentImageSize
 
-                // Constrain the image size within the allowed bounds
-                currentImageSize = newImageSize.coerceIn(minImageSize, maxImageSize)
-                val consumed = currentImageSize - previousImageSize
+                    // Constrain the image size within the allowed bounds
+                    currentImageSize = newImageSize.coerceIn(minImageSize, maxImageSize)
+                    val consumed = currentImageSize - previousImageSize
 
-                // Calculate the scale for the image
-                imageScale = currentImageSize / maxImageSize
+                    // Calculate the scale for the image
+                    imageScale = currentImageSize / maxImageSize
 
-                val sizeDelta = (currentImageSize - minImageSize) / (maxImageSize - minImageSize)
+                    val sizeDelta = (currentImageSize - minImageSize) / (maxImageSize - minImageSize)
 
-                currentImageAlpha = sizeDelta.coerceIn(minAlpha, maxAlpha)
+                    currentImageAlpha = sizeDelta.coerceIn(minAlpha, maxAlpha)
 
-                // Return the consumed scroll amount
-                return Offset(0f, consumed.value)
+                    // Return the consumed scroll amount
+                    return Offset(0f, consumed.value)
+                }
             }
         }
-    }
 
     Box(
         Modifier
@@ -119,7 +123,7 @@ fun RecommendationScreen(
             .background(MaterialTheme.colorScheme.surface)
             .nestedScroll(nestedScrollConnection)
             .statusBarsPadding()
-            .padding(top = 10.dp)
+            .padding(top = 10.dp),
     ) {
         LazyColumn(
             Modifier
@@ -127,17 +131,17 @@ fun RecommendationScreen(
                 .padding(horizontal = 15.dp)
                 .offset {
                     IntOffset(0, currentImageSize.roundToPx())
-                }
+                },
         ) {
             item {
                 RecommendationDetails(
                     description = "The Weeknd, Lady Gaga, JENNIE, Charlie Puth, yung kai, Dhruv",
-                    modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding * 2)
+                    modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding * 2),
                 )
             }
             item {
                 RecommendationScreenFunctionBar(
-                    modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding * 2)
+                    modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding * 2),
                 )
             }
             // Placeholder list items
@@ -150,46 +154,51 @@ fun RecommendationScreen(
 
         Cover(
             imageUrl = imageUrl,
-            modifier = Modifier
-                .size(maxImageSize)
-                .align(Alignment.TopCenter)
-                .graphicsLayer {
-                    scaleX = imageScale
-                    scaleY = imageScale
-                    // Center the image vertically as it scales
-                    translationY = -(maxImageSize.toPx() - currentImageSize.toPx()) / 2f
-                }
-                .alpha(currentImageAlpha)
+            modifier =
+                Modifier
+                    .size(maxImageSize)
+                    .align(Alignment.TopCenter)
+                    .graphicsLayer {
+                        scaleX = imageScale
+                        scaleY = imageScale
+                        // Center the image vertically as it scales
+                        translationY = -(maxImageSize.toPx() - currentImageSize.toPx()) / 2f
+                    }
+                    .alpha(currentImageAlpha),
         )
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(SpotlightDimens.FullsizePlayerTopAppBarHeight)
-                .align(Alignment.TopStart),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(SpotlightDimens.FullsizePlayerTopAppBarHeight)
+                    .align(Alignment.TopStart),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                modifier = Modifier
-                    .padding(
-                        start = SpotlightDimens.TopAppBarIconHorizontalPadding * 2,
-                        end = SpotlightDimens.TopAppBarIconHorizontalPadding,
-                    )
-                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
-                    .singleClickable { onBackClick() },
+                modifier =
+                    Modifier
+                        .padding(
+                            start = SpotlightDimens.TopAppBarIconHorizontalPadding * 2,
+                            end = SpotlightDimens.TopAppBarIconHorizontalPadding,
+                        )
+                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
+                        .singleClickable { onBackClick() },
                 imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
                 tint = MaterialTheme.colorScheme.onBackground,
                 contentDescription = "",
             )
             AnimatedVisibility(
                 visible = currentImageAlpha == 0f,
-                enter = slideIn(
-                    initialOffset = { IntOffset(0, (it.height)) / 2f },
-                    animationSpec = spring(
-                        stiffness = Spring.StiffnessMediumLow,
-                        visibilityThreshold = IntOffset.VisibilityThreshold
+                enter =
+                    slideIn(
+                        initialOffset = { IntOffset(0, (it.height)) / 2f },
+                        animationSpec =
+                            spring(
+                                stiffness = Spring.StiffnessMediumLow,
+                                visibilityThreshold = IntOffset.VisibilityThreshold,
+                            ),
                     ),
-                ),
             ) {
                 Text(
                     text = "Daily Mix $id", // TODO: replace,
@@ -201,12 +210,13 @@ fun RecommendationScreen(
             }
 
             Spacer(
-                modifier = Modifier
-                    .padding(
-                        end = SpotlightDimens.TopAppBarIconHorizontalPadding * 2,
-                        start = SpotlightDimens.TopAppBarIconHorizontalPadding,
-                    )
-                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
+                modifier =
+                    Modifier
+                        .padding(
+                            end = SpotlightDimens.TopAppBarIconHorizontalPadding * 2,
+                            start = SpotlightDimens.TopAppBarIconHorizontalPadding,
+                        )
+                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
             )
         }
     }
@@ -226,16 +236,16 @@ fun RecommendationDetails(
             color = NavigationGray,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding * 2)
+            modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding * 2),
         ) {
             Image(
                 painter = painterResource(R.drawable.ic_launcher_background),
                 contentDescription = "",
-                modifier = Modifier.size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
+                modifier = Modifier.size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
             )
             Text(
                 text = "Made for you",
@@ -243,9 +253,10 @@ fun RecommendationDetails(
                 color = NavigationGray,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .padding(horizontal = SpotlightDimens.TopAppBarHorizontalPadding * 2)
-                    .fillMaxWidth()
+                modifier =
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.TopAppBarHorizontalPadding * 2)
+                        .fillMaxWidth(),
             )
         }
         Text(
@@ -254,50 +265,52 @@ fun RecommendationDetails(
             color = NavigationGray,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
 
 @Composable
-fun RecommendationScreenFunctionBar(
-    modifier: Modifier = Modifier,
-) {
+fun RecommendationScreenFunctionBar(modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.FullsizePlayerTopAppBarHeight),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.FullsizePlayerTopAppBarHeight),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             FirstRecommendationPreview(
-                modifier = Modifier
-                    .height(SpotlightDimens.FullsizePlayerTopAppBarHeight)
-                    .width(SpotlightDimens.FullsizePlayerTopAppBarHeight * 3 / 4)
+                modifier =
+                    Modifier
+                        .height(SpotlightDimens.FullsizePlayerTopAppBarHeight)
+                        .width(SpotlightDimens.FullsizePlayerTopAppBarHeight * 3 / 4),
             )
             Icon(
                 painter = painterResource(SpotlightIcons.Add),
                 contentDescription = "",
                 tint = NavigationGray,
-                modifier = Modifier
-                    .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
-                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize + 4.dp)
+                modifier =
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
+                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize + 4.dp),
             )
             Icon(
                 painter = painterResource(SpotlightIcons.Download),
                 contentDescription = "",
                 tint = NavigationGray,
-                modifier = Modifier.size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
+                modifier = Modifier.size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
             )
             Icon(
                 imageVector = Icons.Filled.MoreVert,
                 contentDescription = "",
                 tint = NavigationGray,
-                modifier = Modifier
-                    .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
-                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
+                modifier =
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
+                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
             )
         }
         Row(
@@ -307,28 +320,28 @@ fun RecommendationScreenFunctionBar(
                 painter = painterResource(SpotlightIcons.Shuffle),
                 contentDescription = "",
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
-                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
+                modifier =
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
+                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
             )
             Icon(
                 painter = painterResource(SpotlightIcons.Play),
                 contentDescription = "",
                 tint = MinimizedPlayerBackground,
-                modifier = Modifier
-                    .size(SpotlightDimens.FullsizePlayerTopAppBarHeight)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary)
-                    .padding((SpotlightDimens.FullsizePlayerTopAppBarHeight - SpotlightDimens.PlayerControllerMediumIconSize) / 2),
+                modifier =
+                    Modifier
+                        .size(SpotlightDimens.FullsizePlayerTopAppBarHeight)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary)
+                        .padding((SpotlightDimens.FullsizePlayerTopAppBarHeight - SpotlightDimens.PlayerControllerMediumIconSize) / 2),
             )
         }
     }
 }
 
 @Composable
-fun FirstRecommendationPreview(
-    modifier: Modifier = Modifier,
-) {
+fun FirstRecommendationPreview(modifier: Modifier = Modifier) {
     CardWithAnimatedBorder(modifier = modifier) {
         Cover(
             imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
@@ -342,45 +355,50 @@ fun CardWithAnimatedBorder(
     modifier: Modifier = Modifier,
     onCardClick: () -> Unit = {},
     borderColors: List<Color> = emptyList(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "")
     val angle by
-    infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec =
-        infiniteRepeatable(
-            animation = tween(1500, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        ), label = ""
-    )
+        infiniteTransition.animateFloat(
+            initialValue = 0f,
+            targetValue = 360f,
+            animationSpec =
+                infiniteRepeatable(
+                    animation = tween(1500, easing = LinearEasing),
+                    repeatMode = RepeatMode.Restart,
+                ),
+            label = "",
+        )
 
     val brush =
-        if (borderColors.isNotEmpty()) Brush.sweepGradient(borderColors)
-        else Brush.sweepGradient(listOf(Color.Gray, Color.White))
+        if (borderColors.isNotEmpty()) {
+            Brush.sweepGradient(borderColors)
+        } else {
+            Brush.sweepGradient(listOf(Color.Gray, Color.White))
+        }
 
     Surface(
         modifier = modifier.clickable { onCardClick() },
-        shape = RoundedCornerShape(6.dp)
+        shape = RoundedCornerShape(6.dp),
     ) {
         Surface(
-            modifier = Modifier
-                .clipToBounds()
-                .fillMaxWidth()
-                .padding(1.dp)
-                .drawWithContent {
-                    rotate(angle) {
-                        drawCircle(
-                            brush = brush,
-                            radius = size.width,
-                            blendMode = BlendMode.SrcIn,
-                        )
-                    }
-                    drawContent()
-                },
+            modifier =
+                Modifier
+                    .clipToBounds()
+                    .fillMaxWidth()
+                    .padding(1.dp)
+                    .drawWithContent {
+                        rotate(angle) {
+                            drawCircle(
+                                brush = brush,
+                                radius = size.width,
+                                blendMode = BlendMode.SrcIn,
+                            )
+                        }
+                        drawContent()
+                    },
             color = Color.Red,
-            shape = RoundedCornerShape(6.dp)
+            shape = RoundedCornerShape(6.dp),
         ) {
             Box(modifier = Modifier) { content() }
         }

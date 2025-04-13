@@ -5,10 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class HomeSectionDto(
     @SerializedName("id")
     val id: String?,
-
     @SerializedName("name")
     val name: String?,
-
     @SerializedName("items")
     val items: List<HomeSectionItemDto>?,
 )

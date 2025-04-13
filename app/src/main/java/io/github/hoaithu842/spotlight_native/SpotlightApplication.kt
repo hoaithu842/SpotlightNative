@@ -11,11 +11,12 @@ class SpotlightApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        val channel = NotificationChannel(
-            "channel_id",
-            "channel_name",
-            NotificationManager.IMPORTANCE_DEFAULT,
-        )
+        val channel =
+            NotificationChannel(
+                "channel_id",
+                "channel_name",
+                NotificationManager.IMPORTANCE_DEFAULT,
+            )
 
         val notificationManager = getSystemService<NotificationManager>()!!
         notificationManager.createNotificationChannel(channel)

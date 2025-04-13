@@ -57,7 +57,6 @@ private fun NavDestination?.isRouteInHierarchy(route: KClass<*>) =
         it.hasRoute(route)
     } ?: false
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpotlightContent(
@@ -76,9 +75,10 @@ fun SpotlightContent(
     var drawerState by remember { mutableStateOf(CustomDrawerState.Closed) }
     val configuration = LocalConfiguration.current
     val newDensity = LocalDensity.current.density
-    val screenWidth = remember {
-        derivedStateOf { (configuration.screenWidthDp * newDensity).roundToInt() }
-    }
+    val screenWidth =
+        remember {
+            derivedStateOf { (configuration.screenWidthDp * newDensity).roundToInt() }
+        }
     val offsetValue by remember { derivedStateOf { (screenWidth.value / 3.5).dp } }
     val animatedOffset by animateDpAsState(
         targetValue = if (drawerState.isOpened()) offsetValue else 0.dp,
@@ -104,7 +104,7 @@ fun SpotlightContent(
         Modifier
             .background(MaterialTheme.colorScheme.surface)
             .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f))
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         HomeScreenDrawer(
             userProfile = userProfile,
@@ -113,11 +113,12 @@ fun SpotlightContent(
             onLogoutClick = onLogoutClick,
         )
         Scaffold(
-            modifier = Modifier
-                .offset(x = animatedOffset)
-                .clickable(enabled = drawerState == CustomDrawerState.Opened) {
-                    drawerState = CustomDrawerState.Closed
-                },
+            modifier =
+                Modifier
+                    .offset(x = animatedOffset)
+                    .clickable(enabled = drawerState == CustomDrawerState.Opened) {
+                        drawerState = CustomDrawerState.Closed
+                    },
             bottomBar = {
                 if (isNavBarDisplaying) {
                     SpotlightNavigationBar(
@@ -144,9 +145,10 @@ fun SpotlightContent(
             },
         ) { innerPadding ->
             Box(
-                modifier = Modifier
-                    .padding(bottom = innerPadding.calculateBottomPadding())
-                    .fillMaxSize()
+                modifier =
+                    Modifier
+                        .padding(bottom = innerPadding.calculateBottomPadding())
+                        .fillMaxSize(),
             ) {
                 BottomSheetScaffold(
                     scaffoldState = scaffoldState,
@@ -173,17 +175,18 @@ fun SpotlightContent(
                                     if (previousDelta == null) {
                                         previousDelta = it
                                     } else {
-                                        isNavBarDisplaying = if (it > previousDelta!!) {
-                                            true
-                                        } else {
-                                            false
-                                        }
+                                        isNavBarDisplaying =
+                                            if (it > previousDelta!!) {
+                                                true
+                                            } else {
+                                                false
+                                            }
                                         previousDelta = null
                                     }
                                 }
                                 currentYOffset =
                                     ((1 - it) * SpotlightDimens.NavigationBarHeight.value).dp
-                            }
+                            },
                         )
                     },
                     snackbarHost = { SnackbarHost(snackbarHostState) },

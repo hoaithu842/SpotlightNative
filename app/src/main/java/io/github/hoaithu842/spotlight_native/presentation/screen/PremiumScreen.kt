@@ -12,9 +12,10 @@ import androidx.compose.ui.Modifier
 @Composable
 fun PremiumScreen() {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface),
     ) {
         Text(
             text = "PremiumScreen",

@@ -34,9 +34,10 @@ fun SearchScreen(
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
     ) {
         SearchTopAppBar(
             scrollBehavior = scrollBehavior,
@@ -44,121 +45,136 @@ fun SearchScreen(
         )
 
         SearchBar(
-            modifier = Modifier
-                .padding(
-                    start = SpotlightDimens.RecommendationPadding * 2,
-                    end = SpotlightDimens.RecommendationPadding * 2,
-                    top = SpotlightDimens.SearchBarTopPadding,
-                    bottom = SpotlightDimens.TopAppBarHorizontalPadding * 2,
-                )
-                .noRippleClickable { onNavigateToSearchClick() }
+            modifier =
+                Modifier
+                    .padding(
+                        start = SpotlightDimens.RecommendationPadding * 2,
+                        end = SpotlightDimens.RecommendationPadding * 2,
+                        top = SpotlightDimens.SearchBarTopPadding,
+                        bottom = SpotlightDimens.TopAppBarHorizontalPadding * 2,
+                    )
+                    .noRippleClickable { onNavigateToSearchClick() },
         )
-
 
         FlowRow(
             maxItemsInEachRow = 2,
-            modifier = Modifier
-                .padding(SpotlightDimens.RecommendationPadding)
-                .verticalScroll(rememberScrollState())
-                .padding(bottom = SpotlightDimens.MinimizedPlayerHeight),
+            modifier =
+                Modifier
+                    .padding(SpotlightDimens.RecommendationPadding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(bottom = SpotlightDimens.MinimizedPlayerHeight),
         ) {
             BrowseCard(
                 title = "Musics",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(SpotlightDimens.RecommendationPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(SpotlightDimens.RecommendationPadding),
             )
             BrowseCard(
                 title = "Musics",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(SpotlightDimens.RecommendationPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(SpotlightDimens.RecommendationPadding),
             )
             BrowseCard(
                 title = "Musics",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(SpotlightDimens.RecommendationPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(SpotlightDimens.RecommendationPadding),
             )
             BrowseCard(
                 title = "Musics",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(SpotlightDimens.RecommendationPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(SpotlightDimens.RecommendationPadding),
             )
             BrowseCard(
                 title = "Musics",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(SpotlightDimens.RecommendationPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(SpotlightDimens.RecommendationPadding),
             )
             BrowseCard(
                 title = "Musicsjfglisajglkjsdflkgjads;lgj;lsajdg;ljsadl;gjl;sa",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(SpotlightDimens.RecommendationPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(SpotlightDimens.RecommendationPadding),
             )
             BrowseCard(
                 title = "Musicsjfglisajglkjsdflkgjads;lgj;lsajdg;ljsadl;gjl;sa",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(SpotlightDimens.RecommendationPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(SpotlightDimens.RecommendationPadding),
             )
             BrowseCard(
                 title = "Musicsjfglisajglkjsdflkgjads;lgj;lsajdg;ljsadl;gjl;sa",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(SpotlightDimens.RecommendationPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(SpotlightDimens.RecommendationPadding),
             )
             BrowseCard(
                 title = "Musicsjfglisajglkjsdflkgjads;lgj;lsajdg;ljsadl;gjl;sa",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(SpotlightDimens.RecommendationPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(SpotlightDimens.RecommendationPadding),
             )
             BrowseCard(
                 title = "Musicsjfglisajglkjsdflkgjads;lgj;lsajdg;ljsadl;gjl;sa",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(SpotlightDimens.RecommendationPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(SpotlightDimens.RecommendationPadding),
             )
             BrowseCard(
                 title = "Musicsjfglisajglkjsdflkgjads;lgj;lsajdg;ljsadl;gjl;sa",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(SpotlightDimens.RecommendationPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(SpotlightDimens.RecommendationPadding),
             )
             BrowseCard(
                 title = "Musicsjfglisajglkjsdflkgjads;lgj;lsajdg;ljsadl;gjl;sa",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(SpotlightDimens.RecommendationPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(SpotlightDimens.RecommendationPadding),
             )
             BrowseCard(
                 title = "Musicsjfglisajglkjsdflkgjads;lgj;lsajdg;ljsadl;gjl;sa",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(SpotlightDimens.RecommendationPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(SpotlightDimens.RecommendationPadding),
             )
             BrowseCard(
                 title = "Musicsjfglisajglkjsdflkgjads;lgj;lsajdg;ljsadl;gjl;sa",
                 imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(SpotlightDimens.RecommendationPadding),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(SpotlightDimens.RecommendationPadding),
             )
         }
     }

@@ -27,24 +27,27 @@ fun Cover(
 ) {
     var isLoading by remember { mutableStateOf(true) }
 
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
-            .listener(onSuccess = { _, _ ->
-                isLoading = false
-            })
-            .build()
-    )
+    val painter =
+        rememberAsyncImagePainter(
+            model =
+                ImageRequest.Builder(LocalContext.current)
+                    .data(imageUrl)
+                    .listener(onSuccess = { _, _ ->
+                        isLoading = false
+                    })
+                    .build(),
+        )
 
     Image(
         painter = painter,
         contentDescription = "",
-        modifier = modifier
-            .fillMaxSize()
-            .shimmerLoadingAnimation(
-                isLoadingCompleted = !isLoading,
-                isLightModeActive = !isSystemInDarkTheme(),
-            ),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .shimmerLoadingAnimation(
+                    isLoadingCompleted = !isLoading,
+                    isLightModeActive = !isSystemInDarkTheme(),
+                ),
         contentScale = contentScale,
     )
 }
@@ -57,25 +60,28 @@ fun CircularCover(
 ) {
     var isLoading by remember { mutableStateOf(true) }
 
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
-            .listener(onSuccess = { _, _ ->
-                isLoading = false
-            })
-            .build()
-    )
+    val painter =
+        rememberAsyncImagePainter(
+            model =
+                ImageRequest.Builder(LocalContext.current)
+                    .data(imageUrl)
+                    .listener(onSuccess = { _, _ ->
+                        isLoading = false
+                    })
+                    .build(),
+        )
 
     Image(
         painter = painter,
         contentDescription = "",
-        modifier = modifier
-            .fillMaxSize()
-            .clip(CircleShape)
-            .shimmerLoadingAnimation(
-                isLoadingCompleted = !isLoading,
-                isLightModeActive = !isSystemInDarkTheme(),
-            ),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .clip(CircleShape)
+                .shimmerLoadingAnimation(
+                    isLoadingCompleted = !isLoading,
+                    isLightModeActive = !isSystemInDarkTheme(),
+                ),
         contentScale = contentScale,
     )
 }
@@ -88,25 +94,28 @@ fun RoundedCornerCover(
 ) {
     var isLoading by remember { mutableStateOf(true) }
 
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
-            .listener(onSuccess = { _, _ ->
-                isLoading = false
-            })
-            .build()
-    )
+    val painter =
+        rememberAsyncImagePainter(
+            model =
+                ImageRequest.Builder(LocalContext.current)
+                    .data(imageUrl)
+                    .listener(onSuccess = { _, _ ->
+                        isLoading = false
+                    })
+                    .build(),
+        )
 
     Image(
         painter = painter,
         contentDescription = "",
-        modifier = modifier
-            .fillMaxSize()
-            .clip(shape = RoundedCornerShape(size = 6.dp))
-            .shimmerLoadingAnimation(
-                isLoadingCompleted = !isLoading,
-                isLightModeActive = !isSystemInDarkTheme(),
-            ),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .clip(shape = RoundedCornerShape(size = 6.dp))
+                .shimmerLoadingAnimation(
+                    isLoadingCompleted = !isLoading,
+                    isLightModeActive = !isSystemInDarkTheme(),
+                ),
         contentScale = contentScale,
     )
 }

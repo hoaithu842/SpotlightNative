@@ -30,14 +30,15 @@ fun NoNetworkDialog(
     title: String,
     message: String,
     backgroundColor: Color,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(6.dp))
-                .background(backgroundColor)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(6.dp))
+                    .background(backgroundColor),
         ) {
             Row(
                 Modifier
@@ -45,28 +46,29 @@ fun NoNetworkDialog(
                     .background(MaterialTheme.colorScheme.primary)
                     .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = title,
                     color = Color.White,
-                    fontFamily = FontFamily.Monospace
+                    fontFamily = FontFamily.Monospace,
                 )
             }
 
             Row(
-                modifier = Modifier.padding(
-                    horizontal = 16.dp,
-                    vertical = 20.dp
-                ),
+                modifier =
+                    Modifier.padding(
+                        horizontal = 16.dp,
+                        vertical = 20.dp,
+                    ),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Icon(
                     Icons.Filled.Info,
                     contentDescription = "Error",
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(48.dp)
+                    modifier = Modifier.size(48.dp),
                 )
 
                 Text(
@@ -76,9 +78,10 @@ fun NoNetworkDialog(
                 )
             }
             Surface(
-                modifier = Modifier
-                    .padding(bottom = 8.dp)
-                    .align(Alignment.CenterHorizontally),
+                modifier =
+                    Modifier
+                        .padding(bottom = 8.dp)
+                        .align(Alignment.CenterHorizontally),
                 onClick = onDismissRequest,
                 color = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(6.dp),
@@ -87,10 +90,11 @@ fun NoNetworkDialog(
                     text = "Try Again",
                     fontFamily = FontFamily.Monospace,
                     color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier
-                        .widthIn(120.dp)
-                        .background(MaterialTheme.colorScheme.primary)
-                        .padding(vertical = 8.dp),
+                    modifier =
+                        Modifier
+                            .widthIn(120.dp)
+                            .background(MaterialTheme.colorScheme.primary)
+                            .padding(vertical = 8.dp),
                     textAlign = TextAlign.Center,
                 )
             }

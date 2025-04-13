@@ -18,71 +18,76 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class PlayerViewModel @Inject constructor(
-    private val playerRepository: PlayerRepository,
-) : ViewModel() {
-    private lateinit var mediaController: MediaController
+class PlayerViewModel
+    @Inject
+    constructor(
+        private val playerRepository: PlayerRepository,
+    ) : ViewModel() {
+        private lateinit var mediaController: MediaController
 
-    val currentPositionFlow: Flow<Long> = flow {
-        while (true) {
-            if (::mediaController.isInitialized && mediaController.isPlaying) {
-                emit(mediaController.currentPosition)
-            }
-            delay(500)
-        }
-    }.flowOn(Dispatchers.Main)
+        val currentPositionFlow: Flow<Long> =
+            flow {
+                while (true) {
+                    if (::mediaController.isInitialized && mediaController.isPlaying) {
+                        emit(mediaController.currentPosition)
+                    }
+                    delay(500)
+                }
+            }.flowOn(Dispatchers.Main)
 
-    private val _playerUiState: MutableStateFlow<PlayerUiState> =
-        MutableStateFlow(
-            PlayerUiState(
-                isPlaying = false,
-                duration = 0,
-                currentSong = playerRepository.songsList.first()
+        private val _playerUiState: MutableStateFlow<PlayerUiState> =
+            MutableStateFlow(
+                PlayerUiState(
+                    isPlaying = false,
+                    duration = 0,
+                    currentSong = playerRepository.songsList.first(),
+                ),
             )
-        )
-    val playerUiState: StateFlow<PlayerUiState> = _playerUiState.asStateFlow()
+        val playerUiState: StateFlow<PlayerUiState> = _playerUiState.asStateFlow()
 
-    fun next() {
-        mediaController.seekToNextMediaItem()
-    }
+        fun next() {
+            mediaController.seekToNextMediaItem()
+        }
 
-    fun prev() {
-        mediaController.seekToPreviousMediaItem()
-    }
+        fun prev() {
+            mediaController.seekToPreviousMediaItem()
+        }
 
-    fun playOrPause() {
-        if (mediaController.isPlaying) {
-            mediaController.pause()
-        } else {
-            mediaController.play()
+        fun playOrPause() {
+            if (mediaController.isPlaying) {
+                mediaController.pause()
+            } else {
+                mediaController.play()
+            }
+        }
+
+        fun setController(mediaController: MediaController) {
+            this.mediaController = mediaController
+            mediaController.addListener(
+                object : Player.Listener {
+                    override fun onTracksChanged(tracks: Tracks) {
+                        super.onTracksChanged(tracks)
+                        _playerUiState.update {
+                            it.copy(
+                                currentSong = playerRepository.songsList[mediaController.currentMediaItemIndex],
+                                duration = mediaController.duration,
+                            )
+                        }
+                    }
+
+                    override fun onIsLoadingChanged(isLoading: Boolean) {
+                        super.onIsLoadingChanged(isLoading)
+                    }
+
+                    override fun onIsPlayingChanged(isPlaying: Boolean) {
+                        super.onIsPlayingChanged(isPlaying)
+                        _playerUiState.update {
+                            it.copy(
+                                isPlaying = isPlaying,
+                            )
+                        }
+                    }
+                },
+            )
         }
     }
-
-    fun setController(mediaController: MediaController) {
-        this.mediaController = mediaController
-        mediaController.addListener(object : Player.Listener {
-            override fun onTracksChanged(tracks: Tracks) {
-                super.onTracksChanged(tracks)
-                _playerUiState.update {
-                    it.copy(
-                        currentSong = playerRepository.songsList[mediaController.currentMediaItemIndex],
-                        duration = mediaController.duration,
-                    )
-                }
-            }
-
-            override fun onIsLoadingChanged(isLoading: Boolean) {
-                super.onIsLoadingChanged(isLoading)
-            }
-
-            override fun onIsPlayingChanged(isPlaying: Boolean) {
-                super.onIsPlayingChanged(isPlaying)
-                _playerUiState.update {
-                    it.copy(
-                        isPlaying = isPlaying,
-                    )
-                }
-            }
-        })
-    }
-}

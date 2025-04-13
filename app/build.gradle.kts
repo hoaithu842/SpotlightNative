@@ -1,3 +1,5 @@
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,6 +7,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    id("org.jlleitschuh.gradle.ktlint") version "12.2.0"
 }
 
 android {
@@ -23,16 +26,24 @@ android {
         manifestPlaceholders.put("auth0Scheme", "app")
 
         buildConfigField(
-            "String", "auth0ClientId", providers.gradleProperty("auth0ClientId").get()
+            "String",
+            "auth0ClientId",
+            providers.gradleProperty("auth0ClientId").get(),
         )
         buildConfigField(
-            "String", "auth0Audience", providers.gradleProperty("auth0Audience").get()
+            "String",
+            "auth0Audience",
+            providers.gradleProperty("auth0Audience").get(),
         )
         buildConfigField(
-            "String", "auth0Domain", providers.gradleProperty("auth0Domain").get()
+            "String",
+            "auth0Domain",
+            providers.gradleProperty("auth0Domain").get(),
         )
         buildConfigField(
-            "String", "auth0Scheme", providers.gradleProperty("auth0Scheme").get()
+            "String",
+            "auth0Scheme",
+            providers.gradleProperty("auth0Scheme").get(),
         )
 
         buildFeatures {
@@ -45,7 +56,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -61,6 +72,16 @@ android {
     }
     androidResources {
         generateLocaleConfig = true
+    }
+}
+
+ktlint {
+    android = true
+    ignoreFailures = false
+    reporters {
+        reporter(ReporterType.PLAIN)
+        reporter(ReporterType.CHECKSTYLE)
+        reporter(ReporterType.SARIF)
     }
 }
 

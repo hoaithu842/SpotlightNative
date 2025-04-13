@@ -38,10 +38,10 @@ fun PlaylistBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         containerColor = Color.DarkGray,
-        shape = RoundedCornerShape(size = 6.dp)
+        shape = RoundedCornerShape(size = 6.dp),
     ) {
         Column(
-            modifier = modifier.fillMaxSize()
+            modifier = modifier.fillMaxSize(),
         ) {
             HomeScreenDrawerHeader(
                 userProfile = null,
@@ -53,27 +53,28 @@ fun PlaylistBottomSheet(
             HorizontalDivider(
                 thickness = 0.15.dp,
                 color = NavigationGray,
-                modifier = Modifier
-                    .padding(vertical = SpotlightDimens.HomeScreenDrawerHeaderVerticalPadding)
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .padding(vertical = SpotlightDimens.HomeScreenDrawerHeaderVerticalPadding)
+                        .fillMaxWidth(),
             )
 
             ModalBottomSheetOption(
                 icon = SpotlightIcons.Add,
                 title = "Add to Your Library",
-                modifier = Modifier.padding(horizontal = SpotlightDimens.HomeScreenDrawerHeaderPadding)
+                modifier = Modifier.padding(horizontal = SpotlightDimens.HomeScreenDrawerHeaderPadding),
             )
 
             ModalBottomSheetOption(
                 icon = SpotlightIcons.Download,
                 title = "Download",
-                modifier = Modifier.padding(horizontal = SpotlightDimens.HomeScreenDrawerHeaderPadding)
+                modifier = Modifier.padding(horizontal = SpotlightDimens.HomeScreenDrawerHeaderPadding),
             )
 
             ModalBottomSheetOption(
                 icon = SpotlightIcons.Download,
                 title = "Share",
-                modifier = Modifier.padding(horizontal = SpotlightDimens.HomeScreenDrawerHeaderPadding)
+                modifier = Modifier.padding(horizontal = SpotlightDimens.HomeScreenDrawerHeaderPadding),
             )
         }
     }
@@ -87,16 +88,18 @@ fun ModalBottomSheetOption(
     withActionIcon: Boolean = false,
 ) {
     Box(
-        modifier = modifier
-            .height(SpotlightDimens.ModalBottomSheetOptionHeight)
-            .fillMaxWidth(),
+        modifier =
+            modifier
+                .height(SpotlightDimens.ModalBottomSheetOptionHeight)
+                .fillMaxWidth(),
     ) {
         Icon(
             painter = painterResource(icon),
             contentDescription = "",
-            modifier = Modifier
-                .size(SpotlightDimens.ModalBottomSheetOptionIconSize)
-                .align(Alignment.CenterStart),
+            modifier =
+                Modifier
+                    .size(SpotlightDimens.ModalBottomSheetOptionIconSize)
+                    .align(Alignment.CenterStart),
             tint = MaterialTheme.colorScheme.onBackground,
         )
         Text(
@@ -105,17 +108,21 @@ fun ModalBottomSheetOption(
             overflow = TextOverflow.Ellipsis,
             color = MaterialTheme.colorScheme.onBackground,
             maxLines = 1,
-            modifier = Modifier
-                .padding(horizontal = SpotlightDimens.ModalBottomSheetOptionTextPadding + SpotlightDimens.ModalBottomSheetOptionIconSize)
-                .align(Alignment.CenterStart),
+            modifier =
+                Modifier
+                    .padding(
+                        horizontal = SpotlightDimens.ModalBottomSheetOptionTextPadding + SpotlightDimens.ModalBottomSheetOptionIconSize,
+                    )
+                    .align(Alignment.CenterStart),
         )
         if (withActionIcon) {
             Icon(
                 imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
                 contentDescription = "",
-                modifier = Modifier
-                    .size(SpotlightDimens.ModalBottomSheetOptionIconSize)
-                    .align(Alignment.CenterEnd),
+                modifier =
+                    Modifier
+                        .size(SpotlightDimens.ModalBottomSheetOptionIconSize)
+                        .align(Alignment.CenterEnd),
                 tint = MaterialTheme.colorScheme.onBackground,
             )
         }

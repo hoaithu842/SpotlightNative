@@ -8,11 +8,13 @@ import io.github.hoaithu842.spotlight_native.domain.model.ArtistDetails
 import io.github.hoaithu842.spotlight_native.domain.repository.ArtistRepository
 import javax.inject.Inject
 
-class ArtistRepositoryImpl @Inject constructor(
-    private val apiService: SpotlightApiService,
-) : ArtistRepository {
-    override suspend fun getArtist(): ApiResponse<ArtistDetails> {
-        // TODO: return from ApiService
-        return ApiResponse.Success(data = fakeArtistDetails.toDomain())
+class ArtistRepositoryImpl
+    @Inject
+    constructor(
+        private val apiService: SpotlightApiService,
+    ) : ArtistRepository {
+        override suspend fun getArtist(): ApiResponse<ArtistDetails> {
+            // TODO: return from ApiService
+            return ApiResponse.Success(data = fakeArtistDetails.toDomain())
+        }
     }
-}

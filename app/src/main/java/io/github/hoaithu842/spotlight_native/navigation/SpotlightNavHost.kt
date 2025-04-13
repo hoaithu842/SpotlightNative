@@ -10,36 +10,41 @@ fun navigateToTopLevelDestination(
     navController: NavHostController,
     topLevelDestination: TopLevelDestination,
 ) {
-    val topLevelNavOptions = navOptions {
-        popUpTo(navController.graph.findStartDestination().id) {
-            saveState = true
+    val topLevelNavOptions =
+        navOptions {
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
         }
-        launchSingleTop = true
-        restoreState = true
-    }
     when (topLevelDestination) {
-        TopLevelDestination.HOME -> navController.navigateToHome(
-            topLevelNavOptions
-        )
+        TopLevelDestination.HOME ->
+            navController.navigateToHome(
+                topLevelNavOptions,
+            )
 
-        TopLevelDestination.SEARCH -> navController.navigateToSearch(
-            topLevelNavOptions
-        )
+        TopLevelDestination.SEARCH ->
+            navController.navigateToSearch(
+                topLevelNavOptions,
+            )
 
-        TopLevelDestination.LIBRARY -> navController.navigateToLibrary(
-            topLevelNavOptions
-        )
+        TopLevelDestination.LIBRARY ->
+            navController.navigateToLibrary(
+                topLevelNavOptions,
+            )
 
-        TopLevelDestination.PREMIUM -> navController.navigateToPremiumScreen(
-            topLevelNavOptions
-        )
+        TopLevelDestination.PREMIUM ->
+            navController.navigateToPremiumScreen(
+                topLevelNavOptions,
+            )
     }
 }
 
 @Composable
 fun SpotlightNavHost(
     navHostController: NavHostController,
-    onAvatarClick: () -> Unit
+    onAvatarClick: () -> Unit,
 ) {
     NavHost(
         navController = navHostController,
@@ -56,9 +61,10 @@ fun SpotlightNavHost(
             onCancelClick = navHostController::popBackStack,
             onNavigateToSearchClick = {
                 navHostController.navigateToSearchResultScreen(
-                    navOptions = navOptions {
-                        launchSingleTop = true
-                    }
+                    navOptions =
+                        navOptions {
+                            launchSingleTop = true
+                        },
                 )
             },
         )
@@ -67,9 +73,10 @@ fun SpotlightNavHost(
             onCancelClick = navHostController::popBackStack,
             onNavigateToSearchClick = {
                 navHostController.navigateToLibrarySearchScreen(
-                    navOptions = navOptions {
-                        launchSingleTop = true
-                    }
+                    navOptions =
+                        navOptions {
+                            launchSingleTop = true
+                        },
                 )
             },
         )

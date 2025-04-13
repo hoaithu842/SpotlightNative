@@ -90,28 +90,31 @@ fun HomeTopAppBar(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(bottom = TopAppBarHorizontalPadding * 2),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(bottom = TopAppBarHorizontalPadding * 2),
         verticalAlignment = Alignment.Bottom,
     ) {
         Row(
-            modifier = Modifier
-                .wrapContentSize()
-                .horizontalScroll(rememberScrollState()),
+            modifier =
+                Modifier
+                    .wrapContentSize()
+                    .horizontalScroll(rememberScrollState()),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher_background),
                 contentDescription = "",
-                modifier = Modifier
-                    .padding(
-                        start = SpotlightDimens.TopAppBarIconHorizontalPadding * 2,
-                        end = SpotlightDimens.TopAppBarIconHorizontalPadding
-                    )
-                    .size(SpotlightDimens.TopAppBarIconSize)
-                    .clip(shape = CircleShape)
-                    .clickable { onAvatarClick() }
+                modifier =
+                    Modifier
+                        .padding(
+                            start = SpotlightDimens.TopAppBarIconHorizontalPadding * 2,
+                            end = SpotlightDimens.TopAppBarIconHorizontalPadding,
+                        )
+                        .size(SpotlightDimens.TopAppBarIconSize)
+                        .clip(shape = CircleShape)
+                        .clickable { onAvatarClick() },
             )
             HomeTopAppBarOption(
                 title = stringResource(id = R.string.all),
@@ -119,7 +122,7 @@ fun HomeTopAppBar(
                 modifier = Modifier.padding(horizontal = TopAppBarHorizontalPadding),
                 onOptionClick = {
                     onTabClick(HomeScreenTab.All)
-                }
+                },
             )
             HomeTopAppBarOption(
                 title = stringResource(id = R.string.music),
@@ -127,7 +130,7 @@ fun HomeTopAppBar(
                 modifier = Modifier.padding(horizontal = TopAppBarHorizontalPadding),
                 onOptionClick = {
                     onTabClick(HomeScreenTab.Music)
-                }
+                },
             )
             HomeTopAppBarOption(
                 title = stringResource(id = R.string.podcasts),
@@ -135,7 +138,7 @@ fun HomeTopAppBar(
                 modifier = Modifier.padding(horizontal = TopAppBarHorizontalPadding),
                 onOptionClick = {
                     onTabClick(HomeScreenTab.Podcasts)
-                }
+                },
             )
         }
     }
@@ -149,15 +152,16 @@ fun HomeTopAppBarOption(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .wrapContentWidth()
-            .height(SpotlightDimens.TopAppBarOptionHeight)
-            .clip(shape = CircleShape)
-            .background(if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary)
-            .padding(horizontal = SpotlightDimens.TopAppBarOptionPadding)
-            .noRippleClickable {
-                onOptionClick()
-            }
+        modifier =
+            modifier
+                .wrapContentWidth()
+                .height(SpotlightDimens.TopAppBarOptionHeight)
+                .clip(shape = CircleShape)
+                .background(if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary)
+                .padding(horizontal = SpotlightDimens.TopAppBarOptionPadding)
+                .noRippleClickable {
+                    onOptionClick()
+                },
     ) {
         Text(
             text = title,
@@ -176,15 +180,17 @@ fun LibraryTopAppBar(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(bottom = TopAppBarHorizontalPadding * 2),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(bottom = TopAppBarHorizontalPadding * 2),
         verticalArrangement = Arrangement.Bottom,
     ) {
         Row(
-            modifier = Modifier
-                .padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding * 2)
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding * 2)
+                    .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
@@ -192,11 +198,12 @@ fun LibraryTopAppBar(
                 Image(
                     painter = painterResource(id = R.drawable.ic_launcher_background),
                     contentDescription = "",
-                    modifier = Modifier
-                        .padding(end = SpotlightDimens.TopAppBarIconHorizontalPadding)
-                        .size(SpotlightDimens.TopAppBarIconSize)
-                        .clip(shape = CircleShape)
-                        .clickable { onAvatarClick() }
+                    modifier =
+                        Modifier
+                            .padding(end = SpotlightDimens.TopAppBarIconHorizontalPadding)
+                            .size(SpotlightDimens.TopAppBarIconSize)
+                            .clip(shape = CircleShape)
+                            .clickable { onAvatarClick() },
                 )
                 Text(
                     text = stringResource(R.string.library),
@@ -208,13 +215,14 @@ fun LibraryTopAppBar(
                 Icon(
                     painter = painterResource(SpotlightIcons.Search),
                     contentDescription = "",
-                    modifier = Modifier
-                        .padding(horizontal = TopAppBarHorizontalPadding)
-                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
-                        .padding(1.dp)
-                        .noRippleClickable {
-                            onNavigateToSearchClick()
-                        },
+                    modifier =
+                        Modifier
+                            .padding(horizontal = TopAppBarHorizontalPadding)
+                            .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
+                            .padding(1.dp)
+                            .noRippleClickable {
+                                onNavigateToSearchClick()
+                            },
                     tint = MaterialTheme.colorScheme.onBackground,
                 )
                 Icon(
@@ -226,7 +234,7 @@ fun LibraryTopAppBar(
             }
         }
         LibraryFiltering(
-            modifier = Modifier.padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding * 2)
+            modifier = Modifier.padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding * 2),
         )
     }
 }
@@ -239,13 +247,14 @@ fun LibrarySearchTopAppBar(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(
-                bottom = TopAppBarHorizontalPadding * 2,
-                start = SpotlightDimens.TopAppBarIconHorizontalPadding,
-                end = SpotlightDimens.TopAppBarIconHorizontalPadding,
-            )
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(
+                    bottom = TopAppBarHorizontalPadding * 2,
+                    start = SpotlightDimens.TopAppBarIconHorizontalPadding,
+                    end = SpotlightDimens.TopAppBarIconHorizontalPadding,
+                ),
     ) {
         val keyboardController = LocalSoftwareKeyboardController.current
         val focusManager = LocalFocusManager.current
@@ -261,21 +270,22 @@ fun LibrarySearchTopAppBar(
         }
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(SpotlightDimens.LibraryTextFieldHeight)
-                .padding(end = SpotlightDimens.LibrarySearchButtonWidth)
-                .clip(shape = RoundedCornerShape(size = 6.dp))
-                .background(TopAppBarGray)
-                .align(Alignment.BottomStart),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(SpotlightDimens.LibraryTextFieldHeight)
+                    .padding(end = SpotlightDimens.LibrarySearchButtonWidth)
+                    .clip(shape = RoundedCornerShape(size = 6.dp))
+                    .background(TopAppBarGray)
+                    .align(Alignment.BottomStart),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                modifier = Modifier
-                    .padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding)
-                    .size(SpotlightDimens.LibrarySearchIconSize)
-                    .noRippleClickable { onSearchExplicitlyTriggered() },
-
+                modifier =
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding)
+                        .size(SpotlightDimens.LibrarySearchIconSize)
+                        .noRippleClickable { onSearchExplicitlyTriggered() },
                 imageVector = ImageVector.vectorResource(SpotlightIcons.Search),
                 tint = NavigationGray,
                 contentDescription = "",
@@ -287,9 +297,10 @@ fun LibrarySearchTopAppBar(
                 onValueChange = {
                     if ("\n" !in it) onSearchQueryChanged(it)
                 },
-                modifier = Modifier
-                    .weight(1f)
-                    .focusRequester(focusRequester),
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .focusRequester(focusRequester),
                 maxLines = 1,
                 singleLine = true,
                 decorationBox = { innerTextField ->
@@ -308,10 +319,11 @@ fun LibrarySearchTopAppBar(
             )
         }
         Row(
-            modifier = Modifier
-                .height(SpotlightDimens.LibraryTextFieldHeight)
-                .width(SpotlightDimens.LibrarySearchButtonWidth)
-                .align(Alignment.BottomEnd),
+            modifier =
+                Modifier
+                    .height(SpotlightDimens.LibraryTextFieldHeight)
+                    .width(SpotlightDimens.LibrarySearchButtonWidth)
+                    .align(Alignment.BottomEnd),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
@@ -319,7 +331,7 @@ fun LibrarySearchTopAppBar(
                 text = stringResource(R.string.cancel),
                 style = SpotlightTextStyle.Text11W600,
                 color = NavigationGray,
-                modifier = Modifier.singleClickable { onCancelClick() }
+                modifier = Modifier.singleClickable { onCancelClick() },
             )
         }
     }
@@ -333,13 +345,14 @@ fun SearchResultTopAppBar(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(
-                bottom = TopAppBarHorizontalPadding * 2,
-                start = SpotlightDimens.TopAppBarIconHorizontalPadding,
-                end = SpotlightDimens.TopAppBarIconHorizontalPadding,
-            )
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(
+                    bottom = TopAppBarHorizontalPadding * 2,
+                    start = SpotlightDimens.TopAppBarIconHorizontalPadding,
+                    end = SpotlightDimens.TopAppBarIconHorizontalPadding,
+                ),
     ) {
         val keyboardController = LocalSoftwareKeyboardController.current
         val focusManager = LocalFocusManager.current
@@ -355,21 +368,22 @@ fun SearchResultTopAppBar(
         }
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(SpotlightDimens.LibraryTextFieldHeight)
-                .padding(end = SpotlightDimens.LibrarySearchButtonWidth)
-                .clip(shape = RoundedCornerShape(size = 6.dp))
-                .background(TopAppBarGray)
-                .align(Alignment.BottomStart),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(SpotlightDimens.LibraryTextFieldHeight)
+                    .padding(end = SpotlightDimens.LibrarySearchButtonWidth)
+                    .clip(shape = RoundedCornerShape(size = 6.dp))
+                    .background(TopAppBarGray)
+                    .align(Alignment.BottomStart),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                modifier = Modifier
-                    .padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding)
-                    .size(SpotlightDimens.LibrarySearchIconSize)
-                    .noRippleClickable { onSearchExplicitlyTriggered() },
-
+                modifier =
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding)
+                        .size(SpotlightDimens.LibrarySearchIconSize)
+                        .noRippleClickable { onSearchExplicitlyTriggered() },
                 imageVector = ImageVector.vectorResource(SpotlightIcons.Search),
                 tint = NavigationGray,
                 contentDescription = "",
@@ -381,9 +395,10 @@ fun SearchResultTopAppBar(
                 onValueChange = {
                     if ("\n" !in it) onSearchQueryChanged(it)
                 },
-                modifier = Modifier
-                    .weight(1f)
-                    .focusRequester(focusRequester),
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .focusRequester(focusRequester),
                 maxLines = 1,
                 singleLine = true,
                 decorationBox = { innerTextField ->
@@ -402,10 +417,11 @@ fun SearchResultTopAppBar(
             )
         }
         Row(
-            modifier = Modifier
-                .height(SpotlightDimens.LibraryTextFieldHeight)
-                .width(SpotlightDimens.LibrarySearchButtonWidth)
-                .align(Alignment.BottomEnd),
+            modifier =
+                Modifier
+                    .height(SpotlightDimens.LibraryTextFieldHeight)
+                    .width(SpotlightDimens.LibrarySearchButtonWidth)
+                    .align(Alignment.BottomEnd),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
@@ -413,45 +429,44 @@ fun SearchResultTopAppBar(
                 text = stringResource(R.string.cancel),
                 style = SpotlightTextStyle.Text11W600,
                 color = NavigationGray,
-                modifier = Modifier.singleClickable { onCancelClick() }
+                modifier = Modifier.singleClickable { onCancelClick() },
             )
         }
     }
 }
 
-
 @Preview
 @Composable
-fun LibraryFiltering(
-    modifier: Modifier = Modifier,
-) {
+fun LibraryFiltering(modifier: Modifier = Modifier) {
     var isFiltered by remember { mutableStateOf(false) }
     var filterCategory by remember { mutableStateOf(FilterCategory.None) }
 
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.TopAppBarHeight),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.TopAppBarHeight),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         AnimatedVisibility(
-            visible = isFiltered
+            visible = isFiltered,
         ) {
             Icon(
                 painter = painterResource(SpotlightIcons.Add),
                 contentDescription = "",
-                modifier = Modifier
-                    .size(SpotlightDimens.TopAppBarOptionHeight)
-                    .noRippleClickable {
-                        isFiltered = false
-                        filterCategory = FilterCategory.None
-                    },
+                modifier =
+                    Modifier
+                        .size(SpotlightDimens.TopAppBarOptionHeight)
+                        .noRippleClickable {
+                            isFiltered = false
+                            filterCategory = FilterCategory.None
+                        },
                 tint = MaterialTheme.colorScheme.onBackground,
             )
         }
 
         AnimatedVisibility(
-            visible = !isFiltered || filterCategory == FilterCategory.Playlists
+            visible = !isFiltered || filterCategory == FilterCategory.Playlists,
         ) {
             LibraryTopAppBarOption(
                 title = "Playlists",
@@ -470,9 +485,8 @@ fun LibraryFiltering(
         }
 
         AnimatedVisibility(
-            visible = !isFiltered || filterCategory == FilterCategory.Podcasts
+            visible = !isFiltered || filterCategory == FilterCategory.Podcasts,
         ) {
-
             LibraryTopAppBarOption(
                 title = "Podcasts",
                 selected = filterCategory == FilterCategory.Podcasts,
@@ -490,7 +504,7 @@ fun LibraryFiltering(
         }
 
         AnimatedVisibility(
-            visible = !isFiltered || filterCategory == FilterCategory.Albums
+            visible = !isFiltered || filterCategory == FilterCategory.Albums,
         ) {
             LibraryTopAppBarOption(
                 title = "Albums",
@@ -508,7 +522,7 @@ fun LibraryFiltering(
             )
         }
         AnimatedVisibility(
-            visible = !isFiltered || filterCategory == FilterCategory.Artists
+            visible = !isFiltered || filterCategory == FilterCategory.Artists,
         ) {
             LibraryTopAppBarOption(
                 title = "Artists",
@@ -536,15 +550,16 @@ fun LibraryTopAppBarOption(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .wrapContentWidth()
-            .height(SpotlightDimens.TopAppBarOptionHeight)
-            .clip(shape = CircleShape)
-            .background(if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary)
-            .padding(horizontal = SpotlightDimens.TopAppBarOptionPadding)
-            .noRippleClickable {
-                onOptionClick()
-            }
+        modifier =
+            modifier
+                .wrapContentWidth()
+                .height(SpotlightDimens.TopAppBarOptionHeight)
+                .clip(shape = CircleShape)
+                .background(if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary)
+                .padding(horizontal = SpotlightDimens.TopAppBarOptionPadding)
+                .noRippleClickable {
+                    onOptionClick()
+                },
     ) {
         Text(
             text = title,
@@ -565,35 +580,36 @@ fun SearchTopAppBar(
     TopAppBar(
         navigationIcon = {
             Box(
-                modifier = Modifier.size(SpotlightDimens.TopAppBarHeight)
+                modifier = Modifier.size(SpotlightDimens.TopAppBarHeight),
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_launcher_background),
                     contentDescription = "",
-                    modifier = Modifier
-                        .padding(
-                            start = SpotlightDimens.SearchTopAppBarPadding + 2.dp,
-                            bottom = TopAppBarHorizontalPadding * 2 + 2.dp,
-                        )
-                        .size(SpotlightDimens.TopAppBarIconSize)
-                        .clip(shape = CircleShape)
-                        .clickable { onAvatarClick() }
-                        .align(Alignment.BottomStart)
+                    modifier =
+                        Modifier
+                            .padding(
+                                start = SpotlightDimens.SearchTopAppBarPadding + 2.dp,
+                                bottom = TopAppBarHorizontalPadding * 2 + 2.dp,
+                            )
+                            .size(SpotlightDimens.TopAppBarIconSize)
+                            .clip(shape = CircleShape)
+                            .clickable { onAvatarClick() }
+                            .align(Alignment.BottomStart),
                 )
             }
-
         },
         title = {
             Text(
                 text = stringResource(R.string.search),
                 style = SpotlightTextStyle.Text22W700,
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(top = TopAppBarHorizontalPadding)
+                modifier = Modifier.padding(top = TopAppBarHorizontalPadding),
             )
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-            scrolledContainerColor = Color.Transparent,
-        ),
+        colors =
+            TopAppBarDefaults.topAppBarColors(
+                scrolledContainerColor = Color.Transparent,
+            ),
         scrollBehavior = scrollBehavior,
     )
 }
@@ -605,20 +621,22 @@ fun FullsizePlayerTopAppBar(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.FullsizePlayerTopAppBarHeight),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.FullsizePlayerTopAppBarHeight),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Icon(
             painter = painterResource(SpotlightIcons.Down),
             contentDescription = "",
-            modifier = Modifier
-                .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
-                .noRippleClickable {
-                    onMinimizeClick()
-                },
+            modifier =
+                Modifier
+                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
+                    .noRippleClickable {
+                        onMinimizeClick()
+                    },
             tint = MaterialTheme.colorScheme.onBackground,
         )
         Text(
@@ -632,9 +650,10 @@ fun FullsizePlayerTopAppBar(
         Icon(
             painter = painterResource(SpotlightIcons.More),
             contentDescription = "",
-            modifier = Modifier
-                .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
-                .noRippleClickable {},
+            modifier =
+                Modifier
+                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
+                    .noRippleClickable {},
             tint = MaterialTheme.colorScheme.onBackground,
         )
     }
@@ -651,34 +670,38 @@ fun PlayerControllerTopAppBar(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.MinimizedPlayerHeight)
-            .clip(shape = RoundedCornerShape(size = 12.dp))
-            .background(MinimizedPlayerBackground)
-            .noRippleClickable {
-                onPlayerClick()
-            }
-            .padding(bottom = 2.dp)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.MinimizedPlayerHeight)
+                .clip(shape = RoundedCornerShape(size = 12.dp))
+                .background(MinimizedPlayerBackground)
+                .noRippleClickable {
+                    onPlayerClick()
+                }
+                .padding(bottom = 2.dp),
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = SpotlightDimens.MinimizedPlayerThumbnailPaddingStart),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = SpotlightDimens.MinimizedPlayerThumbnailPaddingStart),
         ) {
             Column(
-                modifier = Modifier
-                    .padding(end = SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize.times(2))
-                    .height(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
-                    .align(Alignment.CenterStart)
+                modifier =
+                    Modifier
+                        .padding(end = SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize.times(2))
+                        .height(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
+                        .align(Alignment.CenterStart),
             ) {
                 Text(
                     text = song.title,
                     style = SpotlightTextStyle.Text11W400,
                     color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .basicMarquee()
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .basicMarquee(),
                 )
                 Text(
                     text = song.artists,
@@ -693,21 +716,23 @@ fun PlayerControllerTopAppBar(
                 painter = painterResource(if (isPlaying) SpotlightIcons.Pause else SpotlightIcons.Play),
                 contentDescription = "",
                 tint = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
-                    .align(Alignment.CenterEnd)
-                    .noRippleClickable {
-                        onMainFunctionClick()
-                    }
+                modifier =
+                    Modifier
+                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
+                        .align(Alignment.CenterEnd)
+                        .noRippleClickable {
+                            onMainFunctionClick()
+                        },
             )
         }
 
         LinearProgressIndicator(
             progress = { if (duration.toInt() == 0) 0f else (currentPosition * 1.0 / duration).toFloat() },
-            modifier = Modifier
-                .padding(horizontal = SpotlightDimens.MinimizedPlayerProgressIndicatorPadding)
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter),
+            modifier =
+                Modifier
+                    .padding(horizontal = SpotlightDimens.MinimizedPlayerProgressIndicatorPadding)
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter),
             color = ProgressIndicatorTrackColor,
             trackColor = ProgressIndicatorColor,
             strokeCap = StrokeCap.Round,
@@ -734,10 +759,11 @@ fun TopAppBarPreview() {
             )
 
             PlayerControllerTopAppBar(
-                song = SongDetails(
-                    title = "Preview",
-                    artists = "Preview",
-                ),
+                song =
+                    SongDetails(
+                        title = "Preview",
+                        artists = "Preview",
+                    ),
                 isPlaying = true,
                 currentPosition = 0,
                 duration = 232155,

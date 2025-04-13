@@ -47,27 +47,30 @@ fun LibraryScreen(
     val uiState by viewModel.libraryUiState.collectAsState()
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface),
     ) {
         var isInGridView by remember { mutableStateOf(true) }
 
         LibraryTopAppBar(
             onAvatarClick = onAvatarClick,
             onNavigateToSearchClick = onNavigateToSearchClick,
-            modifier = Modifier
-                .statusBarsPadding()
-                .height(SpotlightDimens.TopAppBarHeight * 2)
+            modifier =
+                Modifier
+                    .statusBarsPadding()
+                    .height(SpotlightDimens.TopAppBarHeight * 2),
         )
 
         SortAndViewBar(
             isInGridView = isInGridView,
             onChangeViewClick = { isInGridView = it },
-            modifier = Modifier.padding(
-                horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding * 2,
-                vertical = SpotlightDimens.TopAppBarIconHorizontalPadding,
-            ),
+            modifier =
+                Modifier.padding(
+                    horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding * 2,
+                    vertical = SpotlightDimens.TopAppBarIconHorizontalPadding,
+                ),
         )
 
         when (uiState) {
@@ -75,9 +78,10 @@ fun LibraryScreen(
             LibraryUiState.Loading -> Text(text = "Loading")
             is LibraryUiState.Success -> {
                 LazyVerticalGrid(
-                    modifier = Modifier
-                        .padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding * 2)
-                        .fillMaxSize(),
+                    modifier =
+                        Modifier
+                            .padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding * 2)
+                            .fillMaxSize(),
                     columns = if (isInGridView) GridCells.Adaptive(100.dp) else GridCells.Fixed(1),
 // verticalArrangement = Arrangement.SpaceAround,
                 ) {
@@ -95,9 +99,10 @@ fun LibraryScreen(
 
                     item {
                         Spacer(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(SpotlightDimens.MinimizedPlayerHeight)
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .height(SpotlightDimens.MinimizedPlayerHeight),
                         )
                     }
                 }
@@ -106,7 +111,6 @@ fun LibraryScreen(
     }
 }
 
-
 @Composable
 fun SortAndViewBar(
     onChangeViewClick: (Boolean) -> Unit,
@@ -114,9 +118,10 @@ fun SortAndViewBar(
     isInGridView: Boolean = true,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.TopAppBarOptionHeight),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.TopAppBarOptionHeight),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
@@ -133,15 +138,16 @@ fun SortAndViewBar(
                 text = stringResource(R.string.recents),
                 style = SpotlightTextStyle.Text11W600,
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding)
+                modifier = Modifier.padding(horizontal = SpotlightDimens.TopAppBarIconHorizontalPadding),
             )
         }
         Icon(
             painter = painterResource(if (!isInGridView) SpotlightIcons.GridView else SpotlightIcons.ListView),
             contentDescription = "",
-            modifier = Modifier
-                .size(SpotlightDimens.LibraryFunctionBarIconSize)
-                .singleClickable { onChangeViewClick(!isInGridView) },
+            modifier =
+                Modifier
+                    .size(SpotlightDimens.LibraryFunctionBarIconSize)
+                    .singleClickable { onChangeViewClick(!isInGridView) },
             tint = MaterialTheme.colorScheme.onBackground,
         )
     }

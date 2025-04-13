@@ -42,11 +42,12 @@ fun BrowseCard(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.BrowseSectionHeight)
-            .clip(shape = RoundedCornerShape(size = 6.dp))
-            .background(MaterialTheme.colorScheme.secondary),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.BrowseSectionHeight)
+                .clip(shape = RoundedCornerShape(size = 6.dp))
+                .background(MaterialTheme.colorScheme.secondary),
     ) {
         Text(
             text = title,
@@ -54,94 +55,101 @@ fun BrowseCard(
             color = MaterialTheme.colorScheme.onBackground,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .height(SpotlightDimens.BrowseSectionHeight)
-                .padding(
-                    top = 16.dp,
-                    start = 16.dp,
-                    end = SpotlightDimens.BrowseSectionThumbnailSize,
-                )
+            modifier =
+                Modifier
+                    .height(SpotlightDimens.BrowseSectionHeight)
+                    .padding(
+                        top = 16.dp,
+                        start = 16.dp,
+                        end = SpotlightDimens.BrowseSectionThumbnailSize,
+                    ),
         )
         RoundedCornerCover(
             imageUrl = imageUrl,
-            modifier = modifier
-                .align(Alignment.BottomEnd)
-                .size(SpotlightDimens.BrowseSectionThumbnailSize)
-                .rotate(30f)
-                .offset(
-                    x = SpotlightDimens.BrowseSectionThumbnailXOffset,
-                    y = SpotlightDimens.BrowseSectionThumbnailYOffset,
-                ),
+            modifier =
+                modifier
+                    .align(Alignment.BottomEnd)
+                    .size(SpotlightDimens.BrowseSectionThumbnailSize)
+                    .rotate(30f)
+                    .offset(
+                        x = SpotlightDimens.BrowseSectionThumbnailXOffset,
+                        y = SpotlightDimens.BrowseSectionThumbnailYOffset,
+                    ),
         )
     }
 }
 
 @Composable
-fun LyricsCard(
-    modifier: Modifier = Modifier,
-) {
+fun LyricsCard(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.LyricsCardHeight)
-            .clip(shape = RoundedCornerShape(20.dp))
-            .background(LyricsCardBackgroundColor),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.LyricsCardHeight)
+                .clip(shape = RoundedCornerShape(20.dp))
+                .background(LyricsCardBackgroundColor),
     ) {
         Text(
             text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
             style = SpotlightTextStyle.Text18W500L30,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    vertical = 50.dp,
-                    horizontal = 10.dp
-                )
-                .verticalScroll(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(
+                        vertical = 50.dp,
+                        horizontal = 10.dp,
+                    )
+                    .verticalScroll(
 // enabled = false,
-                    state = rememberScrollState(),
-                )
+                        state = rememberScrollState(),
+                    ),
         )
 
         Column {
             Text(
                 text = "Lyrics preview",
                 style = SpotlightTextStyle.Text14W600,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
             )
             Box(
-                modifier = Modifier
-                    .height(15.dp)
-                    .fillMaxWidth()
-                    .blur(15.dp, BlurredEdgeTreatment.Unbounded)
-                    .background(LyricsCardBackgroundColor.copy(alpha = 1f))
+                modifier =
+                    Modifier
+                        .height(15.dp)
+                        .fillMaxWidth()
+                        .blur(15.dp, BlurredEdgeTreatment.Unbounded)
+                        .background(LyricsCardBackgroundColor.copy(alpha = 1f)),
             )
         }
 
         Column(
-            modifier = Modifier
-                .padding(10.dp)
-                .align(Alignment.BottomStart)
+            modifier =
+                Modifier
+                    .padding(10.dp)
+                    .align(Alignment.BottomStart),
         ) {
             Box(
-                modifier = Modifier
-                    .height(15.dp)
-                    .fillMaxWidth()
-                    .blur(15.dp, BlurredEdgeTreatment.Unbounded)
-                    .background(LyricsCardBackgroundColor.copy(alpha = 1f))
+                modifier =
+                    Modifier
+                        .height(15.dp)
+                        .fillMaxWidth()
+                        .blur(15.dp, BlurredEdgeTreatment.Unbounded)
+                        .background(LyricsCardBackgroundColor.copy(alpha = 1f)),
             )
             Text(
                 text = "Show lyrics",
                 style = SpotlightTextStyle.Text12W600,
                 color = MaterialTheme.colorScheme.background,
-                modifier = Modifier
-                    .clip(shape = RoundedCornerShape(50.dp))
-                    .background(MaterialTheme.colorScheme.onBackground)
-                    .padding(
-                        vertical = 7.dp,
-                        horizontal = 13.dp,
-                    ),
+                modifier =
+                    Modifier
+                        .clip(shape = RoundedCornerShape(50.dp))
+                        .background(MaterialTheme.colorScheme.onBackground)
+                        .padding(
+                            vertical = 7.dp,
+                            horizontal = 13.dp,
+                        ),
             )
         }
     }
@@ -153,11 +161,12 @@ fun ArtistCard(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.ArtistCardHeight)
-            .clip(shape = RoundedCornerShape(20.dp))
-            .background(TopAppBarGray),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.ArtistCardHeight)
+                .clip(shape = RoundedCornerShape(20.dp))
+                .background(TopAppBarGray),
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -165,25 +174,28 @@ fun ArtistCard(
             Cover(
                 imageUrl = imageUrl,
                 contentScale = ContentScale.FillWidth,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(2f)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(2f),
             )
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(10.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .padding(10.dp),
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Column(
-                        modifier = Modifier.padding(end = 10.dp)
+                        modifier = Modifier.padding(end = 10.dp),
                     ) {
                         Text(
                             text = "Jax",
@@ -200,18 +212,19 @@ fun ArtistCard(
                         text = "Follow",
                         style = SpotlightTextStyle.Text12W600,
                         color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier
-                            .clip(shape = RoundedCornerShape(50.dp))
-                            .background(TopAppBarGray)
-                            .border(
-                                width = 0.5.dp,
-                                shape = RoundedCornerShape(50.dp),
-                                color = NavigationGray,
-                            )
-                            .padding(
-                                vertical = 7.dp,
-                                horizontal = 13.dp,
-                            ),
+                        modifier =
+                            Modifier
+                                .clip(shape = RoundedCornerShape(50.dp))
+                                .background(TopAppBarGray)
+                                .border(
+                                    width = 0.5.dp,
+                                    shape = RoundedCornerShape(50.dp),
+                                    color = NavigationGray,
+                                )
+                                .padding(
+                                    vertical = 7.dp,
+                                    horizontal = 13.dp,
+                                ),
                     )
                 }
 
@@ -221,20 +234,22 @@ fun ArtistCard(
                     maxLines = 2,
                     style = SpotlightTextStyle.Text11W400,
                     color = NavigationGray,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .background(TopAppBarGray),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .background(TopAppBarGray),
                 )
             }
         }
         Text(
             text = "About the artist",
             style = SpotlightTextStyle.Text14W600,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp)
-                .align(Alignment.TopStart),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp)
+                    .align(Alignment.TopStart),
         )
     }
 }
@@ -245,26 +260,29 @@ fun CreditCard(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.CreditCardHeight)
-            .clip(shape = RoundedCornerShape(20.dp))
-            .background(TopAppBarGray),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.CreditCardHeight)
+                .clip(shape = RoundedCornerShape(20.dp))
+                .background(TopAppBarGray),
     ) {
         Text(
             text = "Credits",
             style = SpotlightTextStyle.Text14W600,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp),
         )
 
         creditsList.forEach {
             Column(
-                modifier = Modifier.padding(
-                    horizontal = 15.dp,
-                    vertical = 8.dp,
-                )
+                modifier =
+                    Modifier.padding(
+                        horizontal = 15.dp,
+                        vertical = 8.dp,
+                    ),
             ) {
                 Text(
                     text = it.first,
@@ -290,7 +308,7 @@ fun Preview() {
         BrowseCard(
             title = "Musics",
             imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
-            modifier = Modifier
+            modifier = Modifier,
         )
     }
 }

@@ -12,15 +12,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object SearchGraph
 
-fun NavController.navigateToSearch(navOptions: NavOptions? = null) =
-    navigate(route = SearchGraph, navOptions = navOptions)
+fun NavController.navigateToSearch(navOptions: NavOptions? = null) = navigate(route = SearchGraph, navOptions = navOptions)
 
 fun NavGraphBuilder.searchGraph(
     onAvatarClick: () -> Unit,
     onCancelClick: () -> Unit,
     onNavigateToSearchClick: () -> Unit,
-
-    ) {
+) {
     navigation<SearchGraph>(
         startDestination = SearchRoute,
     ) {
@@ -55,9 +53,7 @@ data object SearchResultRoute
 fun NavController.navigateToSearchResultScreen(navOptions: NavOptions? = null) =
     navigate(route = SearchResultRoute, navOptions = navOptions)
 
-fun NavGraphBuilder.searchResultScreen(
-    onCancelClick: () -> Unit,
-) {
+fun NavGraphBuilder.searchResultScreen(onCancelClick: () -> Unit) {
     composable<SearchResultRoute> {
         SearchResultScreen(
             onCancelClick = onCancelClick,

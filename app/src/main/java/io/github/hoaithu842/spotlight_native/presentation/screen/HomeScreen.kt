@@ -48,9 +48,10 @@ fun HomeScreen(
 
     var showBottomSheet by remember { mutableStateOf(false) }
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface),
     ) {
         var currentTab by remember { mutableStateOf(HomeScreenTab.All) }
 
@@ -62,33 +63,37 @@ fun HomeScreen(
                     currentTab = tab
                 }
             },
-            modifier = Modifier
-                .statusBarsPadding()
-                .height(SpotlightDimens.TopAppBarHeight)
+            modifier =
+                Modifier
+                    .statusBarsPadding()
+                    .height(SpotlightDimens.TopAppBarHeight),
         )
 
         when (currentTab) {
-            HomeScreenTab.All -> AllTab(
-                uiState = uiState,
-                onArtistClick = onArtistClick,
-                onRecommendedPlaylistClick = onRecommendedPlaylistClick,
-                onLongPress = { showBottomSheet = true }
-            )
+            HomeScreenTab.All ->
+                AllTab(
+                    uiState = uiState,
+                    onArtistClick = onArtistClick,
+                    onRecommendedPlaylistClick = onRecommendedPlaylistClick,
+                    onLongPress = { showBottomSheet = true },
+                )
 
-            HomeScreenTab.Music -> Text(
-                text = "Home - Music",
-            )
+            HomeScreenTab.Music ->
+                Text(
+                    text = "Home - Music",
+                )
 
-            HomeScreenTab.Podcasts -> Text(
-                text = "Home - Podcasts",
-            )
+            HomeScreenTab.Podcasts ->
+                Text(
+                    text = "Home - Podcasts",
+                )
         }
     }
     if (showBottomSheet) {
         PlaylistBottomSheet(
             onDismissRequest = {
                 showBottomSheet = false
-            }
+            },
         )
     }
 }
@@ -123,7 +128,7 @@ fun AllTab(
                     item {
                         FlowRow(
                             maxItemsInEachRow = 2,
-                            modifier = Modifier.padding(SpotlightDimens.RecommendationPadding)
+                            modifier = Modifier.padding(SpotlightDimens.RecommendationPadding),
                         ) {
                             uiState.contents.first().items.forEach {
                                 if (it.type == "artist") {
@@ -131,18 +136,20 @@ fun AllTab(
                                         artist = it.name,
                                         imageUrl = it.image?.url ?: "",
                                         onLongPress = {},
-                                        modifier = Modifier
-                                            .padding(SpotlightDimens.RecommendationPadding)
-                                            .weight(1f),
+                                        modifier =
+                                            Modifier
+                                                .padding(SpotlightDimens.RecommendationPadding)
+                                                .weight(1f),
                                     )
                                 } else {
                                     HorizontalRoundedCornerThumbnail(
                                         artist = it.name,
                                         imageUrl = it.image?.url ?: "",
                                         onLongPress = {},
-                                        modifier = Modifier
-                                            .padding(SpotlightDimens.RecommendationPadding)
-                                            .weight(1f),
+                                        modifier =
+                                            Modifier
+                                                .padding(SpotlightDimens.RecommendationPadding)
+                                                .weight(1f),
                                     )
                                 }
                             }
@@ -163,17 +170,19 @@ fun AllTab(
         }
         item {
             Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(SpotlightDimens.MinimizedPlayerHeight)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(SpotlightDimens.MinimizedPlayerHeight),
             )
         }
     }
 
     Spacer(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.MinimizedPlayerHeight)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.MinimizedPlayerHeight),
     )
 }
 
@@ -186,9 +195,10 @@ fun HomeSectionDisplay(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.RecommendationSectionHeight)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.RecommendationSectionHeight),
     ) {
         Text(
             text = homeSection.name,
@@ -196,7 +206,7 @@ fun HomeSectionDisplay(
             color = MaterialTheme.colorScheme.onBackground,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.padding(10.dp),
         )
 
         LazyRow(
@@ -214,8 +224,9 @@ fun HomeSectionDisplay(
                 } else {
                     VerticalRoundedCornerThumbnail(
                         imageUrl = homeSection.items[index].image?.url ?: "",
-                        description = homeSection.items[index].artists?.joinToString { it.name }
-                            ?: "",
+                        description =
+                            homeSection.items[index].artists?.joinToString { it.name }
+                                ?: "",
                         onClick = { onRecommendedPlaylistClick(index) },
                         onLongPress = onLongPress,
                     )

@@ -43,35 +43,36 @@ fun Modifier.invisibleBy(condition: Boolean): Modifier =
         then(
             Modifier
                 .alpha(0f)
-                .gesturesDisabled()
+                .gesturesDisabled(),
         )
     } else {
         then(Modifier.alpha(1f))
     }
 
-inline fun Modifier.noRippleClickable(
-    crossinline onClick: () -> Unit
-): Modifier = composed {
-    clickable(
-        indication = null,
-        interactionSource = remember { MutableInteractionSource() }) {
-        onClick()
+inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier =
+    composed {
+        clickable(
+            indication = null,
+            interactionSource = remember { MutableInteractionSource() },
+        ) {
+            onClick()
+        }
     }
-}
 
 fun Modifier.singleClickable(
     enabled: Boolean = true,
     onClickLabel: String? = null,
     role: Role? = null,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) = composed(
-    inspectorInfo = debugInspectorInfo {
-        name = "clickable"
-        properties["enabled"] = enabled
-        properties["onClickLabel"] = onClickLabel
-        properties["role"] = role
-        properties["onClick"] = onClick
-    }
+    inspectorInfo =
+        debugInspectorInfo {
+            name = "clickable"
+            properties["enabled"] = enabled
+            properties["onClickLabel"] = onClickLabel
+            properties["role"] = role
+            properties["onClick"] = onClick
+        },
 ) {
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
     Modifier.clickable(
@@ -80,7 +81,7 @@ fun Modifier.singleClickable(
         onClick = { multipleEventsCutter.processEvent { onClick() } },
         role = role,
         indication = LocalIndication.current,
-        interactionSource = remember { MutableInteractionSource() }
+        interactionSource = remember { MutableInteractionSource() },
     )
 }
 
@@ -90,8 +91,7 @@ internal interface MultipleEventsCutter {
     companion object
 }
 
-internal fun MultipleEventsCutter.Companion.get(): MultipleEventsCutter =
-    MultipleEventsCutterImpl()
+internal fun MultipleEventsCutter.Companion.get(): MultipleEventsCutter = MultipleEventsCutterImpl()
 
 private class MultipleEventsCutterImpl : MultipleEventsCutter {
     private val now: Long
@@ -122,32 +122,36 @@ fun Modifier.shimmerLoadingAnimation(
 
             val transition = rememberInfiniteTransition(label = "")
 
-            val translateAnimation = transition.animateFloat(
-                initialValue = 0f,
-                targetValue = (durationMillis + widthOfShadowBrush).toFloat(),
-                animationSpec = infiniteRepeatable(
-                    animation = tween(
-                        durationMillis = durationMillis,
-                        easing = LinearEasing,
-                    ),
-                    repeatMode = RepeatMode.Restart,
-                ),
-                label = "Shimmer loading animation",
-            )
+            val translateAnimation =
+                transition.animateFloat(
+                    initialValue = 0f,
+                    targetValue = (durationMillis + widthOfShadowBrush).toFloat(),
+                    animationSpec =
+                        infiniteRepeatable(
+                            animation =
+                                tween(
+                                    durationMillis = durationMillis,
+                                    easing = LinearEasing,
+                                ),
+                            repeatMode = RepeatMode.Restart,
+                        ),
+                    label = "Shimmer loading animation",
+                )
 
             this.background(
-                brush = Brush.linearGradient(
-                    colors = shimmerColors,
-                    start = Offset(x = translateAnimation.value - widthOfShadowBrush, y = 0.0f),
-                    end = Offset(x = translateAnimation.value, y = angleOfAxisY),
-                ),
+                brush =
+                    Brush.linearGradient(
+                        colors = shimmerColors,
+                        start = Offset(x = translateAnimation.value - widthOfShadowBrush, y = 0.0f),
+                        end = Offset(x = translateAnimation.value, y = angleOfAxisY),
+                    ),
             )
         }
     }
 }
 
 data class ShimmerAnimationData(
-    private val isLightMode: Boolean
+    private val isLightMode: Boolean,
 ) {
     fun getColours(): List<Color> {
         return if (isLightMode) {
