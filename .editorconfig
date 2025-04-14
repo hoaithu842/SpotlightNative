@@ -1,0 +1,5 @@
+[*.{kt,kts}]
+# Disable the function-naming rule specifically for Composable functions
+ktlint_function_naming_ignore_when_annotated_with = Composable
+# Disable comment positioning in parameter lists
+ktlint_standard_comment_wrapping = disabled

@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
     <queries>
-        <package android:name="io.github.hoaithu842.spotlight_native.service" />
+        <package android:name="io.github.hoaithu842.spotlight.service" />
     </queries>
 
     <application

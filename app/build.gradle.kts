@@ -11,11 +11,11 @@ plugins {
 }
 
 android {
-    namespace = "io.github.hoaithu842.spotlight_native"
+    namespace = "io.github.hoaithu842.spotlight"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "io.github.hoaithu842.spotlight_native"
+        applicationId = "io.github.hoaithu842.spotlight"
         minSdk = 33
         targetSdk = 35
         versionCode = 1
@@ -51,6 +51,16 @@ android {
         }
     }
 
+    ktlint {
+        android = true
+        ignoreFailures = false
+        reporters {
+            reporter(ReporterType.PLAIN)
+            reporter(ReporterType.CHECKSTYLE)
+            reporter(ReporterType.SARIF)
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -72,16 +82,6 @@ android {
     }
     androidResources {
         generateLocaleConfig = true
-    }
-}
-
-ktlint {
-    android = true
-    ignoreFailures = false
-    reporters {
-        reporter(ReporterType.PLAIN)
-        reporter(ReporterType.CHECKSTYLE)
-        reporter(ReporterType.SARIF)
     }
 }
 
