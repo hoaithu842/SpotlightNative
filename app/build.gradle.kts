@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     id("org.jlleitschuh.gradle.ktlint") version "12.2.0"
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -124,6 +125,8 @@ dependencies {
 
     // Datastore
     implementation(libs.androidx.datastore.preferences)
+
+    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
