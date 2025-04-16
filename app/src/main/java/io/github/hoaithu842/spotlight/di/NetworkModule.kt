@@ -20,7 +20,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val BASE_URL = "http://sa.thaijaor.site:8083/api/v1/"
+    private const val BASE_URL = "https://spotlighthcmus.io.vn/api/v1/"
 
     @Provides
     @Singleton
@@ -45,7 +45,8 @@ object NetworkModule {
     @Provides
     @Singleton
     fun providesDictionaryOkHttp(authorizationInterceptor: Interceptor): OkHttpClient {
-        val loggingInterceptor = HttpLoggingInterceptor().apply { setLevel(HttpLoggingInterceptor.Level.BODY) }
+        val loggingInterceptor =
+            HttpLoggingInterceptor().apply { setLevel(HttpLoggingInterceptor.Level.BODY) }
         return OkHttpClient()
             .newBuilder()
             .addInterceptor(authorizationInterceptor)

@@ -1,7 +1,7 @@
 package io.github.hoaithu842.spotlight.data.network
 
 import io.github.hoaithu842.spotlight.data.network.dto.ArtistDetailsDto
-import io.github.hoaithu842.spotlight.data.network.dto.HomeContentsDto
+import io.github.hoaithu842.spotlight.data.network.dto.HomeSectionDto
 import io.github.hoaithu842.spotlight.data.network.dto.LibraryContentsDto
 import io.github.hoaithu842.spotlight.data.network.dto.SuccessBodyDto
 import io.github.hoaithu842.spotlight.data.network.dto.UserProfileDto
@@ -14,7 +14,7 @@ interface SpotlightApiService {
     suspend fun getSessionUser(): ApiResponse<SuccessBodyDto<UserProfileDto>>
 
     @GET("home")
-    suspend fun getHomeContents(): ApiResponse<SuccessBodyDto<HomeContentsDto>>
+    suspend fun getHomeContents(): ApiResponse<SuccessBodyDto<List<HomeSectionDto>?>>
 
     @GET("artists/{id}")
     suspend fun getArtist(
