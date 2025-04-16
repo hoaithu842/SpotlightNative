@@ -1,0 +1,68 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    crashlytics
+  
+    # sh "your_script.sh"
+    # You can also use other beta testing services here
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+
+  lane :build_apk do
+      gradle(
+        task: "assemble",
+        build_type: "debug"
+      )
+  end
+
+  desc "Spotlight App Distribution"
+  require 'csv'
+  lane :distribute do
+      build_apk
+
+      testers = []
+      CSV.foreach("testers.csv", headers: true)  do |row|
+          testers << row["email"].strip
+      end
+
+      testers_str = testers.join(", ")
+      release_notes = File.read("release_notes").strip
+
+      release = firebase_app_distribution(
+        app: "1:442333719546:android:d345be45fb25e330505243",
+        service_credentials_file: "spotlight-86aea-f00fd4d9db2a.json",
+        testers: testers_str,
+        release_notes: release_notes,
+        android_artifact_path: "app/build/outputs/apk/debug/app-debug.apk",
+        debug: true
+      )
+  end
+end
