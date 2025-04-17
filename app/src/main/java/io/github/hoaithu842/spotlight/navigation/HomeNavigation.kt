@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import io.github.hoaithu842.spotlight.domain.model.UserProfile
 import io.github.hoaithu842.spotlight.presentation.screen.HomeScreen
 import kotlinx.serialization.Serializable
 
@@ -14,6 +15,7 @@ data object HomeGraph
 fun NavController.navigateToHome(navOptions: NavOptions? = null) = navigate(route = HomeGraph, navOptions = navOptions)
 
 fun NavGraphBuilder.homeGraph(
+    userProfile: UserProfile?,
     onAvatarClick: () -> Unit,
     onArtistClick: (String) -> Unit,
     onRecommendedPlaylistClick: (Int) -> Unit,
@@ -23,6 +25,7 @@ fun NavGraphBuilder.homeGraph(
         startDestination = HomeRoute,
     ) {
         homeScreen(
+            userProfile = userProfile,
             onAvatarClick = onAvatarClick,
             onArtistClick = onArtistClick,
             onRecommendedPlaylistClick = onRecommendedPlaylistClick,
@@ -42,12 +45,14 @@ fun NavGraphBuilder.homeGraph(
 data object HomeRoute
 
 fun NavGraphBuilder.homeScreen(
+    userProfile: UserProfile?,
     onAvatarClick: () -> Unit,
     onArtistClick: (String) -> Unit,
     onRecommendedPlaylistClick: (Int) -> Unit,
 ) {
     composable<HomeRoute> {
         HomeScreen(
+            userProfile = userProfile,
             onAvatarClick = onAvatarClick,
             onArtistClick = onArtistClick,
             onRecommendedPlaylistClick = onRecommendedPlaylistClick,

@@ -17,13 +17,13 @@ import io.github.hoaithu842.spotlight.domain.model.UserProfile
 fun UserProfileDto.toDomain(): UserProfile =
     UserProfile(
         name = this.name,
-        pictureURL = this.picture,
-        id = null,
-        nickname = null,
-        email = null,
-        isEmailVerified = null,
+        pictureURL = this.avatar?.url ?: "",
+        id = this.id,
+        nickname = this.username,
+        email = this.email,
+        isEmailVerified = this.emailVerified,
         familyName = null,
-        createdAt = null,
+        createdAt = this.createdAt,
     )
 
 fun ImageDto?.toDomain(): Image =
@@ -112,9 +112,9 @@ fun LibraryItemDto.toDomain(): LibraryItem =
 fun LibraryContentsDto.toDomain(): LibraryContents =
     LibraryContents(
         items =
-            this.items?.map {
-                it.toDomain().also {
-                    Log.d("Rachel", it.name)
-                }
-            } ?: listOf(),
+        this.items?.map {
+            it.toDomain().also {
+                Log.d("Rachel", it.name)
+            }
+        } ?: listOf(),
     )

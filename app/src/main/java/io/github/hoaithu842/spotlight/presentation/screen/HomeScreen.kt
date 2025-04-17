@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.hoaithu842.spotlight.domain.model.HomeSection
+import io.github.hoaithu842.spotlight.domain.model.UserProfile
 import io.github.hoaithu842.spotlight.presentation.component.HorizontalCircularThumbnail
 import io.github.hoaithu842.spotlight.presentation.component.HorizontalRoundedCornerThumbnail
 import io.github.hoaithu842.spotlight.presentation.component.PlaylistBottomSheet
@@ -39,6 +40,7 @@ import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightTextStyle
 
 @Composable
 fun HomeScreen(
+    userProfile: UserProfile?,
     onAvatarClick: () -> Unit,
     onArtistClick: (String) -> Unit,
     onRecommendedPlaylistClick: (Int) -> Unit,
@@ -67,6 +69,7 @@ fun HomeScreen(
                 Modifier
                     .statusBarsPadding()
                     .height(SpotlightDimens.TopAppBarHeight),
+            avatarUrl = userProfile?.pictureURL,
         )
 
         when (currentTab) {

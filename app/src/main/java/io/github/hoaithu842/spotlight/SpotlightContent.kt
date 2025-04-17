@@ -114,11 +114,11 @@ fun SpotlightContent(
         )
         Scaffold(
             modifier =
-                Modifier
-                    .offset(x = animatedOffset)
-                    .clickable(enabled = drawerState == CustomDrawerState.Opened) {
-                        drawerState = CustomDrawerState.Closed
-                    },
+            Modifier
+                .offset(x = animatedOffset)
+                .clickable(enabled = drawerState == CustomDrawerState.Opened) {
+                    drawerState = CustomDrawerState.Closed
+                },
             bottomBar = {
                 if (isNavBarDisplaying) {
                     SpotlightNavigationBar(
@@ -146,9 +146,9 @@ fun SpotlightContent(
         ) { innerPadding ->
             Box(
                 modifier =
-                    Modifier
-                        .padding(bottom = innerPadding.calculateBottomPadding())
-                        .fillMaxSize(),
+                Modifier
+                    .padding(bottom = innerPadding.calculateBottomPadding())
+                    .fillMaxSize(),
             ) {
                 BottomSheetScaffold(
                     scaffoldState = scaffoldState,
@@ -195,6 +195,7 @@ fun SpotlightContent(
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     SpotlightNavHost(
+                        userProfile = userProfile,
                         navHostController = navController,
                         onAvatarClick = { drawerState = drawerState.opposite() },
                     )

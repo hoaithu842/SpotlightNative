@@ -5,6 +5,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
+import io.github.hoaithu842.spotlight.domain.model.UserProfile
 
 fun navigateToTopLevelDestination(
     navController: NavHostController,
@@ -43,6 +44,7 @@ fun navigateToTopLevelDestination(
 
 @Composable
 fun SpotlightNavHost(
+    userProfile: UserProfile?,
     navHostController: NavHostController,
     onAvatarClick: () -> Unit,
 ) {
@@ -51,6 +53,7 @@ fun SpotlightNavHost(
         startDestination = HomeGraph,
     ) {
         homeGraph(
+            userProfile = userProfile,
             onAvatarClick = onAvatarClick,
             onArtistClick = navHostController::navigateToArtistScreen,
             onRecommendedPlaylistClick = navHostController::navigateToRecommendationScreen,
@@ -62,9 +65,9 @@ fun SpotlightNavHost(
             onNavigateToSearchClick = {
                 navHostController.navigateToSearchResultScreen(
                     navOptions =
-                        navOptions {
-                            launchSingleTop = true
-                        },
+                    navOptions {
+                        launchSingleTop = true
+                    },
                 )
             },
         )
@@ -74,9 +77,9 @@ fun SpotlightNavHost(
             onNavigateToSearchClick = {
                 navHostController.navigateToLibrarySearchScreen(
                     navOptions =
-                        navOptions {
-                            launchSingleTop = true
-                        },
+                    navOptions {
+                        launchSingleTop = true
+                    },
                 )
             },
         )

@@ -1,7 +1,5 @@
 package io.github.hoaithu842.spotlight.domain.model
 
-import java.util.Date
-
 data class UserProfile(
     val id: String?,
     val name: String?,
@@ -10,5 +8,5 @@ data class UserProfile(
     val email: String?,
     val isEmailVerified: Boolean?,
     val familyName: String?,
-    val createdAt: Date?,
+    val createdAt: String?,
 )
