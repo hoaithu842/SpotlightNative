@@ -21,6 +21,6 @@ interface SpotlightApiService {
         @Path("id") id: String,
     ): ApiResponse<SuccessBodyDto<ArtistDetailsDto>>
 
-    @GET("playlists")
+    @GET("library")
     suspend fun getPlaylists(): ApiResponse<SuccessBodyDto<LibraryContentsDto>>
 }

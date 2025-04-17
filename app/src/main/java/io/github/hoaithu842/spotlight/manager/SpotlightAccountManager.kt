@@ -39,6 +39,37 @@ class SpotlightAccountManager
                                 // on the Universal Login screen or something
                                 // unusual happened.
                                 Log.e("Rachel", "Error occurred in login(): $error")
+                                Log.e("Rachel", "isAccessDenied: ${error.isAccessDenied}")
+                                Log.e("Rachel", "isRuleError: ${error.isRuleError}")
+                                Log.e("Rachel", "isNetworkError: ${error.isNetworkError}")
+                                Log.e("Rachel", "isLoginRequired: ${error.isLoginRequired}")
+                                Log.e("Rachel", "isCanceled: ${error.isCanceled}")
+                                Log.e(
+                                    "Rachel",
+                                    "isBrowserAppNotAvailable: ${error.isBrowserAppNotAvailable}",
+                                )
+                                Log.e(
+                                    "Rachel",
+                                    "isIdTokenValidationError: ${error.isIdTokenValidationError}",
+                                )
+                                Log.e("Rachel", "isInvalidAuthorizeURL: ${error.isInvalidAuthorizeURL}")
+                                Log.e(
+                                    "Rachel",
+                                    "isInvalidConfiguration: ${error.isInvalidConfiguration}",
+                                )
+                                Log.e("Rachel", "isInvalidCredentials: ${error.isInvalidCredentials}")
+                                Log.e("Rachel", "isInvalidRefreshToken: ${error.isInvalidRefreshToken}")
+                                Log.e("Rachel", "isPKCENotAvailable: ${error.isPKCENotAvailable}")
+                                Log.e("Rachel", "isTooManyAttempts: ${error.isTooManyAttempts}")
+                                Log.e(
+                                    "Rachel",
+                                    "isVerificationRequired: ${error.isVerificationRequired}",
+                                )
+                                Log.e(
+                                    "Rachel",
+                                    "isAuthenticationCanceled: ${error.isAuthenticationCanceled}",
+                                )
+                                Log.e("Rachel", "getDescription: ${error.getDescription()}")
                                 cont.resume(Result.failure(Throwable(error.message)))
                             }
 

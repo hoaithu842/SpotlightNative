@@ -8,18 +8,18 @@ import io.github.hoaithu842.spotlight.domain.repository.HomeRepository
 import javax.inject.Inject
 
 class HomeRepositoryImpl
-@Inject
-constructor(
-    private val apiService: SpotlightApiService,
-) : HomeRepository {
-    override suspend fun getHomeContents(): ApiResponse<HomeContents> {
-        // TODO: return from ApiService
-        return when (val response = apiService.getHomeContents()) {
-            is ApiResponse.Error -> ApiResponse.Error(response.code, response.message)
-            is ApiResponse.Exception -> ApiResponse.Exception(response.e)
-            is ApiResponse.Success -> ApiResponse.Success(
-                HomeContents(contents = response.data.data?.map { it.toDomain() } ?: listOf())
-            )
+    @Inject
+    constructor(
+        private val apiService: SpotlightApiService,
+    ) : HomeRepository {
+        override suspend fun getHomeContents(): ApiResponse<HomeContents> {
+            return when (val response = apiService.getHomeContents()) {
+                is ApiResponse.Error -> ApiResponse.Error(response.code, response.message)
+                is ApiResponse.Exception -> ApiResponse.Exception(response.e)
+                is ApiResponse.Success ->
+                    ApiResponse.Success(
+                        HomeContents(contents = response.data.data?.map { it.toDomain() } ?: listOf()),
+                    )
+            }
         }
     }
-}
