@@ -60,26 +60,28 @@ fun SpotlightNavHost(
             onBackClick = navHostController::popBackStack,
         )
         searchGraph(
+            userProfile = userProfile,
             onAvatarClick = onAvatarClick,
             onCancelClick = navHostController::popBackStack,
             onNavigateToSearchClick = {
                 navHostController.navigateToSearchResultScreen(
                     navOptions =
-                    navOptions {
-                        launchSingleTop = true
-                    },
+                        navOptions {
+                            launchSingleTop = true
+                        },
                 )
             },
         )
         libraryGraph(
+            userProfile = userProfile,
             onAvatarClick = onAvatarClick,
             onCancelClick = navHostController::popBackStack,
             onNavigateToSearchClick = {
                 navHostController.navigateToLibrarySearchScreen(
                     navOptions =
-                    navOptions {
-                        launchSingleTop = true
-                    },
+                        navOptions {
+                            launchSingleTop = true
+                        },
                 )
             },
         )

@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.hoaithu842.spotlight.R
+import io.github.hoaithu842.spotlight.domain.model.UserProfile
 import io.github.hoaithu842.spotlight.extension.singleClickable
 import io.github.hoaithu842.spotlight.presentation.component.LibraryPlaylistItem
 import io.github.hoaithu842.spotlight.presentation.viewmodel.LibraryUiState
@@ -40,6 +41,7 @@ import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightTextStyle
 
 @Composable
 fun LibraryScreen(
+    userProfile: UserProfile?,
     onAvatarClick: () -> Unit,
     onNavigateToSearchClick: () -> Unit,
     viewModel: LibraryViewModel = hiltViewModel(),
@@ -61,6 +63,7 @@ fun LibraryScreen(
                 Modifier
                     .statusBarsPadding()
                     .height(SpotlightDimens.TopAppBarHeight * 2),
+            avatarUrl = userProfile?.pictureURL,
         )
 
         SortAndViewBar(

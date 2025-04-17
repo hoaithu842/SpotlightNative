@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import io.github.hoaithu842.spotlight.domain.model.UserProfile
 import io.github.hoaithu842.spotlight.presentation.screen.SearchResultScreen
 import io.github.hoaithu842.spotlight.presentation.screen.SearchScreen
 import kotlinx.serialization.Serializable
@@ -15,6 +16,7 @@ data object SearchGraph
 fun NavController.navigateToSearch(navOptions: NavOptions? = null) = navigate(route = SearchGraph, navOptions = navOptions)
 
 fun NavGraphBuilder.searchGraph(
+    userProfile: UserProfile?,
     onAvatarClick: () -> Unit,
     onCancelClick: () -> Unit,
     onNavigateToSearchClick: () -> Unit,
@@ -23,6 +25,7 @@ fun NavGraphBuilder.searchGraph(
         startDestination = SearchRoute,
     ) {
         searchScreen(
+            userProfile = userProfile,
             onAvatarClick = onAvatarClick,
             onNavigateToSearchClick = onNavigateToSearchClick,
         )
@@ -36,11 +39,13 @@ fun NavGraphBuilder.searchGraph(
 data object SearchRoute
 
 fun NavGraphBuilder.searchScreen(
+    userProfile: UserProfile?,
     onAvatarClick: () -> Unit,
     onNavigateToSearchClick: () -> Unit,
 ) {
     composable<SearchRoute> {
         SearchScreen(
+            userProfile = userProfile,
             onAvatarClick = onAvatarClick,
             onNavigateToSearchClick = onNavigateToSearchClick,
         )

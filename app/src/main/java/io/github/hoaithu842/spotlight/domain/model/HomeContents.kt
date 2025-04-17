@@ -12,12 +12,13 @@ data class HomeSection(
 
 data class HomeSectionItem(
     val id: String = "",
-    val name: String = "",
+    val title: String = "",
     val type: String = "",
-    val inLibrary: Boolean = false,
+    val artists: List<Artist>?,
     val image: Image?,
     val song: Song?,
-    val artists: List<Artist>?,
+    val name: String = "",
+    val inLibrary: Boolean = false,
 )
 
 data class Song(

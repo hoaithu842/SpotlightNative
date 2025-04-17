@@ -146,7 +146,7 @@ fun AllTab(
                                     )
                                 } else {
                                     HorizontalRoundedCornerThumbnail(
-                                        artist = it.name,
+                                        artist = it.title,
                                         imageUrl = it.image?.url ?: "",
                                         onLongPress = {},
                                         modifier =
@@ -228,8 +228,8 @@ fun HomeSectionDisplay(
                     VerticalRoundedCornerThumbnail(
                         imageUrl = homeSection.items[index].image?.url ?: "",
                         description =
-                            homeSection.items[index].artists?.joinToString { it.name }
-                                ?: "",
+                            homeSection.items[index].title,
+//                            homeSection.items[index].artists?.joinToString { it.name } ?: "",
                         onClick = { onRecommendedPlaylistClick(index) },
                         onLongPress = onLongPress,
                     )

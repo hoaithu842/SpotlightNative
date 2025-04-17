@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import io.github.hoaithu842.spotlight.domain.model.UserProfile
 import io.github.hoaithu842.spotlight.presentation.screen.LibraryScreen
 import io.github.hoaithu842.spotlight.presentation.screen.LibrarySearchScreen
 import kotlinx.serialization.Serializable
@@ -15,6 +16,7 @@ data object LibraryGraph
 fun NavController.navigateToLibrary(navOptions: NavOptions? = null) = navigate(route = LibraryGraph, navOptions = navOptions)
 
 fun NavGraphBuilder.libraryGraph(
+    userProfile: UserProfile?,
     onAvatarClick: () -> Unit,
     onCancelClick: () -> Unit,
     onNavigateToSearchClick: () -> Unit,
@@ -23,6 +25,7 @@ fun NavGraphBuilder.libraryGraph(
         startDestination = LibraryRoute,
     ) {
         libraryScreen(
+            userProfile = userProfile,
             onAvatarClick = onAvatarClick,
             onNavigateToSearchClick = onNavigateToSearchClick,
         )
@@ -36,11 +39,13 @@ fun NavGraphBuilder.libraryGraph(
 data object LibraryRoute
 
 fun NavGraphBuilder.libraryScreen(
+    userProfile: UserProfile?,
     onAvatarClick: () -> Unit,
     onNavigateToSearchClick: () -> Unit,
 ) {
     composable<LibraryRoute> {
         LibraryScreen(
+            userProfile = userProfile,
             onAvatarClick = onAvatarClick,
             onNavigateToSearchClick = onNavigateToSearchClick,
         )

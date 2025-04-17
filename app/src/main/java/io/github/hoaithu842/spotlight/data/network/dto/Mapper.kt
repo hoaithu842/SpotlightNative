@@ -75,6 +75,7 @@ fun ArtistDto.toDomain(): Artist =
 fun HomeSectionItemDto.toDomain(): HomeSectionItem =
     HomeSectionItem(
         id = this.id ?: "",
+        title = this.title ?: "",
         name = this.name ?: "",
         type = this.type ?: "",
         inLibrary = this.inLibrary ?: false,
@@ -112,9 +113,9 @@ fun LibraryItemDto.toDomain(): LibraryItem =
 fun LibraryContentsDto.toDomain(): LibraryContents =
     LibraryContents(
         items =
-        this.items?.map {
-            it.toDomain().also {
-                Log.d("Rachel", it.name)
-            }
-        } ?: listOf(),
+            this.items?.map {
+                it.toDomain().also {
+                    Log.d("Rachel", it.name)
+                }
+            } ?: listOf(),
     )

@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import io.github.hoaithu842.spotlight.domain.model.UserProfile
 import io.github.hoaithu842.spotlight.extension.noRippleClickable
 import io.github.hoaithu842.spotlight.presentation.component.BrowseCard
 import io.github.hoaithu842.spotlight.presentation.component.SearchBar
@@ -26,6 +27,7 @@ import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightDimens
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
+    userProfile: UserProfile?,
     onAvatarClick: () -> Unit,
     onNavigateToSearchClick: () -> Unit,
 ) {
@@ -42,6 +44,7 @@ fun SearchScreen(
         SearchTopAppBar(
             scrollBehavior = scrollBehavior,
             onAvatarClick = onAvatarClick,
+            avatarUrl = userProfile?.pictureURL,
         )
 
         SearchBar(
