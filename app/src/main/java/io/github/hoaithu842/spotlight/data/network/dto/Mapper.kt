@@ -11,6 +11,8 @@ import io.github.hoaithu842.spotlight.domain.model.HomeSectionItem
 import io.github.hoaithu842.spotlight.domain.model.Image
 import io.github.hoaithu842.spotlight.domain.model.LibraryContents
 import io.github.hoaithu842.spotlight.domain.model.LibraryItem
+import io.github.hoaithu842.spotlight.domain.model.Playlist
+import io.github.hoaithu842.spotlight.domain.model.RecommendedPlaylists
 import io.github.hoaithu842.spotlight.domain.model.Song
 import io.github.hoaithu842.spotlight.domain.model.UserProfile
 
@@ -113,9 +115,23 @@ fun LibraryItemDto.toDomain(): LibraryItem =
 fun LibraryContentsDto.toDomain(): LibraryContents =
     LibraryContents(
         items =
-            this.items?.map {
-                it.toDomain().also {
-                    Log.d("Rachel", it.name)
-                }
-            } ?: listOf(),
+        this.items?.map {
+            it.toDomain().also {
+                Log.d("Rachel", it.name)
+            }
+        } ?: listOf(),
+    )
+
+fun PlaylistDto?.toDomain(): Playlist =
+    Playlist(
+        id = this?.id,
+        name = this?.name,
+        description = this?.description,
+        color = this?.color,
+        createdAt = this?.createdAt,
+    )
+
+fun PlaylistsPagingDto?.toDomain(): RecommendedPlaylists =
+    RecommendedPlaylists(
+        items = this?.items?.map { it.toDomain() }
     )

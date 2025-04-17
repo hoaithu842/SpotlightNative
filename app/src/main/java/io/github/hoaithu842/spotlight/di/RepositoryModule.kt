@@ -9,12 +9,14 @@ import io.github.hoaithu842.spotlight.data.repository.HomeRepositoryImpl
 import io.github.hoaithu842.spotlight.data.repository.LibraryRepositoryImpl
 import io.github.hoaithu842.spotlight.data.repository.PlayerRepositoryImpl
 import io.github.hoaithu842.spotlight.data.repository.PreferencesRepositoryImpl
+import io.github.hoaithu842.spotlight.data.repository.SearchRepositoryImpl
 import io.github.hoaithu842.spotlight.data.repository.UserRepositoryImpl
 import io.github.hoaithu842.spotlight.domain.repository.ArtistRepository
 import io.github.hoaithu842.spotlight.domain.repository.HomeRepository
 import io.github.hoaithu842.spotlight.domain.repository.LibraryRepository
 import io.github.hoaithu842.spotlight.domain.repository.PlayerRepository
 import io.github.hoaithu842.spotlight.domain.repository.PreferencesRepository
+import io.github.hoaithu842.spotlight.domain.repository.SearchRepository
 import io.github.hoaithu842.spotlight.domain.repository.UserRepository
 
 @Module
@@ -37,4 +39,7 @@ abstract class RepositoryModule {
 
     @Binds
     internal abstract fun bindsLibraryRepository(libraryRepository: LibraryRepositoryImpl): LibraryRepository
+
+    @Binds
+    internal abstract fun bindsSearchRepository(searchRepository: SearchRepositoryImpl): SearchRepository
 }

@@ -20,7 +20,7 @@ class LibraryViewModel
     ) : ViewModel() {
         val libraryUiState: StateFlow<LibraryUiState> =
             flow {
-                emit(libraryRepository.getPlaylists())
+                emit(libraryRepository.getLibrary())
             }.map {
                 when (it) {
                     is ApiResponse.Error -> LibraryUiState.Error

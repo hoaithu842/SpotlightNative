@@ -12,7 +12,7 @@ class LibraryRepositoryImpl
     constructor(
 //        private val apiService: SpotlightApiService,
     ) : LibraryRepository {
-        override suspend fun getPlaylists(): ApiResponse<LibraryContents> {
+        override suspend fun getLibrary(): ApiResponse<LibraryContents> {
             return ApiResponse.Success(data = fakeLibraryDetails.toDomain())
         }
     }
