@@ -6,13 +6,5 @@ data class PlaylistsPagingDto(
     @SerializedName("items")
     val items: List<PlaylistDto>?,
     @SerializedName("meta")
-    val meta: PagingDetailsDto,
-) {
-    data class PagingDetailsDto(
-        val total: Int,
-        val count: Int,
-        val perPage: Int,
-        val currentPage: Int,
-        val totalPage: Int,
-    )
-}
+    val meta: DetailsPagingDto,
+)

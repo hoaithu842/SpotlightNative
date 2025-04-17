@@ -115,11 +115,11 @@ fun LibraryItemDto.toDomain(): LibraryItem =
 fun LibraryContentsDto.toDomain(): LibraryContents =
     LibraryContents(
         items =
-        this.items?.map {
-            it.toDomain().also {
-                Log.d("Rachel", it.name)
-            }
-        } ?: listOf(),
+            this.items?.map {
+                it.toDomain().also {
+                    Log.d("Rachel", it.name)
+                }
+            } ?: listOf(),
     )
 
 fun PlaylistDto?.toDomain(): Playlist =
@@ -133,5 +133,5 @@ fun PlaylistDto?.toDomain(): Playlist =
 
 fun PlaylistsPagingDto?.toDomain(): RecommendedPlaylists =
     RecommendedPlaylists(
-        items = this?.items?.map { it.toDomain() }
+        items = this?.items?.map { it.toDomain() },
     )
