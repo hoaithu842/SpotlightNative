@@ -17,13 +17,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import io.github.hoaithu842.spotlight.domain.model.Song
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightTextStyle
 import io.github.hoaithu842.spotlight.ui.theme.NavigationGray
 import io.github.hoaithu842.spotlight.ui.theme.SpotlightTheme
 
 @Composable
-fun SongItem(modifier: Modifier = Modifier) {
+fun SongItem(
+    song: Song,
+    modifier: Modifier = Modifier,
+) {
     Box(
         modifier =
             modifier
@@ -31,7 +35,7 @@ fun SongItem(modifier: Modifier = Modifier) {
                 .height(SpotlightDimens.FullsizePlayerTopAppBarHeight),
     ) {
         Cover(
-            imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
+            imageUrl = song.url,
             modifier =
                 Modifier
                     .size(SpotlightDimens.FullsizePlayerTopAppBarHeight)
@@ -52,7 +56,7 @@ fun SongItem(modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.Center,
             ) {
                 Text(
-                    text = "some text",
+                    text = song.name,
                     style = SpotlightTextStyle.Text16W400,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
@@ -87,6 +91,6 @@ fun SongItem(modifier: Modifier = Modifier) {
 @Composable
 fun TrackPreview() {
     SpotlightTheme {
-        SongItem()
+        SongItem(Song())
     }
 }

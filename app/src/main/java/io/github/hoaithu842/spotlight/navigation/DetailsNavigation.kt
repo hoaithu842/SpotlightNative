@@ -10,10 +10,10 @@ import io.github.hoaithu842.spotlight.presentation.screen.RecommendationScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RecommendationRoute(val id: Int)
+data class RecommendationRoute(val id: String)
 
 fun NavController.navigateToRecommendationScreen(
-    id: Int,
+    id: String,
     navOptions: NavOptions? = null,
 ) = navigate(route = RecommendationRoute(id), navOptions = navOptions)
 

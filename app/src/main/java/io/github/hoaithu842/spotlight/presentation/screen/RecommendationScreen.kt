@@ -38,6 +38,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -64,10 +65,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.hoaithu842.spotlight.R
+import io.github.hoaithu842.spotlight.domain.model.Song
 import io.github.hoaithu842.spotlight.extension.singleClickable
 import io.github.hoaithu842.spotlight.presentation.component.Cover
 import io.github.hoaithu842.spotlight.presentation.component.SongItem
+import io.github.hoaithu842.spotlight.presentation.viewmodel.RecommendationUiState
+import io.github.hoaithu842.spotlight.presentation.viewmodel.RecommendationViewModel
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightIcons
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightTextStyle
@@ -76,14 +81,17 @@ import io.github.hoaithu842.spotlight.ui.theme.NavigationGray
 
 @Composable
 fun RecommendationScreen(
-    id: Int,
+    id: String,
     imageUrl: String,
     onBackClick: () -> Unit,
     maxImageSize: Dp = SpotlightDimens.RecommendationScreenThumbnailMaxSize,
     minImageSize: Dp = SpotlightDimens.FullsizePlayerTopAppBarHeight,
     minAlpha: Float = 0f,
     maxAlpha: Float = 1f,
+    viewModel: RecommendationViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.recommendationUiState.collectAsState()
+
     var currentImageSize by remember { mutableStateOf(maxImageSize) }
     var currentImageAlpha by remember { mutableFloatStateOf(maxAlpha) }
     var imageScale by remember { mutableFloatStateOf(1f) }
@@ -126,100 +134,109 @@ fun RecommendationScreen(
             .statusBarsPadding()
             .padding(top = 10.dp),
     ) {
-        LazyColumn(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 15.dp)
-                .offset {
-                    IntOffset(0, currentImageSize.roundToPx())
-                },
-        ) {
-            item {
-                RecommendationDetails(
-                    description = "The Weeknd, Lady Gaga, JENNIE, Charlie Puth, yung kai, Dhruv",
-                    modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding * 2),
-                )
-            }
-            item {
-                RecommendationScreenFunctionBar(
-                    modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding * 2),
-                )
-            }
-            // Placeholder list items
-            items(100, key = { it }) {
-                SongItem(
-                    modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding),
-                )
-            }
-        }
-
-        Cover(
-            imageUrl = imageUrl,
-            modifier =
-                Modifier
-                    .size(maxImageSize)
-                    .align(Alignment.TopCenter)
-                    .graphicsLayer {
-                        scaleX = imageScale
-                        scaleY = imageScale
-                        // Center the image vertically as it scales
-                        translationY = -(maxImageSize.toPx() - currentImageSize.toPx()) / 2f
+        when (uiState) {
+            RecommendationUiState.Error -> Text(text = "Error")
+            RecommendationUiState.Loading -> Text(text = "Loading")
+            is RecommendationUiState.Success -> {
+                val state = (uiState as RecommendationUiState.Success)
+                LazyColumn(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 15.dp)
+                        .offset {
+                            IntOffset(0, currentImageSize.roundToPx())
+                        },
+                ) {
+                    item {
+                        RecommendationDetails(
+                            description = "The Weeknd, Lady Gaga, JENNIE, Charlie Puth, yung kai, Dhruv",
+                            modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding * 2),
+                        )
                     }
-                    .alpha(currentImageAlpha),
-        )
-        Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(SpotlightDimens.FullsizePlayerTopAppBarHeight)
-                    .align(Alignment.TopStart),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                modifier =
-                    Modifier
-                        .padding(
-                            start = SpotlightDimens.TopAppBarIconHorizontalPadding * 2,
-                            end = SpotlightDimens.TopAppBarIconHorizontalPadding,
+                    item {
+                        RecommendationScreenFunctionBar(
+                            modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding * 2),
                         )
-                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
-                        .singleClickable { onBackClick() },
-                imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
-                tint = MaterialTheme.colorScheme.onBackground,
-                contentDescription = "",
-            )
-            AnimatedVisibility(
-                visible = currentImageAlpha == 0f,
-                enter =
-                    slideIn(
-                        initialOffset = { IntOffset(0, (it.height)) / 2f },
-                        animationSpec =
-                            spring(
-                                stiffness = Spring.StiffnessMediumLow,
-                                visibilityThreshold = IntOffset.VisibilityThreshold,
-                            ),
-                    ),
-            ) {
-                Text(
-                    text = "Daily Mix $id",
-                    // TODO: replace,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = SpotlightTextStyle.Text16W600,
-                    color = MaterialTheme.colorScheme.onBackground,
-                )
-            }
+                    }
+                    // Placeholder list items
+                    items(state.album.items?.size ?: 0, key = { it }) {
+                        state.album.items?.get(it)?.let { item ->
+                            SongItem(
+                                song = item.song ?: Song(),
+                                modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding),
+                            )
+                        }
+                    }
+                }
 
-            Spacer(
-                modifier =
-                    Modifier
-                        .padding(
-                            end = SpotlightDimens.TopAppBarIconHorizontalPadding * 2,
-                            start = SpotlightDimens.TopAppBarIconHorizontalPadding,
+                Cover(
+                    imageUrl = state.album.image?.url ?: "",
+                    modifier =
+                        Modifier
+                            .size(maxImageSize)
+                            .align(Alignment.TopCenter)
+                            .graphicsLayer {
+                                scaleX = imageScale
+                                scaleY = imageScale
+                                // Center the image vertically as it scales
+                                translationY = -(maxImageSize.toPx() - currentImageSize.toPx()) / 2f
+                            }
+                            .alpha(currentImageAlpha),
+                )
+                Row(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(SpotlightDimens.FullsizePlayerTopAppBarHeight)
+                            .align(Alignment.TopStart),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        modifier =
+                            Modifier
+                                .padding(
+                                    start = SpotlightDimens.TopAppBarIconHorizontalPadding * 2,
+                                    end = SpotlightDimens.TopAppBarIconHorizontalPadding,
+                                )
+                                .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
+                                .singleClickable { onBackClick() },
+                        imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        contentDescription = "",
+                    )
+                    AnimatedVisibility(
+                        visible = currentImageAlpha == 0f,
+                        enter =
+                            slideIn(
+                                initialOffset = { IntOffset(0, (it.height)) / 2f },
+                                animationSpec =
+                                    spring(
+                                        stiffness = Spring.StiffnessMediumLow,
+                                        visibilityThreshold = IntOffset.VisibilityThreshold,
+                                    ),
+                            ),
+                    ) {
+                        Text(
+                            text = state.album.title ?: "",
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            style = SpotlightTextStyle.Text16W600,
+                            color = MaterialTheme.colorScheme.onBackground,
                         )
-                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
-            )
+                    }
+
+                    Spacer(
+                        modifier =
+                            Modifier
+                                .padding(
+                                    end = SpotlightDimens.TopAppBarIconHorizontalPadding * 2,
+                                    start = SpotlightDimens.TopAppBarIconHorizontalPadding,
+                                )
+                                .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
+                    )
+                }
+            }
         }
     }
 }

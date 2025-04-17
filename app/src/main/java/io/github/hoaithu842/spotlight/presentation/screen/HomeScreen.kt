@@ -43,7 +43,7 @@ fun HomeScreen(
     userProfile: UserProfile?,
     onAvatarClick: () -> Unit,
     onArtistClick: (String) -> Unit,
-    onRecommendedPlaylistClick: (Int) -> Unit,
+    onRecommendedPlaylistClick: (String) -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.homeUiState.collectAsState()
@@ -106,7 +106,7 @@ fun HomeScreen(
 fun AllTab(
     uiState: HomeUiState,
     onArtistClick: (String) -> Unit,
-    onRecommendedPlaylistClick: (Int) -> Unit,
+    onRecommendedPlaylistClick: (String) -> Unit,
     onLongPress: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -193,7 +193,7 @@ fun AllTab(
 fun HomeSectionDisplay(
     homeSection: HomeSection,
     onArtistClick: (String) -> Unit,
-    onRecommendedPlaylistClick: (Int) -> Unit,
+    onRecommendedPlaylistClick: (String) -> Unit,
     onLongPress: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -230,7 +230,7 @@ fun HomeSectionDisplay(
                         description =
                             homeSection.items[index].title,
 //                            homeSection.items[index].artists?.joinToString { it.name } ?: "",
-                        onClick = { onRecommendedPlaylistClick(index) },
+                        onClick = { onRecommendedPlaylistClick(homeSection.items[index].id) },
                         onLongPress = onLongPress,
                     )
                 }

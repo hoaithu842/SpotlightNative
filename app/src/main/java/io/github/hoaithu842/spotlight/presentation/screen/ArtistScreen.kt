@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.hoaithu842.spotlight.domain.model.ArtistCategory
+import io.github.hoaithu842.spotlight.domain.model.Song
 import io.github.hoaithu842.spotlight.presentation.component.RoundedCornerCover
 import io.github.hoaithu842.spotlight.presentation.component.SongItem
 import io.github.hoaithu842.spotlight.presentation.component.VerticalCircularWithTitleThumbnail
@@ -99,6 +100,7 @@ fun ArtistScreen(
                 LazyColumn {
                     items(100, key = { it }) {
                         SongItem(
+                            song = Song(),
                             modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding),
                         )
                     }

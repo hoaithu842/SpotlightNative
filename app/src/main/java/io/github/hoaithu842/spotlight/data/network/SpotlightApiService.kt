@@ -1,5 +1,6 @@
 package io.github.hoaithu842.spotlight.data.network
 
+import io.github.hoaithu842.spotlight.data.network.dto.AlbumDetailsDto
 import io.github.hoaithu842.spotlight.data.network.dto.ArtistDetailsDto
 import io.github.hoaithu842.spotlight.data.network.dto.HomeSectionDto
 import io.github.hoaithu842.spotlight.data.network.dto.LibraryContentsDto
@@ -19,6 +20,11 @@ interface SpotlightApiService {
 
     @GET("playlists")
     suspend fun getPlaylists(): ApiResponse<SuccessBodyDto<PlaylistsPagingDto?>>
+
+    @GET("albums/{id}")
+    suspend fun getAlbum(
+        @Path("id") id: String,
+    ): ApiResponse<SuccessBodyDto<AlbumDetailsDto>>
 
     @GET("artists/{id}")
     suspend fun getArtist(

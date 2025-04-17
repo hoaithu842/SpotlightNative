@@ -18,7 +18,7 @@ fun NavGraphBuilder.homeGraph(
     userProfile: UserProfile?,
     onAvatarClick: () -> Unit,
     onArtistClick: (String) -> Unit,
-    onRecommendedPlaylistClick: (Int) -> Unit,
+    onRecommendedPlaylistClick: (String) -> Unit,
     onBackClick: () -> Unit,
 ) {
     navigation<HomeGraph>(
@@ -48,7 +48,7 @@ fun NavGraphBuilder.homeScreen(
     userProfile: UserProfile?,
     onAvatarClick: () -> Unit,
     onArtistClick: (String) -> Unit,
-    onRecommendedPlaylistClick: (Int) -> Unit,
+    onRecommendedPlaylistClick: (String) -> Unit,
 ) {
     composable<HomeRoute> {
         HomeScreen(
