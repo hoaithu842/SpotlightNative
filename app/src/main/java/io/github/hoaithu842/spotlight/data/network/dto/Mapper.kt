@@ -155,6 +155,7 @@ fun AlbumDetailsDto.toDomain(): AlbumDetails =
         isPublic = this.isPublic,
         isOwned = this.isOwned,
         inLibrary = this.inLibrary,
+        artists = this.artist.map { it.name }.joinToString(separator = ", "),
         items =
             if (!this.categories.isNullOrEmpty()) {
                 this.categories[0].items?.map { it.toDomain() } ?: listOf()

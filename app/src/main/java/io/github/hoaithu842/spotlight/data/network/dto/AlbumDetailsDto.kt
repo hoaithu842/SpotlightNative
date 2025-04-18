@@ -17,6 +17,8 @@ data class AlbumDetailsDto(
     val isOwned: Boolean?,
     @SerializedName("in_library")
     val inLibrary: Boolean?,
+    @SerializedName("Artists")
+    val artist: List<Artist>,
     @SerializedName("categories")
     val categories: List<Category>?,
 ) {
@@ -27,5 +29,10 @@ data class AlbumDetailsDto(
         val name: String?,
         @SerializedName("items")
         val items: List<AlbumCategoryItem>?,
+    )
+
+    data class Artist(
+        @SerializedName("name")
+        val name: String?,
     )
 }

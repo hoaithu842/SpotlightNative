@@ -16,7 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import io.github.hoaithu842.spotlight.domain.model.Image
 import io.github.hoaithu842.spotlight.domain.model.Song
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightTextStyle
@@ -26,6 +28,7 @@ import io.github.hoaithu842.spotlight.ui.theme.SpotlightTheme
 @Composable
 fun SongItem(
     song: Song,
+    cover: Image,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -35,7 +38,7 @@ fun SongItem(
                 .height(SpotlightDimens.FullsizePlayerTopAppBarHeight),
     ) {
         Cover(
-            imageUrl = song.url,
+            imageUrl = cover.url,
             modifier =
                 Modifier
                     .size(SpotlightDimens.FullsizePlayerTopAppBarHeight)
@@ -59,6 +62,8 @@ fun SongItem(
                     text = song.name,
                     style = SpotlightTextStyle.Text16W400,
                     color = MaterialTheme.colorScheme.onBackground,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
                 Text(
                     text = "abc",
@@ -91,6 +96,6 @@ fun SongItem(
 @Composable
 fun TrackPreview() {
     SpotlightTheme {
-        SongItem(Song())
+        SongItem(Song(), Image())
     }
 }

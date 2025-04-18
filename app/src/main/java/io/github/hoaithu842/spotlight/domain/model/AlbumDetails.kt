@@ -8,6 +8,7 @@ data class AlbumDetails(
     val isPublic: Boolean? = false,
     val isOwned: Boolean? = false,
     val inLibrary: Boolean? = false,
+    val artists: String? = "",
     val items: List<AlbumDetailsItem>? = listOf(),
 )
 

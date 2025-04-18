@@ -43,6 +43,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -67,8 +68,11 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.hoaithu842.spotlight.R
+import io.github.hoaithu842.spotlight.domain.model.Image
 import io.github.hoaithu842.spotlight.domain.model.Song
+import io.github.hoaithu842.spotlight.extension.noRippleClickable
 import io.github.hoaithu842.spotlight.extension.singleClickable
+import io.github.hoaithu842.spotlight.extension.toColor
 import io.github.hoaithu842.spotlight.presentation.component.Cover
 import io.github.hoaithu842.spotlight.presentation.component.SongItem
 import io.github.hoaithu842.spotlight.presentation.viewmodel.RecommendationUiState
@@ -78,6 +82,7 @@ import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightIcons
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightTextStyle
 import io.github.hoaithu842.spotlight.ui.theme.MinimizedPlayerBackground
 import io.github.hoaithu842.spotlight.ui.theme.NavigationGray
+import kotlinx.coroutines.launch
 
 @Composable
 fun RecommendationScreen(
@@ -95,6 +100,7 @@ fun RecommendationScreen(
     var currentImageSize by remember { mutableStateOf(maxImageSize) }
     var currentImageAlpha by remember { mutableFloatStateOf(maxAlpha) }
     var imageScale by remember { mutableFloatStateOf(1f) }
+    val scope = rememberCoroutineScope()
 
     val nestedScrollConnection =
         remember {
@@ -126,19 +132,33 @@ fun RecommendationScreen(
             }
         }
 
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-            .nestedScroll(nestedScrollConnection)
-            .statusBarsPadding()
-            .padding(top = 10.dp),
-    ) {
-        when (uiState) {
-            RecommendationUiState.Error -> Text(text = "Error")
-            RecommendationUiState.Loading -> Text(text = "Loading")
-            is RecommendationUiState.Success -> {
-                val state = (uiState as RecommendationUiState.Success)
+    when (uiState) {
+        RecommendationUiState.Error -> Text(text = "Error")
+        RecommendationUiState.Loading -> Text(text = "Loading")
+        is RecommendationUiState.Success -> {
+            val state = (uiState as RecommendationUiState.Success)
+            val dynamicColor =
+                (
+                    state.album.color?.toColor()
+                        ?: MaterialTheme.colorScheme.onSurface
+                ).copy(alpha = imageScale.coerceIn(0f, 1f))
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush =
+                            Brush.verticalGradient(
+                                colorStops =
+                                    arrayOf(
+                                        0.0f to dynamicColor,
+                                        1f to Color.Black,
+                                    ),
+                            ),
+                    )
+                    .nestedScroll(nestedScrollConnection)
+                    .statusBarsPadding()
+                    .padding(top = 10.dp),
+            ) {
                 LazyColumn(
                     Modifier
                         .fillMaxWidth()
@@ -149,12 +169,17 @@ fun RecommendationScreen(
                 ) {
                     item {
                         RecommendationDetails(
-                            description = "The Weeknd, Lady Gaga, JENNIE, Charlie Puth, yung kai, Dhruv",
+                            description = state.album.artists ?: "",
                             modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding * 2),
                         )
                     }
                     item {
                         RecommendationScreenFunctionBar(
+                            onPlayClick = {
+                                scope.launch {
+                                    viewModel.playAlbum()
+                                }
+                            },
                             modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding * 2),
                         )
                     }
@@ -163,6 +188,7 @@ fun RecommendationScreen(
                         state.album.items?.get(it)?.let { item ->
                             SongItem(
                                 song = item.song ?: Song(),
+                                cover = item.image ?: Image(),
                                 modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding),
                             )
                         }
@@ -290,7 +316,10 @@ fun RecommendationDetails(
 }
 
 @Composable
-fun RecommendationScreenFunctionBar(modifier: Modifier = Modifier) {
+fun RecommendationScreenFunctionBar(
+    onPlayClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier =
             modifier
@@ -353,7 +382,8 @@ fun RecommendationScreenFunctionBar(modifier: Modifier = Modifier) {
                         .size(SpotlightDimens.FullsizePlayerTopAppBarHeight)
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.primary)
-                        .padding((SpotlightDimens.FullsizePlayerTopAppBarHeight - SpotlightDimens.PlayerControllerMediumIconSize) / 2),
+                        .padding((SpotlightDimens.FullsizePlayerTopAppBarHeight - SpotlightDimens.PlayerControllerMediumIconSize) / 2)
+                        .noRippleClickable(onPlayClick),
             )
         }
     }
