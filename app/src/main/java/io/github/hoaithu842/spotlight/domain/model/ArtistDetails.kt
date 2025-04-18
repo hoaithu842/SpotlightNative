@@ -20,3 +20,17 @@ data class ArtistCategoryItem(
     val type: String = "",
     val image: Image,
 )
+
+data class ArtistSongs(
+    val items: List<ArtistSong>,
+)
+
+data class ArtistSong(
+    val id: String,
+    val title: String,
+    val color: String,
+    val image: Image,
+    val url: String,
+    val releaseDate: String,
+    val duration: Int,
+)

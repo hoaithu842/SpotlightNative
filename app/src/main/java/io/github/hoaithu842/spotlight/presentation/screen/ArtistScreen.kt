@@ -45,6 +45,7 @@ import io.github.hoaithu842.spotlight.presentation.component.RoundedCornerCover
 import io.github.hoaithu842.spotlight.presentation.component.SongItem
 import io.github.hoaithu842.spotlight.presentation.component.VerticalCircularWithTitleThumbnail
 import io.github.hoaithu842.spotlight.presentation.component.VerticalRoundedCornerThumbnail
+import io.github.hoaithu842.spotlight.presentation.viewmodel.ArtistSongsUiState
 import io.github.hoaithu842.spotlight.presentation.viewmodel.ArtistUiState
 import io.github.hoaithu842.spotlight.presentation.viewmodel.ArtistViewModel
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightDimens
@@ -58,6 +59,8 @@ fun ArtistScreen(
     viewModel: ArtistViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.artistUiState.collectAsState()
+    val songsUiState by viewModel.artistSongsUiState.collectAsState()
+
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
@@ -134,9 +137,34 @@ fun ArtistScreen(
                     )
                 }
                 LazyColumn {
+                    when (songsUiState) {
+                        ArtistSongsUiState.Error -> {}
+                        ArtistSongsUiState.Loading -> {}
+                        is ArtistSongsUiState.Success -> {
+                            item {
+                                Text(
+                                    "Popular",
+                                    style = SpotlightTextStyle.Text16W600,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    modifier = Modifier.padding(10.dp),
+                                )
+                            }
+                            items(
+                                (songsUiState as ArtistSongsUiState.Success).songsList.items.size,
+                            ) {
+                                val item =
+                                    (songsUiState as ArtistSongsUiState.Success).songsList.items[it]
+                                SongItem(
+                                    song = Song(name = item.title, url = item.url, id = item.id),
+                                    cover = item.image,
+                                    modifier = Modifier.padding(horizontal = 10.dp),
+                                )
+                            }
+                        }
+                    }
+
                     items(
                         (uiState as ArtistUiState.Success).artistDetails.categories.size,
-                        key = { it },
                     ) {
                         ArtistSectionDisplay(
                             artistCategory = (uiState as ArtistUiState.Success).artistDetails.categories[it],

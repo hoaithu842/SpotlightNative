@@ -7,6 +7,8 @@ import io.github.hoaithu842.spotlight.domain.model.Artist
 import io.github.hoaithu842.spotlight.domain.model.ArtistCategory
 import io.github.hoaithu842.spotlight.domain.model.ArtistCategoryItem
 import io.github.hoaithu842.spotlight.domain.model.ArtistDetails
+import io.github.hoaithu842.spotlight.domain.model.ArtistSong
+import io.github.hoaithu842.spotlight.domain.model.ArtistSongs
 import io.github.hoaithu842.spotlight.domain.model.Creator
 import io.github.hoaithu842.spotlight.domain.model.HomeSection
 import io.github.hoaithu842.spotlight.domain.model.HomeSectionItem
@@ -162,4 +164,20 @@ fun AlbumDetailsDto.toDomain(): AlbumDetails =
             } else {
                 listOf()
             },
+    )
+
+fun ArtistSongDto.toDomain(): ArtistSong =
+    ArtistSong(
+        id = this.id ?: "",
+        title = this.title ?: "",
+        color = this.color ?: "",
+        image = this.image.toDomain(),
+        url = this.url ?: "",
+        releaseDate = this.releaseDate ?: "",
+        duration = this.duration ?: 0,
+    )
+
+fun ArtistSongsPagingDto.toDomain(): ArtistSongs =
+    ArtistSongs(
+        items = this.items?.map { it.toDomain() } ?: listOf(),
     )

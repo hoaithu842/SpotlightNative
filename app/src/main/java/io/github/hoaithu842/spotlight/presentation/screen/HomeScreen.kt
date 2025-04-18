@@ -138,6 +138,7 @@ fun AllTab(
                                     HorizontalCircularThumbnail(
                                         artist = it.name,
                                         imageUrl = it.image?.url ?: "",
+                                        onClick = { onArtistClick(it.id) },
                                         onLongPress = {},
                                         modifier =
                                             Modifier
@@ -148,6 +149,7 @@ fun AllTab(
                                     HorizontalRoundedCornerThumbnail(
                                         artist = it.title,
                                         imageUrl = it.image?.url ?: "",
+                                        onClick = { onRecommendedPlaylistClick(it.id) },
                                         onLongPress = {},
                                         modifier =
                                             Modifier

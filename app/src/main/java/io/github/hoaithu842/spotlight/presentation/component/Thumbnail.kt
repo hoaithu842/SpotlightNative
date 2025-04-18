@@ -208,10 +208,12 @@ fun VerticalCircularWithTitleThumbnail(
 fun HorizontalCircularThumbnail(
     imageUrl: String,
     artist: String,
+    onClick: () -> Unit,
     onLongPress: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     OuterBox(
+        onClick = onClick,
         onLongPress = onLongPress,
         modifier = modifier,
     ) {
@@ -251,10 +253,12 @@ fun HorizontalCircularThumbnail(
 fun HorizontalRoundedCornerThumbnail(
     imageUrl: String,
     artist: String,
+    onClick: () -> Unit,
     onLongPress: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     OuterBox(
+        onClick = onClick,
         onLongPress = onLongPress,
         modifier = modifier,
     ) {
@@ -409,12 +413,14 @@ fun AllThumbnailPreviews() {
                 imageUrl = imageUrl,
                 artist = artist,
                 onLongPress = {},
+                onClick = {},
             )
 
             HorizontalRoundedCornerThumbnail(
                 imageUrl = imageUrl,
                 artist = artist,
                 onLongPress = {},
+                onClick = {},
             )
         }
     }

@@ -2,6 +2,7 @@ package io.github.hoaithu842.spotlight.data.network
 
 import io.github.hoaithu842.spotlight.data.network.dto.AlbumDetailsDto
 import io.github.hoaithu842.spotlight.data.network.dto.ArtistDetailsDto
+import io.github.hoaithu842.spotlight.data.network.dto.ArtistSongsPagingDto
 import io.github.hoaithu842.spotlight.data.network.dto.HomeSectionDto
 import io.github.hoaithu842.spotlight.data.network.dto.LibraryContentsDto
 import io.github.hoaithu842.spotlight.data.network.dto.PlaylistsPagingDto
@@ -10,6 +11,7 @@ import io.github.hoaithu842.spotlight.data.network.dto.UserProfileDto
 import io.github.hoaithu842.spotlight.domain.model.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface SpotlightApiService {
     @GET("auth/session-user")
@@ -30,6 +32,11 @@ interface SpotlightApiService {
     suspend fun getArtist(
         @Path("id") id: String,
     ): ApiResponse<SuccessBodyDto<ArtistDetailsDto>>
+
+    @GET("songs")
+    suspend fun getArtistSongs(
+        @Query("artist_ids[]") artistId: String,
+    ): ApiResponse<SuccessBodyDto<ArtistSongsPagingDto>>
 
     @GET("library")
     suspend fun getLibrary(): ApiResponse<SuccessBodyDto<LibraryContentsDto>>
