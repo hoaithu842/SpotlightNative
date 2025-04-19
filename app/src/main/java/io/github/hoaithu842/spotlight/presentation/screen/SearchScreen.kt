@@ -1,5 +1,6 @@
 package io.github.hoaithu842.spotlight.presentation.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -15,6 +16,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,6 +26,7 @@ import io.github.hoaithu842.spotlight.presentation.component.BrowseCard
 import io.github.hoaithu842.spotlight.presentation.component.SearchBar
 import io.github.hoaithu842.spotlight.presentation.viewmodel.SearchUiState
 import io.github.hoaithu842.spotlight.presentation.viewmodel.SearchViewModel
+import io.github.hoaithu842.spotlight.ui.designsystem.DotsCollision
 import io.github.hoaithu842.spotlight.ui.designsystem.SearchTopAppBar
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightDimens
 
@@ -66,7 +69,15 @@ fun SearchScreen(
 
         when (uiState) {
             SearchUiState.Error -> Text(text = "Error")
-            SearchUiState.Loading -> Text(text = "Loading")
+            SearchUiState.Loading -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    DotsCollision()
+                }
+            }
             is SearchUiState.Success -> {
                 FlowRow(
                     maxItemsInEachRow = 2,

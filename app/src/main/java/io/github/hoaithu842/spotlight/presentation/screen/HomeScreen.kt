@@ -1,6 +1,7 @@
 package io.github.hoaithu842.spotlight.presentation.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -20,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -33,6 +35,7 @@ import io.github.hoaithu842.spotlight.presentation.component.VerticalCircularWit
 import io.github.hoaithu842.spotlight.presentation.component.VerticalRoundedCornerThumbnail
 import io.github.hoaithu842.spotlight.presentation.viewmodel.HomeUiState
 import io.github.hoaithu842.spotlight.presentation.viewmodel.HomeViewModel
+import io.github.hoaithu842.spotlight.ui.designsystem.DotsCollision
 import io.github.hoaithu842.spotlight.ui.designsystem.HomeScreenTab
 import io.github.hoaithu842.spotlight.ui.designsystem.HomeTopAppBar
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightDimens
@@ -51,9 +54,9 @@ fun HomeScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
     Column(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface),
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface),
     ) {
         var currentTab by remember { mutableStateOf(HomeScreenTab.All) }
 
@@ -66,9 +69,9 @@ fun HomeScreen(
                 }
             },
             modifier =
-                Modifier
-                    .statusBarsPadding()
-                    .height(SpotlightDimens.TopAppBarHeight),
+            Modifier
+                .statusBarsPadding()
+                .height(SpotlightDimens.TopAppBarHeight),
             avatarUrl = userProfile?.pictureURL,
         )
 
@@ -122,7 +125,13 @@ fun AllTab(
 
             is HomeUiState.Loading -> {
                 item {
-                    Text(text = "Loading")
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        DotsCollision()
+                    }
                 }
             }
 
@@ -141,9 +150,9 @@ fun AllTab(
                                         onClick = { onArtistClick(it.id) },
                                         onLongPress = {},
                                         modifier =
-                                            Modifier
-                                                .padding(SpotlightDimens.RecommendationPadding)
-                                                .weight(1f),
+                                        Modifier
+                                            .padding(SpotlightDimens.RecommendationPadding)
+                                            .weight(1f),
                                     )
                                 } else {
                                     HorizontalRoundedCornerThumbnail(
@@ -152,9 +161,9 @@ fun AllTab(
                                         onClick = { onRecommendedPlaylistClick(it.id) },
                                         onLongPress = {},
                                         modifier =
-                                            Modifier
-                                                .padding(SpotlightDimens.RecommendationPadding)
-                                                .weight(1f),
+                                        Modifier
+                                            .padding(SpotlightDimens.RecommendationPadding)
+                                            .weight(1f),
                                     )
                                 }
                             }
@@ -176,19 +185,12 @@ fun AllTab(
         item {
             Spacer(
                 modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(SpotlightDimens.MinimizedPlayerHeight),
+                Modifier
+                    .fillMaxWidth()
+                    .height(SpotlightDimens.MinimizedPlayerHeight),
             )
         }
     }
-
-    Spacer(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(SpotlightDimens.MinimizedPlayerHeight),
-    )
 }
 
 @Composable
@@ -201,9 +203,9 @@ fun HomeSectionDisplay(
 ) {
     Column(
         modifier =
-            modifier
-                .fillMaxWidth()
-                .height(SpotlightDimens.RecommendationSectionHeight),
+        modifier
+            .fillMaxWidth()
+            .height(SpotlightDimens.RecommendationSectionHeight),
     ) {
         Text(
             text = homeSection.name,
@@ -223,14 +225,14 @@ fun HomeSectionDisplay(
                     VerticalCircularWithTitleThumbnail(
                         imageUrl = artist.image?.url ?: "",
                         title = artist.name,
-                        description = artist.type,
+                        description = artist.type.replaceFirstChar { it.uppercase() },
                         onClick = { onArtistClick(artist.id) },
                     )
                 } else {
                     VerticalRoundedCornerThumbnail(
                         imageUrl = homeSection.items[index].image?.url ?: "",
                         description =
-                            homeSection.items[index].title,
+                        homeSection.items[index].title,
 //                            homeSection.items[index].artists?.joinToString { it.name } ?: "",
                         onClick = { onRecommendedPlaylistClick(homeSection.items[index].id) },
                         onLongPress = onLongPress,
