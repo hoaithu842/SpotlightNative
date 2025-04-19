@@ -1,6 +1,7 @@
 package io.github.hoaithu842.spotlight.data.network.dto
 
 import android.util.Log
+import io.github.hoaithu842.spotlight.domain.model.AlbumCategory
 import io.github.hoaithu842.spotlight.domain.model.AlbumDetails
 import io.github.hoaithu842.spotlight.domain.model.Artist
 import io.github.hoaithu842.spotlight.domain.model.ArtistCategory
@@ -20,6 +21,8 @@ import io.github.hoaithu842.spotlight.domain.model.RecommendedPlaylists
 import io.github.hoaithu842.spotlight.domain.model.SearchResult
 import io.github.hoaithu842.spotlight.domain.model.Song
 import io.github.hoaithu842.spotlight.domain.model.SongDetails
+import io.github.hoaithu842.spotlight.domain.model.SongInfo
+import io.github.hoaithu842.spotlight.domain.model.SongInfoAlbum
 import io.github.hoaithu842.spotlight.domain.model.SongSearchResult
 import io.github.hoaithu842.spotlight.domain.model.TopSearchResult
 import io.github.hoaithu842.spotlight.domain.model.UserProfile
@@ -144,7 +147,7 @@ fun PlaylistsPagingDto?.toDomain(): RecommendedPlaylists =
         items = this?.items?.map { it.toDomain() },
     )
 
-fun AlbumCategoryItem.toDomain(): SongDetails =
+fun AlbumCategoryItemDto.toDomain(): SongDetails =
     SongDetails(
         id = this.id ?: "",
         title = this.title ?: "",
@@ -211,4 +214,30 @@ fun SearchResultDto.toDomain(): SearchResult =
         songs = this.songs?.map { it.toDomain() },
         artists = this.artists?.map { it.toDomain() },
         playlists = this.playlists?.map { it.toDomain() },
+    )
+
+fun AlbumCategoryDto.toDomain(): AlbumCategory =
+    AlbumCategory(
+        id = this.id,
+        name = this.name,
+        items = this.items?.map { it.toDomain() } ?: listOf(),
+    )
+
+fun SongInfoDto.SongInfoAlbum.toDomain(): SongInfoAlbum =
+    SongInfoAlbum(
+        id = this.id,
+        title = this.title,
+    )
+
+fun SongInfoDto.toDomain(): SongInfo =
+    SongInfo(
+        id = this.id,
+        title = this.title,
+        album = this.album?.toDomain(),
+        duration = this.duration ?: 0,
+        releaseDate = this.releaseDate,
+        color = this.color,
+        image = this.image.toDomain(),
+        categories = this.categories?.map { it.toDomain() } ?: listOf(),
+        artists = this.artists?.map { it.toDomain() } ?: listOf(),
     )

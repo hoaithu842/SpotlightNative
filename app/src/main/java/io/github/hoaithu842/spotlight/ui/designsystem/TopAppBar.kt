@@ -58,7 +58,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.hoaithu842.spotlight.R
-import io.github.hoaithu842.spotlight.domain.model.SongDetails
+import io.github.hoaithu842.spotlight.domain.model.SongInfo
 import io.github.hoaithu842.spotlight.extension.noRippleClickable
 import io.github.hoaithu842.spotlight.extension.singleClickable
 import io.github.hoaithu842.spotlight.presentation.component.CircularCover
@@ -711,8 +711,7 @@ fun FullsizePlayerTopAppBar(
 @Composable
 fun PlayerControllerTopAppBar(
     isPlaying: Boolean,
-    song: SongDetails?,
-    artists: String,
+    song: SongInfo?,
     currentPosition: Long,
     duration: Long,
     onPlayerClick: () -> Unit,
@@ -754,7 +753,7 @@ fun PlayerControllerTopAppBar(
                             .basicMarquee(),
                 )
                 Text(
-                    text = artists,
+                    text = song?.artists?.joinToString(separator = ", ") { it.name } ?: "",
                     style = SpotlightTextStyle.Text11W400,
                     overflow = TextOverflow.Ellipsis,
                     color = NavigationGray,

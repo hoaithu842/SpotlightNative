@@ -54,9 +54,9 @@ fun HomeScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
     Column(
         modifier =
-        Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface),
     ) {
         var currentTab by remember { mutableStateOf(HomeScreenTab.All) }
 
@@ -69,9 +69,9 @@ fun HomeScreen(
                 }
             },
             modifier =
-            Modifier
-                .statusBarsPadding()
-                .height(SpotlightDimens.TopAppBarHeight),
+                Modifier
+                    .statusBarsPadding()
+                    .height(SpotlightDimens.TopAppBarHeight),
             avatarUrl = userProfile?.pictureURL,
         )
 
@@ -150,9 +150,9 @@ fun AllTab(
                                         onClick = { onArtistClick(it.id) },
                                         onLongPress = {},
                                         modifier =
-                                        Modifier
-                                            .padding(SpotlightDimens.RecommendationPadding)
-                                            .weight(1f),
+                                            Modifier
+                                                .padding(SpotlightDimens.RecommendationPadding)
+                                                .weight(1f),
                                     )
                                 } else {
                                     HorizontalRoundedCornerThumbnail(
@@ -161,9 +161,9 @@ fun AllTab(
                                         onClick = { onRecommendedPlaylistClick(it.id) },
                                         onLongPress = {},
                                         modifier =
-                                        Modifier
-                                            .padding(SpotlightDimens.RecommendationPadding)
-                                            .weight(1f),
+                                            Modifier
+                                                .padding(SpotlightDimens.RecommendationPadding)
+                                                .weight(1f),
                                     )
                                 }
                             }
@@ -185,9 +185,9 @@ fun AllTab(
         item {
             Spacer(
                 modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(SpotlightDimens.MinimizedPlayerHeight),
+                    Modifier
+                        .fillMaxWidth()
+                        .height(SpotlightDimens.MinimizedPlayerHeight),
             )
         }
     }
@@ -203,9 +203,9 @@ fun HomeSectionDisplay(
 ) {
     Column(
         modifier =
-        modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.RecommendationSectionHeight),
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.RecommendationSectionHeight),
     ) {
         Text(
             text = homeSection.name,
@@ -232,7 +232,7 @@ fun HomeSectionDisplay(
                     VerticalRoundedCornerThumbnail(
                         imageUrl = homeSection.items[index].image?.url ?: "",
                         description =
-                        homeSection.items[index].title,
+                            homeSection.items[index].title,
 //                            homeSection.items[index].artists?.joinToString { it.name } ?: "",
                         onClick = { onRecommendedPlaylistClick(homeSection.items[index].id) },
                         onLongPress = onLongPress,

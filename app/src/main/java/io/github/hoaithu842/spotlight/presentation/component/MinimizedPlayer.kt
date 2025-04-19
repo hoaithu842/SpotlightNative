@@ -31,7 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
-import io.github.hoaithu842.spotlight.domain.model.SongDetails
+import io.github.hoaithu842.spotlight.domain.model.SongInfo
 import io.github.hoaithu842.spotlight.extension.noRippleClickable
 import io.github.hoaithu842.spotlight.extension.shimmerLoadingAnimation
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightDimens
@@ -45,8 +45,7 @@ import io.github.hoaithu842.spotlight.ui.theme.ProgressIndicatorTrackColor
 @Composable
 fun MinimizedPlayer(
     isPlaying: Boolean,
-    song: SongDetails?,
-    artists: String,
+    song: SongInfo?,
     currentPosition: Long,
     duration: Long,
     painter: AsyncImagePainter,
@@ -111,7 +110,7 @@ fun MinimizedPlayer(
                                 .basicMarquee(),
                     )
                     Text(
-                        text = artists,
+                        text = song?.artists?.joinToString(separator = ", ") { it.name } ?: "",
                         style = SpotlightTextStyle.Text11W400,
                         overflow = TextOverflow.Ellipsis,
                         color = NavigationGray,

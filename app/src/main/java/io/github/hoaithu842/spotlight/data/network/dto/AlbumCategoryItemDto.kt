@@ -2,7 +2,7 @@ package io.github.hoaithu842.spotlight.data.network.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class AlbumCategoryItem(
+data class AlbumCategoryItemDto(
     @SerializedName("id")
     val id: String?,
     @SerializedName("title")

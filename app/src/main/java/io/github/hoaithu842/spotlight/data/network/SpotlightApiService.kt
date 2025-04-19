@@ -7,6 +7,7 @@ import io.github.hoaithu842.spotlight.data.network.dto.HomeSectionDto
 import io.github.hoaithu842.spotlight.data.network.dto.LibraryContentsDto
 import io.github.hoaithu842.spotlight.data.network.dto.PlaylistsPagingDto
 import io.github.hoaithu842.spotlight.data.network.dto.SearchResultDto
+import io.github.hoaithu842.spotlight.data.network.dto.SongInfoDto
 import io.github.hoaithu842.spotlight.data.network.dto.SuccessBodyDto
 import io.github.hoaithu842.spotlight.data.network.dto.UserProfileDto
 import io.github.hoaithu842.spotlight.domain.model.ApiResponse
@@ -33,6 +34,11 @@ interface SpotlightApiService {
     suspend fun getArtist(
         @Path("id") id: String,
     ): ApiResponse<SuccessBodyDto<ArtistDetailsDto>>
+
+    @GET("songs/{id}")
+    suspend fun getSongInfo(
+        @Path("id") id: String,
+    ): ApiResponse<SuccessBodyDto<SongInfoDto>>
 
     @GET("songs")
     suspend fun getArtistSongs(

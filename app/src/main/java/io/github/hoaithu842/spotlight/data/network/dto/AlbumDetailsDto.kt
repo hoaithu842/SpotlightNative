@@ -20,17 +20,8 @@ data class AlbumDetailsDto(
     @SerializedName("Artists")
     val artist: List<Artist>,
     @SerializedName("categories")
-    val categories: List<Category>?,
+    val categories: List<AlbumCategoryDto>?,
 ) {
-    data class Category(
-        @SerializedName("id")
-        val id: String?,
-        @SerializedName("name")
-        val name: String?,
-        @SerializedName("items")
-        val items: List<AlbumCategoryItem>?,
-    )
-
     data class Artist(
         @SerializedName("name")
         val name: String?,

@@ -37,7 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
-import io.github.hoaithu842.spotlight.domain.model.SongDetails
+import io.github.hoaithu842.spotlight.domain.model.SongInfo
 import io.github.hoaithu842.spotlight.extension.noRippleClickable
 import io.github.hoaithu842.spotlight.extension.shimmerLoadingAnimation
 import io.github.hoaithu842.spotlight.extension.toTimeFormat
@@ -55,8 +55,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun FullsizePlayer(
     isPlaying: Boolean,
-    song: SongDetails?,
-    artists: String,
+    song: SongInfo?,
     currentPosition: Long,
     duration: Long,
     painter: AsyncImagePainter,
@@ -87,7 +86,7 @@ fun FullsizePlayer(
         ) {
             item {
                 FullsizePlayerTopAppBar(
-                    artists = artists,
+                    artists = song?.artists?.joinToString(separator = ", ") { it.name } ?: "",
                     onMinimizeClick = onMinimizeClick,
                     modifier =
                         Modifier
@@ -99,7 +98,6 @@ fun FullsizePlayer(
                 MainPlayerContent(
                     isPlaying = isPlaying,
                     song = song,
-                    artists = artists,
                     currentPosition = currentPosition,
                     duration = duration,
                     painter = painter,
@@ -118,7 +116,6 @@ fun FullsizePlayer(
         ) {
             PlayerControllerTopAppBar(
                 song = song,
-                artists = artists,
                 isPlaying = isPlaying,
                 currentPosition = currentPosition,
                 duration = duration,
@@ -136,8 +133,7 @@ fun FullsizePlayer(
 @Composable
 fun MainPlayerContent(
     isPlaying: Boolean,
-    song: SongDetails?,
-    artists: String,
+    song: SongInfo?,
     currentPosition: Long,
     duration: Long,
     painter: AsyncImagePainter,
@@ -191,7 +187,7 @@ fun MainPlayerContent(
                             .basicMarquee(),
                 )
                 Text(
-                    text = artists,
+                    text = song?.artists?.joinToString(separator = ", ") { it.name } ?: "",
                     style = SpotlightTextStyle.Text16W400,
                     overflow = TextOverflow.Ellipsis,
                     color = NavigationGray,

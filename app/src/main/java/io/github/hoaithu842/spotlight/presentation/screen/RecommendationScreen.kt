@@ -145,21 +145,21 @@ fun RecommendationScreen(
             val state = (uiState as RecommendationUiState.Success)
             val dynamicColor =
                 (
-                        state.album.color?.toColor()
-                            ?: MaterialTheme.colorScheme.onSurface
-                        ).copy(alpha = imageScale.coerceIn(0f, 1f))
+                    state.album.color?.toColor()
+                        ?: MaterialTheme.colorScheme.onSurface
+                ).copy(alpha = imageScale.coerceIn(0f, 1f))
             Box(
                 Modifier
                     .fillMaxSize()
                     .background(
                         brush =
-                        Brush.verticalGradient(
-                            colorStops =
-                            arrayOf(
-                                0.0f to dynamicColor,
-                                1f to Color.Black,
+                            Brush.verticalGradient(
+                                colorStops =
+                                    arrayOf(
+                                        0.0f to dynamicColor,
+                                        1f to Color.Black,
+                                    ),
                             ),
-                        ),
                     )
                     .nestedScroll(nestedScrollConnection)
                     .statusBarsPadding()
@@ -172,7 +172,7 @@ fun RecommendationScreen(
                         .offset {
                             IntOffset(0, currentImageSize.roundToPx())
                         },
-                    contentPadding = PaddingValues(bottom = SpotlightDimens.MinimizedPlayerHeight)
+                    contentPadding = PaddingValues(bottom = SpotlightDimens.MinimizedPlayerHeight),
                 ) {
                     item {
                         RecommendationDetails(
@@ -183,6 +183,7 @@ fun RecommendationScreen(
                     item {
                         RecommendationScreenFunctionBar(
                             onPlayClick = { viewModel.playAlbum(state.album.items) },
+                            onPauseClick = { viewModel.pause() },
                             modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding * 2),
                         )
                     }
@@ -201,23 +202,23 @@ fun RecommendationScreen(
                 Cover(
                     imageUrl = state.album.image?.url ?: "",
                     modifier =
-                    Modifier
-                        .size(maxImageSize)
-                        .align(Alignment.TopCenter)
-                        .graphicsLayer {
-                            scaleX = imageScale
-                            scaleY = imageScale
-                            // Center the image vertically as it scales
-                            translationY = -(maxImageSize.toPx() - currentImageSize.toPx()) / 2f
-                        }
-                        .alpha(currentImageAlpha),
+                        Modifier
+                            .size(maxImageSize)
+                            .align(Alignment.TopCenter)
+                            .graphicsLayer {
+                                scaleX = imageScale
+                                scaleY = imageScale
+                                // Center the image vertically as it scales
+                                translationY = -(maxImageSize.toPx() - currentImageSize.toPx()) / 2f
+                            }
+                            .alpha(currentImageAlpha),
                 )
                 Row(
                     modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(SpotlightDimens.FullsizePlayerTopAppBarHeight)
-                        .align(Alignment.TopStart),
+                        Modifier
+                            .fillMaxWidth()
+                            .height(SpotlightDimens.FullsizePlayerTopAppBarHeight)
+                            .align(Alignment.TopStart),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -232,14 +233,14 @@ fun RecommendationScreen(
                     AnimatedVisibility(
                         visible = currentImageAlpha == 0f,
                         enter =
-                        slideIn(
-                            initialOffset = { IntOffset(0, (it.height)) / 2f },
-                            animationSpec =
-                            spring(
-                                stiffness = Spring.StiffnessMediumLow,
-                                visibilityThreshold = IntOffset.VisibilityThreshold,
+                            slideIn(
+                                initialOffset = { IntOffset(0, (it.height)) / 2f },
+                                animationSpec =
+                                    spring(
+                                        stiffness = Spring.StiffnessMediumLow,
+                                        visibilityThreshold = IntOffset.VisibilityThreshold,
+                                    ),
                             ),
-                        ),
                     ) {
                         Text(
                             text = state.album.title ?: "",
@@ -252,12 +253,12 @@ fun RecommendationScreen(
 
                     Spacer(
                         modifier =
-                        Modifier
-                            .padding(
-                                end = SpotlightDimens.TopAppBarIconHorizontalPadding * 2,
-                                start = SpotlightDimens.TopAppBarIconHorizontalPadding,
-                            )
-                            .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
+                            Modifier
+                                .padding(
+                                    end = SpotlightDimens.TopAppBarIconHorizontalPadding * 2,
+                                    start = SpotlightDimens.TopAppBarIconHorizontalPadding,
+                                )
+                                .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
                     )
                 }
             }
@@ -297,9 +298,9 @@ fun RecommendationDetails(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier =
-                Modifier
-                    .padding(horizontal = SpotlightDimens.TopAppBarHorizontalPadding * 2)
-                    .fillMaxWidth(),
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.TopAppBarHorizontalPadding * 2)
+                        .fillMaxWidth(),
             )
         }
         Text(
@@ -316,14 +317,15 @@ fun RecommendationDetails(
 @Composable
 fun RecommendationScreenFunctionBar(
     onPlayClick: () -> Unit,
+    onPauseClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var isPlaying by remember { mutableStateOf(false) }
     Row(
         modifier =
-        modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.FullsizePlayerTopAppBarHeight),
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.FullsizePlayerTopAppBarHeight),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Row(
@@ -331,18 +333,18 @@ fun RecommendationScreenFunctionBar(
         ) {
             FirstRecommendationPreview(
                 modifier =
-                Modifier
-                    .height(SpotlightDimens.FullsizePlayerTopAppBarHeight)
-                    .width(SpotlightDimens.FullsizePlayerTopAppBarHeight * 3 / 4),
+                    Modifier
+                        .height(SpotlightDimens.FullsizePlayerTopAppBarHeight)
+                        .width(SpotlightDimens.FullsizePlayerTopAppBarHeight * 3 / 4),
             )
             Icon(
                 painter = painterResource(SpotlightIcons.Add),
                 contentDescription = "",
                 tint = NavigationGray,
                 modifier =
-                Modifier
-                    .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
-                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize + 4.dp),
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
+                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize + 4.dp),
             )
             Icon(
                 painter = painterResource(SpotlightIcons.Download),
@@ -355,9 +357,9 @@ fun RecommendationScreenFunctionBar(
                 contentDescription = "",
                 tint = NavigationGray,
                 modifier =
-                Modifier
-                    .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
-                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
+                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
             )
         }
         Row(
@@ -368,24 +370,24 @@ fun RecommendationScreenFunctionBar(
                 contentDescription = "",
                 tint = MaterialTheme.colorScheme.primary,
                 modifier =
-                Modifier
-                    .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
-                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
+                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
             )
             Icon(
                 painter = painterResource(if (!isPlaying) SpotlightIcons.Play else SpotlightIcons.Pause),
                 contentDescription = "",
                 tint = MinimizedPlayerBackground,
                 modifier =
-                Modifier
-                    .size(SpotlightDimens.FullsizePlayerTopAppBarHeight)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary)
-                    .padding((SpotlightDimens.FullsizePlayerTopAppBarHeight - SpotlightDimens.PlayerControllerMediumIconSize) / 2)
-                    .noRippleClickable {
-                        isPlaying = !isPlaying
-                        onPlayClick()
-                    },
+                    Modifier
+                        .size(SpotlightDimens.FullsizePlayerTopAppBarHeight)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary)
+                        .padding((SpotlightDimens.FullsizePlayerTopAppBarHeight - SpotlightDimens.PlayerControllerMediumIconSize) / 2)
+                        .noRippleClickable {
+                            isPlaying = !isPlaying
+                            if (isPlaying) onPlayClick() else onPauseClick()
+                        },
             )
         }
     }
@@ -410,16 +412,16 @@ fun CardWithAnimatedBorder(
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "")
     val angle by
-    infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec =
-        infiniteRepeatable(
-            animation = tween(1500, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart,
-        ),
-        label = "",
-    )
+        infiniteTransition.animateFloat(
+            initialValue = 0f,
+            targetValue = 360f,
+            animationSpec =
+                infiniteRepeatable(
+                    animation = tween(1500, easing = LinearEasing),
+                    repeatMode = RepeatMode.Restart,
+                ),
+            label = "",
+        )
 
     val brush =
         if (borderColors.isNotEmpty()) {
@@ -434,20 +436,20 @@ fun CardWithAnimatedBorder(
     ) {
         Surface(
             modifier =
-            Modifier
-                .clipToBounds()
-                .fillMaxWidth()
-                .padding(1.dp)
-                .drawWithContent {
-                    rotate(angle) {
-                        drawCircle(
-                            brush = brush,
-                            radius = size.width,
-                            blendMode = BlendMode.SrcIn,
-                        )
-                    }
-                    drawContent()
-                },
+                Modifier
+                    .clipToBounds()
+                    .fillMaxWidth()
+                    .padding(1.dp)
+                    .drawWithContent {
+                        rotate(angle) {
+                            drawCircle(
+                                brush = brush,
+                                radius = size.width,
+                                blendMode = BlendMode.SrcIn,
+                            )
+                        }
+                        drawContent()
+                    },
             color = Color.Red,
             shape = RoundedCornerShape(6.dp),
         ) {

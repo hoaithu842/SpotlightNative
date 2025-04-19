@@ -49,15 +49,15 @@ fun SearchResultScreen(
                 viewModel.onChangeSearchQuery(it)
             },
             modifier =
-            Modifier
-                .statusBarsPadding()
-                .height(SpotlightDimens.TopAppBarHeight),
+                Modifier
+                    .statusBarsPadding()
+                    .height(SpotlightDimens.TopAppBarHeight),
         )
         Column(
             modifier =
-            Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
         ) {
             when (uiState) {
                 SearchResultUiState.Error -> Text("Error")

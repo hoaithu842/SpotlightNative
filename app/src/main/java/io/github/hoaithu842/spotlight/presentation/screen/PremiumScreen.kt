@@ -38,16 +38,18 @@ fun PremiumScreen() {
     val scrollState = rememberScrollState()
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-            .statusBarsPadding()
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface)
+                .statusBarsPadding(),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .padding(bottom = 80.dp) // for sticky bottom bar space
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+                    .padding(bottom = 80.dp),
         ) {
             HeaderSection()
             BenefitListSection()
@@ -64,25 +66,25 @@ fun HeaderSection() {
             text = "Curious about Premium?\nYou're in luck",
             style = MaterialTheme.typography.headlineSmall,
             color = Color.White,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(Icons.Default.Notifications, contentDescription = null, tint = Color.Cyan)
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "Limited time offer",
                 color = Color.Cyan,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "You can't upgrade to Premium in the app. We know, it's not ideal.",
             color = Color.Gray,
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
         )
     }
 }
@@ -90,29 +92,31 @@ fun HeaderSection() {
 @Composable
 fun BenefitListSection() {
     Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .background(Color.DarkGray, shape = RoundedCornerShape(16.dp))
-            .fillMaxWidth()
-            .padding(16.dp)
+        modifier =
+            Modifier
+                .padding(16.dp)
+                .background(Color.DarkGray, shape = RoundedCornerShape(16.dp))
+                .fillMaxWidth()
+                .padding(16.dp),
     ) {
         Text("Why join Premium?", color = Color.White, fontWeight = FontWeight.Bold)
 
-        val benefits = listOf(
-            "Ad-free music listening" to Icons.Default.Clear,
-            "Download to listen offline" to Icons.Default.Check,
-            "Play songs in any order" to Icons.Default.Refresh,
-            "High audio quality" to Icons.Default.Lock,
-            "Listen with friends in real time" to Icons.Default.Face,
-            "Organize listening queue" to Icons.Default.List
-        )
+        val benefits =
+            listOf(
+                "Ad-free music listening" to Icons.Default.Clear,
+                "Download to listen offline" to Icons.Default.Check,
+                "Play songs in any order" to Icons.Default.Refresh,
+                "High audio quality" to Icons.Default.Lock,
+                "Listen with friends in real time" to Icons.Default.Face,
+                "Organize listening queue" to Icons.Default.List,
+            )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         benefits.forEach { (text, icon) ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(vertical = 6.dp)
+                modifier = Modifier.padding(vertical = 6.dp),
             ) {
                 Icon(icon, contentDescription = null, tint = Color.White)
                 Spacer(modifier = Modifier.width(8.dp))
@@ -124,21 +128,28 @@ fun BenefitListSection() {
 
 @Composable
 fun PlanListSection() {
-    val plans = listOf(
-        PlanUi(
-            "4 months offer", "Individual", listOf(
-                "1 Premium account", "Cancel anytime", "Subscribe or one-time payment"
-            )
-        ),
-        PlanUi(
-            "3 months offer", "Student", listOf(
-                "1 verified Premium account",
-                "Discount for eligible students",
-                "Cancel anytime",
-                "Subscribe or one-time payment"
-            )
+    val plans =
+        listOf(
+            PlanUi(
+                "4 months offer",
+                "Individual",
+                listOf(
+                    "1 Premium account",
+                    "Cancel anytime",
+                    "Subscribe or one-time payment",
+                ),
+            ),
+            PlanUi(
+                "3 months offer",
+                "Student",
+                listOf(
+                    "1 verified Premium account",
+                    "Discount for eligible students",
+                    "Cancel anytime",
+                    "Subscribe or one-time payment",
+                ),
+            ),
         )
-    )
 
     Column(modifier = Modifier.padding(16.dp)) {
         Text("Available plans", color = Color.White, fontWeight = FontWeight.Bold)
@@ -153,15 +164,17 @@ fun PlanListSection() {
 @Composable
 fun PlanCard(plan: PlanUi) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.DarkGray, shape = RoundedCornerShape(16.dp))
-            .padding(16.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(Color.DarkGray, shape = RoundedCornerShape(16.dp))
+                .padding(16.dp),
     ) {
         Box(
-            modifier = Modifier
-                .background(Color(0xFFEC9FA6), shape = RoundedCornerShape(4.dp))
-                .padding(horizontal = 8.dp, vertical = 4.dp)
+            modifier =
+                Modifier
+                    .background(Color(0xFFEC9FA6), shape = RoundedCornerShape(4.dp))
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
         ) {
             Text(plan.offerLabel, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
         }
@@ -175,7 +188,7 @@ fun PlanCard(plan: PlanUi) {
         Text(
             "You can't upgrade to Premium in the app. We know, it's not ideal.",
             color = Color.Gray,
-            fontSize = 12.sp
+            fontSize = 12.sp,
         )
     }
 }

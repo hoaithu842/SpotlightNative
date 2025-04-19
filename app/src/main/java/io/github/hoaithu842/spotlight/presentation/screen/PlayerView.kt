@@ -55,11 +55,12 @@ fun PlayerView(
     modifier: Modifier = Modifier,
     viewModel: PlayerViewModel = hiltViewModel(),
 ) {
-    val currentPosition by viewModel.currentPositionFlow.collectAsStateWithLifecycle(initialValue = 0)
-    val currentSongArtist by viewModel.currentMediaMetadata.collectAsStateWithLifecycle(initialValue = null)
-    val currentSong by viewModel.currentSongFlow.collectAsStateWithLifecycle(initialValue = null)
-    val isPlaying by viewModel.isPlayingFlow.collectAsStateWithLifecycle(initialValue = false)
-    val duration by viewModel.durationFlow.collectAsStateWithLifecycle(initialValue = 0)
+    val uiState by viewModel.playerUiState.collectAsStateWithLifecycle()
+//    val currentPosition by viewModel.currentPositionFlow.collectAsStateWithLifecycle(initialValue = 0)
+//    val currentSongArtist by viewModel.currentMediaMetadata.collectAsStateWithLifecycle(initialValue = null)
+//    val currentSong by viewModel.currentSongFlow.collectAsStateWithLifecycle(initialValue = null)
+//    val isPlaying by viewModel.isPlayingFlow.collectAsStateWithLifecycle(initialValue = false)
+//    val duration by viewModel.durationFlow.collectAsStateWithLifecycle(initialValue = 0)
     val coroutineScope = rememberCoroutineScope()
 
     var isLoading by remember { mutableStateOf(true) }
@@ -67,7 +68,7 @@ fun PlayerView(
         rememberAsyncImagePainter(
             model =
                 ImageRequest.Builder(LocalContext.current)
-                    .data(currentSong?.image?.url ?: "")
+                    .data(uiState.songInfo?.image?.url ?: "")
                     .listener(onSuccess = { _, _ ->
                         isLoading = false
                     })
@@ -105,7 +106,7 @@ fun PlayerView(
         ) {
             item {
                 FullsizePlayerTopAppBar(
-                    artists = currentSongArtist?.artist.toString(),
+                    artists = uiState.songInfo?.artists?.joinToString(separator = ", ") ?: "",
                     onMinimizeClick = {
                         coroutineScope.launch {
                             changeNavBarDisplay()
@@ -117,11 +118,10 @@ fun PlayerView(
             }
             item {
                 MainPlayerContent(
-                    isPlaying = isPlaying,
-                    song = currentSong,
-                    artists = currentSongArtist?.artist.toString(),
-                    currentPosition = currentPosition,
-                    duration = duration,
+                    isPlaying = uiState.isPlaying,
+                    song = uiState.songInfo,
+                    currentPosition = uiState.position,
+                    duration = uiState.duration,
                     painter = painter,
                     isLoading = isLoading,
                     onPrevClick = viewModel::prev,
@@ -138,7 +138,7 @@ fun PlayerView(
 
             item {
                 ArtistCard(
-                    imageUrl = currentSong?.image?.url ?: "",
+                    imageUrl = uiState.songInfo?.image?.url ?: "",
                     modifier = Modifier.padding(vertical = 10.dp),
                 )
             }
@@ -162,11 +162,10 @@ fun PlayerView(
             exit = fadeOut(),
         ) {
             PlayerControllerTopAppBar(
-                song = currentSong,
-                artists = currentSongArtist?.artist.toString(),
-                isPlaying = isPlaying,
-                currentPosition = currentPosition,
-                duration = duration,
+                song = uiState.songInfo,
+                isPlaying = uiState.isPlaying,
+                currentPosition = uiState.position,
+                duration = uiState.duration,
                 onMainFunctionClick = viewModel::playOrPause,
                 onPlayerClick = {
                     scope.launch {
@@ -178,11 +177,10 @@ fun PlayerView(
         }
 
         MinimizedPlayer(
-            song = currentSong,
-            artists = currentSongArtist?.artist.toString(),
-            isPlaying = isPlaying,
-            currentPosition = currentPosition,
-            duration = duration,
+            song = uiState.songInfo,
+            isPlaying = uiState.isPlaying,
+            currentPosition = uiState.position,
+            duration = uiState.duration,
             painter = painter,
             isLoading = isLoading,
             onPlayerClick = {

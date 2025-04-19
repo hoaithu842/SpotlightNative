@@ -76,27 +76,27 @@ fun ArtistScreen(
 
     Column(
         modifier =
-        Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection)
-            .background(MaterialTheme.colorScheme.surface),
+            Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .background(MaterialTheme.colorScheme.surface),
     ) {
         when (uiState) {
             ArtistUiState.Error -> Text("Error")
             ArtistUiState.Loading -> {
                 Box(
                     modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
+                        Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
                 ) {
                     RoundedCornerCover(
                         imageUrl = "",
                         contentScale = ContentScale.FillWidth,
                         modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .height(dpWidth.dp * (1 - scrollBehavior.state.collapsedFraction)),
+                            Modifier
+                                .fillMaxWidth()
+                                .height(dpWidth.dp * (1 - scrollBehavior.state.collapsedFraction)),
                     )
                     ArtistBanner(
                         artistName = "",
@@ -119,19 +119,19 @@ fun ArtistScreen(
             is ArtistUiState.Success -> {
                 Box(
                     modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
+                        Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
                 ) {
                     RoundedCornerCover(
                         imageUrl =
-                        (uiState as ArtistUiState.Success).artistDetails.image?.url
-                            ?: "",
+                            (uiState as ArtistUiState.Success).artistDetails.image?.url
+                                ?: "",
                         contentScale = ContentScale.FillWidth,
                         modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .height(dpWidth.dp * (1 - scrollBehavior.state.collapsedFraction) * 0.9f),
+                            Modifier
+                                .fillMaxWidth()
+                                .height(dpWidth.dp * (1 - scrollBehavior.state.collapsedFraction) * 0.9f),
                     )
                     ArtistBanner(
                         artistName = (uiState as ArtistUiState.Success).artistDetails.name,
@@ -141,7 +141,7 @@ fun ArtistScreen(
                     )
                 }
                 LazyColumn(
-                    contentPadding = PaddingValues(bottom = SpotlightDimens.MinimizedPlayerHeight)
+                    contentPadding = PaddingValues(bottom = SpotlightDimens.MinimizedPlayerHeight),
                 ) {
                     when (songsUiState) {
                         ArtistSongsUiState.Error -> {}
@@ -224,13 +224,13 @@ fun ArtistBanner(
             }
         },
         colors =
-        TopAppBarDefaults.largeTopAppBarColors(
-            containerColor = Color.Transparent,
-            scrolledContainerColor = MaterialTheme.colorScheme.surface,
-            navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
-            titleContentColor = MaterialTheme.colorScheme.onSurface,
-            actionIconContentColor = MaterialTheme.colorScheme.onSurface,
-        ),
+            TopAppBarDefaults.largeTopAppBarColors(
+                containerColor = Color.Transparent,
+                scrolledContainerColor = MaterialTheme.colorScheme.surface,
+                navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+                titleContentColor = MaterialTheme.colorScheme.onSurface,
+                actionIconContentColor = MaterialTheme.colorScheme.onSurface,
+            ),
         scrollBehavior = scrollBehavior,
         expandedHeight = expandedHeight,
         collapsedHeight = 0.3 * 100.dp,
@@ -247,9 +247,9 @@ fun ArtistSectionDisplay(
 ) {
     Column(
         modifier =
-        modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.RecommendationSectionHeight),
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.RecommendationSectionHeight),
     ) {
         Text(
             text = artistCategory.name,

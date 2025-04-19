@@ -53,4 +53,10 @@ class RecommendationViewModel
                 }
             }
         }
+
+        fun pause() {
+            viewModelScope.launch {
+                playerManager.playOrPause()
+            }
+        }
     }

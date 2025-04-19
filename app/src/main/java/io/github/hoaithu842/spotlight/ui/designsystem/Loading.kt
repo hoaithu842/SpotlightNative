@@ -23,56 +23,57 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DotsCollision(
-    dotSize: Dp = 24.dp,
-) {
+fun DotsCollision(dotSize: Dp = 24.dp) {
     val maxOffset = 30f
     val delayUnit = 500 // it's better to use longer delay for this animation
 
     @Composable
-    fun Dot(
-        offset: Float
-    ) = Spacer(
-        Modifier
-            .size(dotSize)
-            .offset(x = offset.dp)
-            .background(
-                color = MaterialTheme.colorScheme.primary,
-                shape = CircleShape
-            )
-    )
+    fun Dot(offset: Float) =
+        Spacer(
+            Modifier
+                .size(dotSize)
+                .offset(x = offset.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = CircleShape,
+                ),
+        )
 
     val infiniteTransition = rememberInfiniteTransition()
 
     val offsetLeft by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 0f,
-        animationSpec = infiniteRepeatable(
-            animation = keyframes {
-                durationMillis = delayUnit * 3
-                0f at 0 with LinearEasing
-                -maxOffset at delayUnit / 2 with LinearEasing
-                0f at delayUnit
-            }
-        )
+        animationSpec =
+            infiniteRepeatable(
+                animation =
+                    keyframes {
+                        durationMillis = delayUnit * 3
+                        0f at 0 with LinearEasing
+                        -maxOffset at delayUnit / 2 with LinearEasing
+                        0f at delayUnit
+                    },
+            ),
     )
     val offsetRight by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 0f,
-        animationSpec = infiniteRepeatable(
-            animation = keyframes {
-                durationMillis = delayUnit * 3
-                0f at delayUnit with LinearEasing
-                maxOffset at delayUnit + delayUnit / 2 with LinearEasing
-                0f at delayUnit * 2
-            }
-        )
+        animationSpec =
+            infiniteRepeatable(
+                animation =
+                    keyframes {
+                        durationMillis = delayUnit * 3
+                        0f at delayUnit with LinearEasing
+                        maxOffset at delayUnit + delayUnit / 2 with LinearEasing
+                        0f at delayUnit * 2
+                    },
+            ),
     )
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
-        modifier = Modifier.padding(horizontal = maxOffset.dp)
+        modifier = Modifier.padding(horizontal = maxOffset.dp),
     ) {
         val spaceSize = 2.dp
 

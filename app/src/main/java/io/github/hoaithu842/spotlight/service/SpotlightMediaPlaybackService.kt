@@ -2,7 +2,6 @@ package io.github.hoaithu842.spotlight.service
 
 import android.content.Intent
 import androidx.annotation.OptIn
-import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
@@ -10,22 +9,22 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.hoaithu842.spotlight.domain.repository.PlayerRepository
+import io.github.hoaithu842.spotlight.domain.repository.SongRepository
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SpotlightMediaPlaybackService : MediaSessionService() {
     @Inject
-    lateinit var playerRepository: PlayerRepository
+    lateinit var playerRepository: SongRepository
     private var mediaSession: MediaSession? = null
 
-    private fun fetchPlaylist(player: ExoPlayer) {
-        player.clearMediaItems()
-        playerRepository.songsList.forEach {
-            player.addMediaItem(MediaItem.fromUri(it.song?.url ?: ""))
-        }
-        player.prepare()
-    }
+//    private fun fetchPlaylist(player: ExoPlayer) {
+//        player.clearMediaItems()
+//        playerRepository.songsList.forEach {
+//            player.addMediaItem(MediaItem.fromUri(it.song?.url ?: ""))
+//        }
+//        player.prepare()
+//    }
 
     @OptIn(UnstableApi::class)
     override fun onCreate() {
@@ -37,7 +36,7 @@ class SpotlightMediaPlaybackService : MediaSessionService() {
                         DefaultHttpDataSource.Factory().setAllowCrossProtocolRedirects(true),
                     ),
                 ).build()
-        fetchPlaylist(player)
+//        fetchPlaylist(player)
         mediaSession = MediaSession.Builder(this, player).build()
     }
 
