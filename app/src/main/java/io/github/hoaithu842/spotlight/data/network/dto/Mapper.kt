@@ -15,9 +15,13 @@ import io.github.hoaithu842.spotlight.domain.model.Image
 import io.github.hoaithu842.spotlight.domain.model.LibraryContents
 import io.github.hoaithu842.spotlight.domain.model.LibraryItem
 import io.github.hoaithu842.spotlight.domain.model.Playlist
+import io.github.hoaithu842.spotlight.domain.model.PlaylistSearchResult
 import io.github.hoaithu842.spotlight.domain.model.RecommendedPlaylists
+import io.github.hoaithu842.spotlight.domain.model.SearchResult
 import io.github.hoaithu842.spotlight.domain.model.Song
 import io.github.hoaithu842.spotlight.domain.model.SongDetails
+import io.github.hoaithu842.spotlight.domain.model.SongSearchResult
+import io.github.hoaithu842.spotlight.domain.model.TopSearchResult
 import io.github.hoaithu842.spotlight.domain.model.UserProfile
 
 fun UserProfileDto.toDomain(): UserProfile =
@@ -180,4 +184,31 @@ fun ArtistSongDto.toDomain(): ArtistSong =
 fun ArtistSongsPagingDto.toDomain(): ArtistSongs =
     ArtistSongs(
         items = this.items?.map { it.toDomain() } ?: listOf(),
+    )
+
+fun SearchResultDto.TopResult.toDomain() =
+    TopSearchResult(
+        id = this.id,
+        name = this.name,
+        type = this.type,
+    )
+
+fun SearchResultDto.Song.toDomain(): SongSearchResult =
+    SongSearchResult(
+        id = this.id,
+        title = this.title,
+    )
+
+fun SearchResultDto.Playlist.toDomain(): PlaylistSearchResult =
+    PlaylistSearchResult(
+        id = this.id,
+        name = this.name,
+    )
+
+fun SearchResultDto.toDomain(): SearchResult =
+    SearchResult(
+        topResult = this.topResult?.toDomain(),
+        songs = this.songs?.map { it.toDomain() },
+        artists = this.artists?.map { it.toDomain() },
+        playlists = this.playlists?.map { it.toDomain() },
     )

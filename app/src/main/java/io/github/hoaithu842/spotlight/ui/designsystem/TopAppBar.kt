@@ -52,6 +52,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -423,6 +424,10 @@ fun SearchResultTopAppBar(
                 onValueChange = {
                     if ("\n" !in it) onSearchQueryChanged(it)
                 },
+                textStyle =
+                    TextStyle(
+                        color = MaterialTheme.colorScheme.onBackground,
+                    ),
                 modifier =
                     Modifier
                         .weight(1f)

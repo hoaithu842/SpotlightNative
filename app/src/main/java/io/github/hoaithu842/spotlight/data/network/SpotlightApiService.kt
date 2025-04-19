@@ -6,6 +6,7 @@ import io.github.hoaithu842.spotlight.data.network.dto.ArtistSongsPagingDto
 import io.github.hoaithu842.spotlight.data.network.dto.HomeSectionDto
 import io.github.hoaithu842.spotlight.data.network.dto.LibraryContentsDto
 import io.github.hoaithu842.spotlight.data.network.dto.PlaylistsPagingDto
+import io.github.hoaithu842.spotlight.data.network.dto.SearchResultDto
 import io.github.hoaithu842.spotlight.data.network.dto.SuccessBodyDto
 import io.github.hoaithu842.spotlight.data.network.dto.UserProfileDto
 import io.github.hoaithu842.spotlight.domain.model.ApiResponse
@@ -40,4 +41,9 @@ interface SpotlightApiService {
 
     @GET("library")
     suspend fun getLibrary(): ApiResponse<SuccessBodyDto<LibraryContentsDto>>
+
+    @GET("search")
+    suspend fun getSearchResult(
+        @Query("q") query: String,
+    ): ApiResponse<SuccessBodyDto<SearchResultDto>>
 }

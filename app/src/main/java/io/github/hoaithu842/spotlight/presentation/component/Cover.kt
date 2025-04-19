@@ -31,7 +31,7 @@ fun Cover(
         rememberAsyncImagePainter(
             model =
                 ImageRequest.Builder(LocalContext.current)
-                    .data(imageUrl)
+                    .data(imageUrl.ifBlank { "https://picsum.photos/200" })
                     .listener(onSuccess = { _, _ ->
                         isLoading = false
                     })
