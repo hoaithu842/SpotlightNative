@@ -43,7 +43,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -82,12 +81,9 @@ import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightIcons
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightTextStyle
 import io.github.hoaithu842.spotlight.ui.theme.MinimizedPlayerBackground
 import io.github.hoaithu842.spotlight.ui.theme.NavigationGray
-import kotlinx.coroutines.launch
 
 @Composable
 fun RecommendationScreen(
-    id: String,
-    imageUrl: String,
     onBackClick: () -> Unit,
     maxImageSize: Dp = SpotlightDimens.RecommendationScreenThumbnailMaxSize,
     minImageSize: Dp = SpotlightDimens.FullsizePlayerTopAppBarHeight,
@@ -100,7 +96,6 @@ fun RecommendationScreen(
     var currentImageSize by remember { mutableStateOf(maxImageSize) }
     var currentImageAlpha by remember { mutableFloatStateOf(maxAlpha) }
     var imageScale by remember { mutableFloatStateOf(1f) }
-    val scope = rememberCoroutineScope()
 
     val nestedScrollConnection =
         remember {
@@ -175,16 +170,12 @@ fun RecommendationScreen(
                     }
                     item {
                         RecommendationScreenFunctionBar(
-                            onPlayClick = {
-                                scope.launch {
-                                    viewModel.playAlbum()
-                                }
-                            },
+                            onPlayClick = { viewModel.playAlbum(state.album.items) },
                             modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding * 2),
                         )
                     }
                     // Placeholder list items
-                    items(state.album.items?.size ?: 0, key = { it }) {
+                    items(state.album.items?.size ?: 0) {
                         state.album.items?.get(it)?.let { item ->
                             SongItem(
                                 song = item.song ?: Song(),

@@ -22,8 +22,6 @@ fun NavGraphBuilder.recommendationScreen(onBackClick: () -> Unit) {
         val recommendationRoute: RecommendationRoute = backStackEntry.toRoute()
 
         RecommendationScreen(
-            id = recommendationRoute.id,
-            imageUrl = "https://thantrieu.com/resources/arts/1078245023.webp",
             onBackClick = onBackClick,
         )
     }

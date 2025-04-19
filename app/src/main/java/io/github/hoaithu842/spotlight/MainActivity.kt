@@ -15,7 +15,7 @@ import com.google.common.util.concurrent.MoreExecutors
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.hoaithu842.spotlight.manager.AccountManager
 import io.github.hoaithu842.spotlight.manager.NetworkMonitor
-import io.github.hoaithu842.spotlight.presentation.viewmodel.PlayerViewModel
+import io.github.hoaithu842.spotlight.manager.SpotlightPlayerManager
 import io.github.hoaithu842.spotlight.service.SpotlightMediaPlaybackService
 import io.github.hoaithu842.spotlight.ui.theme.SpotlightTheme
 import javax.inject.Inject
@@ -27,7 +27,10 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var networkMonitor: NetworkMonitor
-    private val playerViewModel: PlayerViewModel by viewModels()
+
+    @Inject
+    lateinit var playerManager: SpotlightPlayerManager
+
     private val mainViewModel: MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +67,7 @@ class MainActivity : ComponentActivity() {
         val controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
         controllerFuture.addListener(
             {
-                playerViewModel.setController(controllerFuture.get())
+                playerManager.setController(controllerFuture.get())
             },
             MoreExecutors.directExecutor(),
         )

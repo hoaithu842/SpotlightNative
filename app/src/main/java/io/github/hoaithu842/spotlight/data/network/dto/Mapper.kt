@@ -2,7 +2,6 @@ package io.github.hoaithu842.spotlight.data.network.dto
 
 import android.util.Log
 import io.github.hoaithu842.spotlight.domain.model.AlbumDetails
-import io.github.hoaithu842.spotlight.domain.model.AlbumDetailsItem
 import io.github.hoaithu842.spotlight.domain.model.Artist
 import io.github.hoaithu842.spotlight.domain.model.ArtistCategory
 import io.github.hoaithu842.spotlight.domain.model.ArtistCategoryItem
@@ -18,6 +17,7 @@ import io.github.hoaithu842.spotlight.domain.model.LibraryItem
 import io.github.hoaithu842.spotlight.domain.model.Playlist
 import io.github.hoaithu842.spotlight.domain.model.RecommendedPlaylists
 import io.github.hoaithu842.spotlight.domain.model.Song
+import io.github.hoaithu842.spotlight.domain.model.SongDetails
 import io.github.hoaithu842.spotlight.domain.model.UserProfile
 
 fun UserProfileDto.toDomain(): UserProfile =
@@ -140,8 +140,8 @@ fun PlaylistsPagingDto?.toDomain(): RecommendedPlaylists =
         items = this?.items?.map { it.toDomain() },
     )
 
-fun AlbumCategoryItem.toDomain(): AlbumDetailsItem =
-    AlbumDetailsItem(
+fun AlbumCategoryItem.toDomain(): SongDetails =
+    SongDetails(
         id = this.id ?: "",
         title = this.title ?: "",
         image = this.image.toDomain(),

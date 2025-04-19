@@ -1,6 +1,5 @@
 package io.github.hoaithu842.spotlight.presentation.component
 
-import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -34,14 +33,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
 import io.github.hoaithu842.spotlight.domain.model.SongDetails
 import io.github.hoaithu842.spotlight.extension.noRippleClickable
 import io.github.hoaithu842.spotlight.extension.shimmerLoadingAnimation
@@ -55,13 +50,13 @@ import io.github.hoaithu842.spotlight.ui.theme.MinimizedPlayerBackground
 import io.github.hoaithu842.spotlight.ui.theme.NavigationGray
 import io.github.hoaithu842.spotlight.ui.theme.ProgressIndicatorColor
 import io.github.hoaithu842.spotlight.ui.theme.ProgressIndicatorTrackColor
-import io.github.hoaithu842.spotlight.ui.theme.SpotlightTheme
 import kotlinx.coroutines.launch
 
 @Composable
 fun FullsizePlayer(
     isPlaying: Boolean,
-    song: SongDetails,
+    song: SongDetails?,
+    artists: String,
     currentPosition: Long,
     duration: Long,
     painter: AsyncImagePainter,
@@ -92,7 +87,7 @@ fun FullsizePlayer(
         ) {
             item {
                 FullsizePlayerTopAppBar(
-                    artists = song.artists,
+                    artists = artists,
                     onMinimizeClick = onMinimizeClick,
                     modifier =
                         Modifier
@@ -104,6 +99,7 @@ fun FullsizePlayer(
                 MainPlayerContent(
                     isPlaying = isPlaying,
                     song = song,
+                    artists = artists,
                     currentPosition = currentPosition,
                     duration = duration,
                     painter = painter,
@@ -122,6 +118,7 @@ fun FullsizePlayer(
         ) {
             PlayerControllerTopAppBar(
                 song = song,
+                artists = artists,
                 isPlaying = isPlaying,
                 currentPosition = currentPosition,
                 duration = duration,
@@ -139,7 +136,8 @@ fun FullsizePlayer(
 @Composable
 fun MainPlayerContent(
     isPlaying: Boolean,
-    song: SongDetails,
+    song: SongDetails?,
+    artists: String,
     currentPosition: Long,
     duration: Long,
     painter: AsyncImagePainter,
@@ -183,7 +181,7 @@ fun MainPlayerContent(
                         .padding(end = SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize.times(2)),
             ) {
                 Text(
-                    text = song.title,
+                    text = song?.title.toString(),
                     style = SpotlightTextStyle.Text22W400,
                     color = MaterialTheme.colorScheme.onBackground,
                     maxLines = 1,
@@ -193,7 +191,7 @@ fun MainPlayerContent(
                             .basicMarquee(),
                 )
                 Text(
-                    text = song.artists,
+                    text = artists,
                     style = SpotlightTextStyle.Text16W400,
                     overflow = TextOverflow.Ellipsis,
                     color = NavigationGray,
@@ -325,35 +323,6 @@ fun PlayerController(
                 Modifier
                     .size(SpotlightDimens.PlayerControllerSmallIconSize)
                     .noRippleClickable { },
-        )
-    }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun FullsizePlayerPreview() {
-    SpotlightTheme {
-        FullsizePlayer(
-            isPlaying = true,
-            song =
-                SongDetails(
-                    title = "Merry Go Round of Life (From Howl's Moving Castle Original Motion Picture Soundtrack)",
-                    artists = "Grissini Project",
-                ),
-            currentPosition = 0,
-            duration = 232155,
-            painter =
-                rememberAsyncImagePainter(
-                    model =
-                        ImageRequest.Builder(LocalContext.current)
-                            .data("https://thantrieu.com/resources/arts/1073419268.webp")
-                            .build(),
-                ),
-            isLoading = false,
-            onMinimizeClick = {},
-            onPrevClick = {},
-            onMainFunctionClick = {},
-            onNextClick = {},
         )
     }
 }

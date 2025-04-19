@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hoaithu842.spotlight.domain.model.ApiResponse
+import io.github.hoaithu842.spotlight.domain.model.SongDetails
 import io.github.hoaithu842.spotlight.domain.repository.AlbumRepository
+import io.github.hoaithu842.spotlight.manager.PlayerManager
 import io.github.hoaithu842.spotlight.navigation.RecommendationRoute
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,6 +21,7 @@ import javax.inject.Inject
 class RecommendationViewModel
     @Inject
     constructor(
+        private val playerManager: PlayerManager,
         private val albumRepository: AlbumRepository,
         savedStateHandle: SavedStateHandle,
     ) : ViewModel() {
@@ -43,6 +46,11 @@ class RecommendationViewModel
             }
         }
 
-        suspend fun playAlbum() {
+        fun playAlbum(items: List<SongDetails>?) {
+            viewModelScope.launch {
+                if (!items.isNullOrEmpty()) {
+                    playerManager.playAlbum(items)
+                }
+            }
         }
     }

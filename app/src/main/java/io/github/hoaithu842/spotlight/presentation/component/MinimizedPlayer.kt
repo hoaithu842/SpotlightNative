@@ -45,7 +45,8 @@ import io.github.hoaithu842.spotlight.ui.theme.ProgressIndicatorTrackColor
 @Composable
 fun MinimizedPlayer(
     isPlaying: Boolean,
-    song: SongDetails,
+    song: SongDetails?,
+    artists: String,
     currentPosition: Long,
     duration: Long,
     painter: AsyncImagePainter,
@@ -100,7 +101,7 @@ fun MinimizedPlayer(
                     modifier = Modifier.padding(start = SpotlightDimens.MinimizedPlayerInfoPaddingStart),
                 ) {
                     Text(
-                        text = song.title,
+                        text = song?.title.toString(),
                         style = SpotlightTextStyle.Text11W400,
                         color = Color.White,
                         maxLines = 1,
@@ -110,7 +111,7 @@ fun MinimizedPlayer(
                                 .basicMarquee(),
                     )
                     Text(
-                        text = song.artists,
+                        text = artists,
                         style = SpotlightTextStyle.Text11W400,
                         overflow = TextOverflow.Ellipsis,
                         color = NavigationGray,

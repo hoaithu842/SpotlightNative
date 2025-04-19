@@ -706,7 +706,8 @@ fun FullsizePlayerTopAppBar(
 @Composable
 fun PlayerControllerTopAppBar(
     isPlaying: Boolean,
-    song: SongDetails,
+    song: SongDetails?,
+    artists: String,
     currentPosition: Long,
     duration: Long,
     onPlayerClick: () -> Unit,
@@ -739,7 +740,7 @@ fun PlayerControllerTopAppBar(
                         .align(Alignment.CenterStart),
             ) {
                 Text(
-                    text = song.title,
+                    text = song?.title.toString(),
                     style = SpotlightTextStyle.Text11W400,
                     color = MaterialTheme.colorScheme.onBackground,
                     modifier =
@@ -748,7 +749,7 @@ fun PlayerControllerTopAppBar(
                             .basicMarquee(),
                 )
                 Text(
-                    text = song.artists,
+                    text = artists,
                     style = SpotlightTextStyle.Text11W400,
                     overflow = TextOverflow.Ellipsis,
                     color = NavigationGray,
@@ -799,20 +800,6 @@ fun TopAppBarPreview() {
             FullsizePlayerTopAppBar(
                 artists = "Preview",
                 onMinimizeClick = {},
-                modifier = Modifier.padding(vertical = 20.dp),
-            )
-
-            PlayerControllerTopAppBar(
-                song =
-                    SongDetails(
-                        title = "Preview",
-                        artists = "Preview",
-                    ),
-                isPlaying = true,
-                currentPosition = 0,
-                duration = 232155,
-                onPlayerClick = {},
-                onMainFunctionClick = {},
                 modifier = Modifier.padding(vertical = 20.dp),
             )
         }

@@ -9,12 +9,5 @@ data class AlbumDetails(
     val isOwned: Boolean? = false,
     val inLibrary: Boolean? = false,
     val artists: String? = "",
-    val items: List<AlbumDetailsItem>? = listOf(),
-)
-
-data class AlbumDetailsItem(
-    val id: String? = "",
-    val title: String? = "",
-    val image: Image? = Image(),
-    val song: Song? = Song(),
+    val items: List<SongDetails>? = listOf(),
 )
