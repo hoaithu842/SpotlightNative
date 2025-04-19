@@ -31,9 +31,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -70,7 +71,6 @@ import io.github.hoaithu842.spotlight.R
 import io.github.hoaithu842.spotlight.domain.model.Image
 import io.github.hoaithu842.spotlight.domain.model.Song
 import io.github.hoaithu842.spotlight.extension.noRippleClickable
-import io.github.hoaithu842.spotlight.extension.singleClickable
 import io.github.hoaithu842.spotlight.extension.toColor
 import io.github.hoaithu842.spotlight.presentation.component.Cover
 import io.github.hoaithu842.spotlight.presentation.component.SongItem
@@ -209,19 +209,14 @@ fun RecommendationScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Icon(
-                        modifier =
-                            Modifier
-                                .padding(
-                                    start = SpotlightDimens.TopAppBarIconHorizontalPadding * 2,
-                                    end = SpotlightDimens.TopAppBarIconHorizontalPadding,
-                                )
-                                .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
-                                .singleClickable { onBackClick() },
-                        imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowLeft,
-                        tint = MaterialTheme.colorScheme.onBackground,
-                        contentDescription = "",
-                    )
+                    IconButton(
+                        onClick = onBackClick,
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "",
+                        )
+                    }
                     AnimatedVisibility(
                         visible = currentImageAlpha == 0f,
                         enter =
@@ -311,6 +306,7 @@ fun RecommendationScreenFunctionBar(
     onPlayClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var isPlaying by remember { mutableStateOf(false) }
     Row(
         modifier =
             modifier
@@ -365,7 +361,7 @@ fun RecommendationScreenFunctionBar(
                         .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
             )
             Icon(
-                painter = painterResource(SpotlightIcons.Play),
+                painter = painterResource(if (!isPlaying) SpotlightIcons.Play else SpotlightIcons.Pause),
                 contentDescription = "",
                 tint = MinimizedPlayerBackground,
                 modifier =
@@ -374,7 +370,10 @@ fun RecommendationScreenFunctionBar(
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.primary)
                         .padding((SpotlightDimens.FullsizePlayerTopAppBarHeight - SpotlightDimens.PlayerControllerMediumIconSize) / 2)
-                        .noRippleClickable(onPlayClick),
+                        .noRippleClickable{
+                            isPlaying = !isPlaying
+                            onPlayClick()
+                        },
             )
         }
     }

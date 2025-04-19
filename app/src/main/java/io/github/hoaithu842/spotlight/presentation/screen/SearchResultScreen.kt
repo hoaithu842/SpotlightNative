@@ -90,6 +90,7 @@ fun ResultDisplay(
                 title = result.topResult?.name ?: "",
                 description = result.topResult?.type ?: "",
                 onClick = {},
+                modifier = Modifier.padding(10.dp),
             )
         }
         item {
@@ -106,6 +107,7 @@ fun ResultDisplay(
                 title = result.songs?.get(it)?.title ?: "",
                 description = "Song",
                 onClick = {},
+                modifier = Modifier.padding(10.dp),
             )
         }
         item {
@@ -122,6 +124,7 @@ fun ResultDisplay(
                 title = result.artists?.get(it)?.name ?: "",
                 description = "Song",
                 onClick = {},
+                modifier = Modifier.padding(10.dp),
             )
         }
         item {
@@ -138,6 +141,7 @@ fun ResultDisplay(
                 title = result.playlists?.get(it)?.name ?: "",
                 description = "Song",
                 onClick = {},
+                modifier = Modifier.padding(10.dp),
             )
         }
     }
