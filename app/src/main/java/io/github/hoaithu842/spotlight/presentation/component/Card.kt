@@ -316,7 +316,7 @@ fun Preview() {
     SpotlightTheme {
         BrowseCard(
             title = "Musics",
-            imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
+            imageUrl = "",
             modifier = Modifier,
         )
     }

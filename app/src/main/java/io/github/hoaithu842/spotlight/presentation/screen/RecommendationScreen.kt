@@ -397,7 +397,7 @@ fun RecommendationScreenFunctionBar(
 fun FirstRecommendationPreview(modifier: Modifier = Modifier) {
     CardWithAnimatedBorder(modifier = modifier) {
         Cover(
-            imageUrl = "https://thantrieu.com/resources/arts/1078245010.webp",
+            imageUrl = "",
             contentScale = ContentScale.Crop,
         )
     }
