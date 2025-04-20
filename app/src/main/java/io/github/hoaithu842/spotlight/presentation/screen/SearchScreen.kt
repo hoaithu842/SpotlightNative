@@ -45,9 +45,9 @@ fun SearchScreen(
 
     Column(
         modifier =
-        Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
+            Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
     ) {
         SearchTopAppBar(
             scrollBehavior = scrollBehavior,
@@ -57,14 +57,14 @@ fun SearchScreen(
 
         SearchBar(
             modifier =
-            Modifier
-                .padding(
-                    start = SpotlightDimens.RecommendationPadding * 2,
-                    end = SpotlightDimens.RecommendationPadding * 2,
-                    top = SpotlightDimens.SearchBarTopPadding,
-                    bottom = SpotlightDimens.TopAppBarHorizontalPadding * 2,
-                )
-                .noRippleClickable { onNavigateToSearchClick() },
+                Modifier
+                    .padding(
+                        start = SpotlightDimens.RecommendationPadding * 2,
+                        end = SpotlightDimens.RecommendationPadding * 2,
+                        top = SpotlightDimens.SearchBarTopPadding,
+                        bottom = SpotlightDimens.TopAppBarHorizontalPadding * 2,
+                    )
+                    .noRippleClickable { onNavigateToSearchClick() },
         )
 
         when (uiState) {
@@ -83,19 +83,19 @@ fun SearchScreen(
                 FlowRow(
                     maxItemsInEachRow = 2,
                     modifier =
-                    Modifier
-                        .padding(SpotlightDimens.RecommendationPadding)
-                        .verticalScroll(rememberScrollState())
-                        .padding(bottom = SpotlightDimens.MinimizedPlayerHeight),
+                        Modifier
+                            .padding(SpotlightDimens.RecommendationPadding)
+                            .verticalScroll(rememberScrollState())
+                            .padding(bottom = SpotlightDimens.MinimizedPlayerHeight),
                 ) {
                     (uiState as SearchUiState.Success).playlists.items?.forEach {
                         BrowseCard(
                             title = it.name ?: "",
                             imageUrl = "https://picsum.photos/200",
                             modifier =
-                            Modifier
-                                .fillMaxWidth(0.5f)
-                                .padding(SpotlightDimens.RecommendationPadding),
+                                Modifier
+                                    .fillMaxWidth(0.5f)
+                                    .padding(SpotlightDimens.RecommendationPadding),
                         )
                     }
                 }
