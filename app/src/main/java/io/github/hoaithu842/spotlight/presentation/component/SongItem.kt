@@ -30,6 +30,7 @@ fun SongItem(
     song: Song,
     cover: Image,
     modifier: Modifier = Modifier,
+    artists: String = "Song",
 ) {
     Box(
         modifier =
@@ -66,7 +67,7 @@ fun SongItem(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    text = "abc",
+                    text = artists,
                     style = SpotlightTextStyle.Text11W400,
                     color = NavigationGray,
                     modifier = Modifier.padding(top = SpotlightDimens.LibraryTextPadding.times(0.5f)),

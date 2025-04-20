@@ -86,6 +86,7 @@ fun SpotlightNavHost(
                         },
                 )
             },
+            onNavigateToFavorite = navHostController::navigateToLibraryFavoriteScreen,
         )
         premiumScreen()
     }

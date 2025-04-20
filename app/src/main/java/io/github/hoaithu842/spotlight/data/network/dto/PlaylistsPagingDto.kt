@@ -6,5 +6,5 @@ data class PlaylistsPagingDto(
     @SerializedName("items")
     val items: List<PlaylistDto>?,
     @SerializedName("meta")
-    val meta: DetailsPagingDto,
+    val meta: DetailsPagingDto?,
 )

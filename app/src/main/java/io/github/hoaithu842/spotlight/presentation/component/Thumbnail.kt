@@ -96,10 +96,19 @@ fun VerticalWithTitleThumbnail(
                 .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Cover(
-            imageUrl = imageUrl,
-            modifier = Modifier.size(thumbnailCoverSize.size),
-        )
+        if (imageUrl.isBlank()) {
+            Image(
+                painter = painterResource(R.drawable.favorite_playlist),
+                contentDescription = "",
+                modifier = Modifier.size(thumbnailCoverSize.size),
+                contentScale = ContentScale.Fit,
+            )
+        } else {
+            Cover(
+                imageUrl = imageUrl,
+                modifier = Modifier.size(thumbnailCoverSize.size),
+            )
+        }
 
         Text(
             text = title,
@@ -312,6 +321,15 @@ fun HorizontalWithTitleThumbnail(
             if (description == "Artist") {
                 Image(
                     painter = painterResource(R.drawable.person),
+                    contentDescription = "",
+                    modifier =
+                        Modifier
+                            .size(SpotlightDimens.LibraryItemHeight),
+                    contentScale = ContentScale.Fit,
+                )
+            } else if (title == "Liked Songs") {
+                Image(
+                    painter = painterResource(R.drawable.favorite_playlist),
                     contentDescription = "",
                     modifier =
                         Modifier

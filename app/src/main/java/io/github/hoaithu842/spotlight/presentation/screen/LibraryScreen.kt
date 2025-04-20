@@ -43,6 +43,7 @@ import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightTextStyle
 fun LibraryScreen(
     userProfile: UserProfile?,
     onAvatarClick: () -> Unit,
+    onNavigateToFavorite: () -> Unit,
     onNavigateToSearchClick: () -> Unit,
     viewModel: LibraryViewModel = hiltViewModel(),
 ) {
@@ -88,6 +89,16 @@ fun LibraryScreen(
                     columns = if (isInGridView) GridCells.Adaptive(100.dp) else GridCells.Fixed(1),
 // verticalArrangement = Arrangement.SpaceAround,
                 ) {
+                    item {
+                        LibraryPlaylistItem(
+                            name = "Liked Songs",
+                            type = "Playlist",
+                            creator = "You",
+                            imageUrl = "",
+                            isInGridView = isInGridView,
+                            onClick = onNavigateToFavorite,
+                        )
+                    }
                     items((uiState as LibraryUiState.Success).libraryContents.items.size) { index ->
                         val libraryPlaylist =
                             (uiState as LibraryUiState.Success).libraryContents.items[index]

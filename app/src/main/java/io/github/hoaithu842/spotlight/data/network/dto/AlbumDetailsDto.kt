@@ -18,7 +18,7 @@ data class AlbumDetailsDto(
     @SerializedName("in_library")
     val inLibrary: Boolean?,
     @SerializedName("Artists")
-    val artist: List<Artist>,
+    val artist: List<Artist>?,
     @SerializedName("categories")
     val categories: List<AlbumCategoryDto>?,
 ) {

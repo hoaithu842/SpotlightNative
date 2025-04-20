@@ -27,16 +27,16 @@ import io.github.hoaithu842.spotlight.domain.model.SongSearchResult
 import io.github.hoaithu842.spotlight.domain.model.TopSearchResult
 import io.github.hoaithu842.spotlight.domain.model.UserProfile
 
-fun UserProfileDto.toDomain(): UserProfile =
+fun UserProfileDto?.toDomain(): UserProfile =
     UserProfile(
-        name = this.name,
-        pictureURL = this.avatar?.url ?: "",
-        id = this.id,
-        nickname = this.username,
-        email = this.email,
-        isEmailVerified = this.emailVerified,
+        name = this?.name,
+        pictureURL = this?.avatar?.url ?: "",
+        id = this?.id,
+        nickname = this?.username,
+        email = this?.email,
+        isEmailVerified = this?.emailVerified,
         familyName = null,
-        createdAt = this.createdAt,
+        createdAt = this?.createdAt,
     )
 
 fun ImageDto?.toDomain(): Image =
@@ -62,13 +62,13 @@ fun ArtistCategoryDto?.toDomain(): ArtistCategory =
         items = this?.items?.map { it.toDomain() } ?: listOf(),
     )
 
-fun ArtistDetailsDto.toDomain(): ArtistDetails =
+fun ArtistDetailsDto?.toDomain(): ArtistDetails =
     ArtistDetails(
-        id = this.id ?: "",
-        name = this.name ?: "",
-        inLibrary = this.inLibrary ?: false,
-        image = this.image.toDomain(),
-        categories = this.categories?.map { it.toDomain() } ?: listOf(),
+        id = this?.id ?: "",
+        name = this?.name ?: "",
+        inLibrary = this?.inLibrary ?: false,
+        image = this?.image.toDomain(),
+        categories = this?.categories?.map { it.toDomain() } ?: listOf(),
     )
 
 fun SongDto.toDomain(): Song =
@@ -155,18 +155,18 @@ fun AlbumCategoryItemDto.toDomain(): SongDetails =
         song = this.song?.toDomain(),
     )
 
-fun AlbumDetailsDto.toDomain(): AlbumDetails =
+fun AlbumDetailsDto?.toDomain(): AlbumDetails =
     AlbumDetails(
-        id = this.id,
-        title = this.title,
-        color = this.color,
-        image = this.image.toDomain(),
-        isPublic = this.isPublic,
-        isOwned = this.isOwned,
-        inLibrary = this.inLibrary,
-        artists = this.artist.map { it.name }.joinToString(separator = ", "),
+        id = this?.id,
+        title = this?.title,
+        color = this?.color,
+        image = this?.image.toDomain(),
+        isPublic = this?.isPublic,
+        isOwned = this?.isOwned,
+        inLibrary = this?.inLibrary,
+        artists = this?.artist?.map { it.name }?.joinToString(separator = ", "),
         items =
-            if (!this.categories.isNullOrEmpty()) {
+            if (this != null && !this.categories.isNullOrEmpty()) {
                 this.categories[0].items?.map { it.toDomain() } ?: listOf()
             } else {
                 listOf()
@@ -184,9 +184,9 @@ fun ArtistSongDto.toDomain(): ArtistSong =
         duration = this.duration ?: 0,
     )
 
-fun ArtistSongsPagingDto.toDomain(): ArtistSongs =
+fun ArtistSongsPagingDto?.toDomain(): ArtistSongs =
     ArtistSongs(
-        items = this.items?.map { it.toDomain() } ?: listOf(),
+        items = this?.items?.map { it.toDomain() } ?: listOf(),
     )
 
 fun SearchResultDto.TopResult.toDomain() =
@@ -208,12 +208,12 @@ fun SearchResultDto.Playlist.toDomain(): PlaylistSearchResult =
         name = this.name,
     )
 
-fun SearchResultDto.toDomain(): SearchResult =
+fun SearchResultDto?.toDomain(): SearchResult =
     SearchResult(
-        topResult = this.topResult?.toDomain(),
-        songs = this.songs?.map { it.toDomain() },
-        artists = this.artists?.map { it.toDomain() },
-        playlists = this.playlists?.map { it.toDomain() },
+        topResult = this?.topResult?.toDomain(),
+        songs = this?.songs?.map { it.toDomain() },
+        artists = this?.artists?.map { it.toDomain() },
+        playlists = this?.playlists?.map { it.toDomain() },
     )
 
 fun AlbumCategoryDto.toDomain(): AlbumCategory =
@@ -229,16 +229,16 @@ fun SongInfoDto.SongInfoAlbum.toDomain(): SongInfoAlbum =
         title = this.title,
     )
 
-fun SongInfoDto.toDomain(): SongInfo =
+fun SongInfoDto?.toDomain(): SongInfo =
     SongInfo(
-        id = this.id,
-        title = this.title,
-        album = this.album?.toDomain(),
-        duration = this.duration ?: 0,
-        releaseDate = this.releaseDate,
-        color = this.color,
-        url = this.url,
-        image = this.image.toDomain(),
-        categories = this.categories?.map { it.toDomain() } ?: listOf(),
-        artists = this.artists?.map { it.toDomain() } ?: listOf(),
+        id = this?.id,
+        title = this?.title,
+        album = this?.album?.toDomain(),
+        duration = this?.duration ?: 0,
+        releaseDate = this?.releaseDate,
+        color = this?.color,
+        url = this?.url,
+        image = this?.image.toDomain(),
+        categories = this?.categories?.map { it.toDomain() } ?: listOf(),
+        artists = this?.artists?.map { it.toDomain() } ?: listOf(),
     )

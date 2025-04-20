@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class SuccessBodyDto<T>(
     @SerializedName("error_code")
-    val errorCode: Int,
+    val errorCode: Int?,
     @SerializedName("message")
-    val message: String,
+    val message: String?,
     @SerializedName("data")
-    val data: T,
+    val data: T?,
 )

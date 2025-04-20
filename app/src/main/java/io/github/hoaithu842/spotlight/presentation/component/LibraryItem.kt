@@ -40,13 +40,14 @@ fun LibraryPlaylistItem(
     imageUrl: String,
     modifier: Modifier = Modifier,
     isInGridView: Boolean = true,
+    onClick: () -> Unit = {},
 ) {
     if (!isInGridView) {
         HorizontalWithTitleThumbnail(
             imageUrl = imageUrl,
             title = name,
             description = "$type • $creator",
-            onClick = {},
+            onClick = onClick,
             modifier = modifier.padding(vertical = 5.dp),
         )
     } else {
@@ -54,7 +55,7 @@ fun LibraryPlaylistItem(
             imageUrl = imageUrl,
             title = name,
             description = "$type • $creator",
-            onClick = {},
+            onClick = onClick,
             modifier = modifier,
             thumbnailCoverSize = ThumbnailCoverSize.MEDIUM,
         )

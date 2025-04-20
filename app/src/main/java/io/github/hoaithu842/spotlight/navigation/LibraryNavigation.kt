@@ -6,6 +6,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import io.github.hoaithu842.spotlight.domain.model.UserProfile
+import io.github.hoaithu842.spotlight.presentation.screen.LibraryFavoriteScreen
 import io.github.hoaithu842.spotlight.presentation.screen.LibraryScreen
 import io.github.hoaithu842.spotlight.presentation.screen.LibrarySearchScreen
 import kotlinx.serialization.Serializable
@@ -20,6 +21,7 @@ fun NavGraphBuilder.libraryGraph(
     onAvatarClick: () -> Unit,
     onCancelClick: () -> Unit,
     onNavigateToSearchClick: () -> Unit,
+    onNavigateToFavorite: () -> Unit,
 ) {
     navigation<LibraryGraph>(
         startDestination = LibraryRoute,
@@ -28,8 +30,13 @@ fun NavGraphBuilder.libraryGraph(
             userProfile = userProfile,
             onAvatarClick = onAvatarClick,
             onNavigateToSearchClick = onNavigateToSearchClick,
+            onNavigateToFavorite = onNavigateToFavorite,
         )
         librarySearchScreen(
+            onCancelClick = onCancelClick,
+        )
+
+        libraryFavoriteScreen(
             onCancelClick = onCancelClick,
         )
     }
@@ -42,12 +49,14 @@ fun NavGraphBuilder.libraryScreen(
     userProfile: UserProfile?,
     onAvatarClick: () -> Unit,
     onNavigateToSearchClick: () -> Unit,
+    onNavigateToFavorite: () -> Unit,
 ) {
     composable<LibraryRoute> {
         LibraryScreen(
             userProfile = userProfile,
             onAvatarClick = onAvatarClick,
             onNavigateToSearchClick = onNavigateToSearchClick,
+            onNavigateToFavorite = onNavigateToFavorite,
         )
     }
 }
@@ -61,6 +70,20 @@ fun NavController.navigateToLibrarySearchScreen(navOptions: NavOptions? = null) 
 fun NavGraphBuilder.librarySearchScreen(onCancelClick: () -> Unit) {
     composable<LibrarySearchRoute> {
         LibrarySearchScreen(
+            onCancelClick = onCancelClick,
+        )
+    }
+}
+
+@Serializable
+data object LibraryFavoriteRoute
+
+fun NavController.navigateToLibraryFavoriteScreen(navOptions: NavOptions? = null) =
+    navigate(route = LibraryFavoriteRoute, navOptions = navOptions)
+
+fun NavGraphBuilder.libraryFavoriteScreen(onCancelClick: () -> Unit) {
+    composable<LibraryFavoriteRoute> {
+        LibraryFavoriteScreen(
             onCancelClick = onCancelClick,
         )
     }
