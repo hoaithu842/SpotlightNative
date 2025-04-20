@@ -77,22 +77,22 @@ fun LibraryFavoriteScreen(
 
     Column(
         modifier =
-        Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection)
-            .background(MaterialTheme.colorScheme.surface),
+            Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .background(MaterialTheme.colorScheme.surface),
     ) {
         Box(
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
+                Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
         ) {
             HeadlineCover(
                 modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(dpWidth * (1 - scrollBehavior.state.collapsedFraction) * 0.9f),
+                    Modifier
+                        .fillMaxWidth()
+                        .height(dpWidth * (1 - scrollBehavior.state.collapsedFraction) * 0.9f),
                 collapsedFraction = scrollBehavior.state.collapsedFraction,
             )
 
@@ -110,10 +110,10 @@ fun LibraryFavoriteScreen(
                     onPlayClick = {},
                     onPauseClick = {},
                     modifier =
-                    Modifier.padding(
-                        horizontal = 10.dp,
-                        vertical = 15.dp,
-                    ),
+                        Modifier.padding(
+                            horizontal = 10.dp,
+                            vertical = 15.dp,
+                        ),
                 )
             }
 
@@ -122,10 +122,10 @@ fun LibraryFavoriteScreen(
                     onPlayClick = {},
                     onPauseClick = {},
                     modifier =
-                    Modifier.padding(
-                        horizontal = 10.dp,
-                        vertical = 15.dp,
-                    ),
+                        Modifier.padding(
+                            horizontal = 10.dp,
+                            vertical = 15.dp,
+                        ),
                 )
 
                 Column(
@@ -142,10 +142,10 @@ fun LibraryFavoriteScreen(
                     onPlayClick = { viewModel.playAlbum((uiState as LibraryFavoriteUiState.Success).items) },
                     onPauseClick = { viewModel.pause() },
                     modifier =
-                    Modifier.padding(
-                        horizontal = 20.dp,
-                        vertical = 15.dp,
-                    ),
+                        Modifier.padding(
+                            horizontal = 20.dp,
+                            vertical = 15.dp,
+                        ),
                 )
                 LazyColumn(
                     contentPadding = PaddingValues(bottom = SpotlightDimens.MinimizedPlayerHeight),
@@ -157,15 +157,15 @@ fun LibraryFavoriteScreen(
                             (uiState as LibraryFavoriteUiState.Success).items[index]
                         SongItem(
                             song =
-                            Song(
-                                name = item.title ?: "",
-                                url = item.url ?: "",
-                                id = item.id ?: "",
-                            ),
+                                Song(
+                                    name = item.title ?: "",
+                                    url = item.url ?: "",
+                                    id = item.id ?: "",
+                                ),
                             cover = item.image ?: Image(),
                             artists =
-                            item.artists?.joinToString(separator = ", ") { it.name }
-                                ?: "",
+                                item.artists?.joinToString(separator = ", ") { it.name }
+                                    ?: "",
                             modifier = Modifier.padding(start = 10.dp, top = 5.dp, bottom = 5.dp),
                         )
                     }
@@ -183,19 +183,19 @@ fun HeadlineCover(
     val gradientBrush =
         Brush.verticalGradient(
             colors =
-            listOf(
-                MinimizedPlayerBackground.copy(alpha = 1f - collapsedFraction),
-                MaterialTheme.colorScheme.surface.copy(alpha = collapsedFraction),
-            ),
+                listOf(
+                    MinimizedPlayerBackground.copy(alpha = 1f - collapsedFraction),
+                    MaterialTheme.colorScheme.surface.copy(alpha = collapsedFraction),
+                ),
         )
 
     Spacer(
         modifier =
-        modifier
-            .background(
-                brush = gradientBrush,
-                shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp),
-            ),
+            modifier
+                .background(
+                    brush = gradientBrush,
+                    shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp),
+                ),
     )
 }
 
@@ -227,13 +227,13 @@ fun Headline(
             }
         },
         colors =
-        TopAppBarDefaults.largeTopAppBarColors(
-            containerColor = Color.Transparent,
-            scrolledContainerColor = MaterialTheme.colorScheme.surface,
-            navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
-            titleContentColor = MaterialTheme.colorScheme.onSurface,
-            actionIconContentColor = MaterialTheme.colorScheme.onSurface,
-        ),
+            TopAppBarDefaults.largeTopAppBarColors(
+                containerColor = Color.Transparent,
+                scrolledContainerColor = MaterialTheme.colorScheme.surface,
+                navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+                titleContentColor = MaterialTheme.colorScheme.onSurface,
+                actionIconContentColor = MaterialTheme.colorScheme.onSurface,
+            ),
         scrollBehavior = scrollBehavior,
         expandedHeight = expandedHeight,
         collapsedHeight = 0.3 * 100.dp,
@@ -249,9 +249,9 @@ fun MainFunctionBar(
     var isPlaying by remember { mutableStateOf(false) }
     Row(
         modifier =
-        modifier
-            .fillMaxWidth()
-            .height(SpotlightDimens.FullsizePlayerTopAppBarHeight),
+            modifier
+                .fillMaxWidth()
+                .height(SpotlightDimens.FullsizePlayerTopAppBarHeight),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -269,9 +269,9 @@ fun MainFunctionBar(
                 contentDescription = "",
                 tint = NavigationGray,
                 modifier =
-                Modifier
-                    .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
-                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
+                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
             )
         }
         Row(
@@ -282,24 +282,24 @@ fun MainFunctionBar(
                 contentDescription = "",
                 tint = MaterialTheme.colorScheme.primary,
                 modifier =
-                Modifier
-                    .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
-                    .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
+                    Modifier
+                        .padding(horizontal = SpotlightDimens.RecommendationPadding * 3)
+                        .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
             )
             Icon(
                 painter = painterResource(if (!isPlaying) SpotlightIcons.Play else SpotlightIcons.Pause),
                 contentDescription = "",
                 tint = MinimizedPlayerBackground,
                 modifier =
-                Modifier
-                    .size(SpotlightDimens.FullsizePlayerTopAppBarHeight)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary)
-                    .padding((SpotlightDimens.FullsizePlayerTopAppBarHeight - SpotlightDimens.PlayerControllerMediumIconSize) / 2)
-                    .noRippleClickable {
-                        isPlaying = !isPlaying
-                        if (isPlaying) onPlayClick() else onPauseClick()
-                    },
+                    Modifier
+                        .size(SpotlightDimens.FullsizePlayerTopAppBarHeight)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary)
+                        .padding((SpotlightDimens.FullsizePlayerTopAppBarHeight - SpotlightDimens.PlayerControllerMediumIconSize) / 2)
+                        .noRippleClickable {
+                            isPlaying = !isPlaying
+                            if (isPlaying) onPlayClick() else onPauseClick()
+                        },
             )
         }
     }

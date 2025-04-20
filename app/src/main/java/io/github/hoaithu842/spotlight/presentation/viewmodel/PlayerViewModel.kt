@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hoaithu842.spotlight.domain.model.ApiResponse
 import io.github.hoaithu842.spotlight.domain.model.Artist
 import io.github.hoaithu842.spotlight.domain.model.SongInfo
+import io.github.hoaithu842.spotlight.domain.repository.FavoriteRepository
 import io.github.hoaithu842.spotlight.domain.repository.SongRepository
 import io.github.hoaithu842.spotlight.manager.PlayerManager
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +24,7 @@ class PlayerViewModel
     @Inject
     constructor(
         private val songRepository: SongRepository,
+        private val favoriteRepository: FavoriteRepository,
         private val playerManager: PlayerManager,
     ) : ViewModel(), PlayerManager by playerManager {
         private val _playerUiState = MutableStateFlow(PlayerUiState())
@@ -140,6 +142,18 @@ class PlayerViewModel
                         currentState.copy(songInfo = updatedSongInfo)
                     }
                 }
+            }
+        }
+
+        fun addToFavorite(id: String) {
+            viewModelScope.launch {
+                val response = favoriteRepository.addToFavorite(id)
+            }
+        }
+
+        fun removeFromFavorite(id: String) {
+            viewModelScope.launch {
+                val response = favoriteRepository.removeFromFavorite(id)
             }
         }
     }

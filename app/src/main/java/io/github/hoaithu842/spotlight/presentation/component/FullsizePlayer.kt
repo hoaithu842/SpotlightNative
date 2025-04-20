@@ -50,6 +50,8 @@ fun MainPlayerContent(
     onPrevClick: () -> Unit,
     onMainFunctionClick: () -> Unit,
     onNextClick: () -> Unit,
+    onAddToFavoriteClick: () -> Unit,
+    onRemoveFromFavoriteClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -113,7 +115,13 @@ fun MainPlayerContent(
                     Modifier
                         .size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize)
                         .align(Alignment.CenterEnd)
-                        .noRippleClickable { },
+                        .noRippleClickable {
+                            if (isFavorite) {
+                                onRemoveFromFavoriteClick()
+                            } else {
+                                onAddToFavoriteClick()
+                            }
+                        },
             )
         }
 

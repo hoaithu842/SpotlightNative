@@ -13,6 +13,7 @@ import io.github.hoaithu842.spotlight.data.network.dto.SuccessBodyDto
 import io.github.hoaithu842.spotlight.data.network.dto.UserProfileDto
 import io.github.hoaithu842.spotlight.domain.model.ApiResponse
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -56,4 +57,14 @@ interface SpotlightApiService {
 
     @GET("songs/liked")
     suspend fun getFavoriteSongs(): ApiResponse<SuccessBodyDto<FavoritePagingDto>>
+
+    @POST("songs/{id}/like")
+    suspend fun addToFavorite(
+        @Path("id") id: String,
+    ): ApiResponse<SuccessBodyDto<Any>>
+
+    @POST("songs/{id}/dislike")
+    suspend fun removeFromFavorite(
+        @Path("id") id: String,
+    ): ApiResponse<SuccessBodyDto<Any>>
 }

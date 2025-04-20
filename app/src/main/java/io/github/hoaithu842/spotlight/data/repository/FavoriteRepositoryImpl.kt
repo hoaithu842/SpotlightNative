@@ -16,7 +16,27 @@ class FavoriteRepositoryImpl
             return when (val response = apiService.getFavoriteSongs()) {
                 is ApiResponse.Error -> ApiResponse.Error(response.code, response.message)
                 is ApiResponse.Exception -> ApiResponse.Exception(response.e)
-                is ApiResponse.Success -> ApiResponse.Success(response.data.data?.items?.map { it.toDomain() } ?: listOf())
+                is ApiResponse.Success ->
+                    ApiResponse.Success(
+                        response.data.data?.items?.map { it.toDomain() }
+                            ?: listOf(),
+                    )
+            }
+        }
+
+        override suspend fun addToFavorite(id: String): ApiResponse<Unit> {
+            return when (val response = apiService.addToFavorite(id)) {
+                is ApiResponse.Error -> ApiResponse.Error(response.code, response.message)
+                is ApiResponse.Exception -> ApiResponse.Exception(response.e)
+                is ApiResponse.Success -> ApiResponse.Success(Unit)
+            }
+        }
+
+        override suspend fun removeFromFavorite(id: String): ApiResponse<Unit> {
+            return when (val response = apiService.removeFromFavorite(id)) {
+                is ApiResponse.Error -> ApiResponse.Error(response.code, response.message)
+                is ApiResponse.Exception -> ApiResponse.Exception(response.e)
+                is ApiResponse.Success -> ApiResponse.Success(Unit)
             }
         }
     }
