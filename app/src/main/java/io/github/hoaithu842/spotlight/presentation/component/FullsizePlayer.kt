@@ -1,8 +1,5 @@
 package io.github.hoaithu842.spotlight.presentation.component
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
@@ -11,24 +8,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,8 +30,6 @@ import io.github.hoaithu842.spotlight.domain.model.SongInfo
 import io.github.hoaithu842.spotlight.extension.noRippleClickable
 import io.github.hoaithu842.spotlight.extension.shimmerLoadingAnimation
 import io.github.hoaithu842.spotlight.extension.toTimeFormat
-import io.github.hoaithu842.spotlight.ui.designsystem.FullsizePlayerTopAppBar
-import io.github.hoaithu842.spotlight.ui.designsystem.PlayerControllerTopAppBar
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightIcons
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightTextStyle
@@ -50,85 +37,6 @@ import io.github.hoaithu842.spotlight.ui.theme.MinimizedPlayerBackground
 import io.github.hoaithu842.spotlight.ui.theme.NavigationGray
 import io.github.hoaithu842.spotlight.ui.theme.ProgressIndicatorColor
 import io.github.hoaithu842.spotlight.ui.theme.ProgressIndicatorTrackColor
-import kotlinx.coroutines.launch
-
-@Composable
-fun FullsizePlayer(
-    isPlaying: Boolean,
-    song: SongInfo?,
-    currentPosition: Long,
-    duration: Long,
-    painter: AsyncImagePainter,
-    isLoading: Boolean,
-    onMinimizeClick: () -> Unit,
-    onPrevClick: () -> Unit,
-    onMainFunctionClick: () -> Unit,
-    onNextClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val lazyListState = rememberLazyListState()
-    val shouldDisplayTopAppBar by remember {
-        derivedStateOf {
-            lazyListState.firstVisibleItemIndex > 1
-        }
-    }
-    val scope = rememberCoroutineScope()
-
-    Box(
-        modifier =
-            modifier
-                .background(MinimizedPlayerBackground)
-                .statusBarsPadding(),
-    ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = lazyListState,
-        ) {
-            item {
-                FullsizePlayerTopAppBar(
-                    artists = song?.artists?.joinToString(separator = ", ") { it.name } ?: "",
-                    onMinimizeClick = onMinimizeClick,
-                    modifier =
-                        Modifier
-                            .statusBarsPadding()
-                            .padding(horizontal = SpotlightDimens.FullsizePlayerTopAppBarPadding),
-                )
-            }
-            item {
-                MainPlayerContent(
-                    isPlaying = isPlaying,
-                    song = song,
-                    currentPosition = currentPosition,
-                    duration = duration,
-                    painter = painter,
-                    isLoading = isLoading,
-                    onPrevClick = onPrevClick,
-                    onMainFunctionClick = onMainFunctionClick,
-                    onNextClick = onNextClick,
-                )
-            }
-        }
-
-        AnimatedVisibility(
-            visible = shouldDisplayTopAppBar,
-            enter = slideInVertically(),
-            exit = fadeOut(),
-        ) {
-            PlayerControllerTopAppBar(
-                song = song,
-                isPlaying = isPlaying,
-                currentPosition = currentPosition,
-                duration = duration,
-                onMainFunctionClick = onMainFunctionClick,
-                onPlayerClick = {
-                    scope.launch {
-                        lazyListState.animateScrollToItem(0)
-                    }
-                },
-            )
-        }
-    }
-}
 
 @Composable
 fun MainPlayerContent(

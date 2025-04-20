@@ -165,6 +165,7 @@ fun LyricsCard(modifier: Modifier = Modifier) {
 
 @Composable
 fun ArtistCard(
+    artists: String,
     imageUrl: String,
     modifier: Modifier = Modifier,
 ) {
@@ -206,7 +207,7 @@ fun ArtistCard(
                         modifier = Modifier.padding(end = 10.dp),
                     ) {
                         Text(
-                            text = "Jax",
+                            text = artists,
                             style = SpotlightTextStyle.Text16W600,
                             color = MaterialTheme.colorScheme.onBackground,
                         )

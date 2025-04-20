@@ -1,6 +1,5 @@
 package io.github.hoaithu842.spotlight.manager
 
-import android.util.Log
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,7 +23,6 @@ class SpotlightPlayerManager
     constructor() : PlayerManager {
         private var _mediaController: MediaController? = null
         private var _songsList: List<SongDetails> = emptyList()
-        private var _currentIndex = 0
 
         private val _isPlayingFlow = MutableStateFlow(false)
         override val isPlayingFlow: StateFlow<Boolean> = _isPlayingFlow.asStateFlow()
@@ -56,7 +53,6 @@ class SpotlightPlayerManager
                     override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
                         super.onMediaMetadataChanged(mediaMetadata)
                         _mediaMetadataFlow.value = mediaMetadata
-                        if (_currentIndex < _songsList.size) _currentSongFlow.update { _songsList[_currentIndex] }
                     }
 
                     override fun onTracksChanged(tracks: Tracks) {
@@ -72,6 +68,18 @@ class SpotlightPlayerManager
                         super.onIsPlayingChanged(isPlaying)
                         _isPlayingFlow.value = isPlaying
                     }
+
+                    override fun onMediaItemTransition(
+                        mediaItem: MediaItem?,
+                        reason: Int,
+                    ) {
+                        super.onMediaItemTransition(mediaItem, reason)
+                        _mediaController?.currentMediaItemIndex?.let { index ->
+                            _songsList.getOrNull(index)?.let { song ->
+                                _currentSongFlow.value = song
+                            }
+                        }
+                    }
                 },
             )
         }
@@ -80,7 +88,6 @@ class SpotlightPlayerManager
             _mediaController?.clearMediaItems()
             items.forEach {
                 if (!it.song?.url.isNullOrEmpty()) {
-                    Log.d("Rachel", "${it.song?.url}")
                     _mediaController?.addMediaItem(
                         MediaItem.fromUri(
                             it.song?.url ?: "",
@@ -89,19 +96,17 @@ class SpotlightPlayerManager
                 }
             }
             _songsList = items
-            _currentIndex = 0
+            _currentSongFlow.value = items.firstOrNull()
             _mediaController?.prepare()
             _mediaController?.play()
         }
 
         override fun next() {
             _mediaController?.seekToNextMediaItem()
-            if (_currentIndex < _songsList.size - 1) _currentIndex++
         }
 
         override fun prev() {
             _mediaController?.seekToPreviousMediaItem()
-            if (_currentIndex > 0) _currentIndex--
         }
 
         override fun playOrPause() {

@@ -7,20 +7,26 @@ import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.hoaithu842.spotlight.domain.model.ApiResponse
 import io.github.hoaithu842.spotlight.domain.model.ArtistDetails
+import io.github.hoaithu842.spotlight.domain.model.ArtistSong
 import io.github.hoaithu842.spotlight.domain.model.ArtistSongs
+import io.github.hoaithu842.spotlight.domain.model.Song
+import io.github.hoaithu842.spotlight.domain.model.SongDetails
 import io.github.hoaithu842.spotlight.domain.repository.ArtistRepository
+import io.github.hoaithu842.spotlight.manager.PlayerManager
 import io.github.hoaithu842.spotlight.navigation.ArtistRoute
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ArtistViewModel
     @Inject
     constructor(
+        private val playerManager: PlayerManager,
         private val artistRepository: ArtistRepository,
         savedStateHandle: SavedStateHandle,
     ) : ViewModel() {
@@ -55,7 +61,37 @@ class ArtistViewModel
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = ArtistSongsUiState.Loading,
             )
+
+        fun playAlbum(items: List<ArtistSong>?) {
+            viewModelScope.launch {
+                if (!items.isNullOrEmpty()) {
+                    playerManager.playAlbum(items.toSongDetailsList())
+                }
+            }
+        }
+
+        fun pause() {
+            viewModelScope.launch {
+                playerManager.playOrPause()
+            }
+        }
     }
+
+fun List<ArtistSong>.toSongDetailsList(): List<SongDetails> {
+    return this.map { artistSong ->
+        SongDetails(
+            id = artistSong.id,
+            title = artistSong.title,
+            image = artistSong.image,
+            song =
+                Song(
+                    id = artistSong.id,
+                    name = artistSong.title,
+                    url = artistSong.url,
+                ),
+        )
+    }
+}
 
 sealed class ArtistUiState {
     data object Loading : ArtistUiState()

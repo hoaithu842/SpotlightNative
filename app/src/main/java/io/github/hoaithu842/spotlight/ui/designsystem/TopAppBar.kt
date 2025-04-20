@@ -63,7 +63,6 @@ import io.github.hoaithu842.spotlight.extension.noRippleClickable
 import io.github.hoaithu842.spotlight.extension.singleClickable
 import io.github.hoaithu842.spotlight.presentation.component.CircularCover
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightDimens.TopAppBarHorizontalPadding
-import io.github.hoaithu842.spotlight.ui.theme.MinimizedPlayerBackground
 import io.github.hoaithu842.spotlight.ui.theme.NavigationGray
 import io.github.hoaithu842.spotlight.ui.theme.ProgressIndicatorColor
 import io.github.hoaithu842.spotlight.ui.theme.ProgressIndicatorTrackColor
@@ -724,7 +723,7 @@ fun PlayerControllerTopAppBar(
                 .fillMaxWidth()
                 .height(SpotlightDimens.MinimizedPlayerHeight)
                 .clip(shape = RoundedCornerShape(size = 12.dp))
-                .background(MinimizedPlayerBackground)
+                .background(MaterialTheme.colorScheme.surface)
                 .noRippleClickable {
                     onPlayerClick()
                 }

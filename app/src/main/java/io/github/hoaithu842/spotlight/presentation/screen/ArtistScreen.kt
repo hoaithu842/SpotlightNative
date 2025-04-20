@@ -6,13 +6,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,13 +30,17 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -44,6 +51,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.hoaithu842.spotlight.domain.model.ArtistCategory
 import io.github.hoaithu842.spotlight.domain.model.Image
 import io.github.hoaithu842.spotlight.domain.model.Song
+import io.github.hoaithu842.spotlight.extension.noRippleClickable
 import io.github.hoaithu842.spotlight.presentation.component.RoundedCornerCover
 import io.github.hoaithu842.spotlight.presentation.component.SongItem
 import io.github.hoaithu842.spotlight.presentation.component.VerticalCircularWithTitleThumbnail
@@ -53,7 +61,9 @@ import io.github.hoaithu842.spotlight.presentation.viewmodel.ArtistUiState
 import io.github.hoaithu842.spotlight.presentation.viewmodel.ArtistViewModel
 import io.github.hoaithu842.spotlight.ui.designsystem.DotsCollision
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightDimens
+import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightIcons
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightTextStyle
+import io.github.hoaithu842.spotlight.ui.theme.MinimizedPlayerBackground
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -117,6 +127,8 @@ fun ArtistScreen(
             }
 
             is ArtistUiState.Success -> {
+                var isPlaying by remember { mutableStateOf(false) }
+
                 Box(
                     modifier =
                         Modifier
@@ -158,13 +170,59 @@ fun ArtistScreen(
                         }
 
                         is ArtistSongsUiState.Success -> {
-                            item {
-                                Text(
-                                    "Popular",
-                                    style = SpotlightTextStyle.Text16W600,
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    modifier = Modifier.padding(10.dp),
-                                )
+                            if ((songsUiState as ArtistSongsUiState.Success).songsList.items.isNotEmpty()) {
+                                item {
+                                    Row(
+                                        modifier =
+                                            Modifier
+                                                .wrapContentHeight()
+                                                .fillParentMaxWidth()
+                                                .padding(horizontal = 20.dp),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically,
+                                    ) {
+                                        Text(
+                                            "Popular",
+                                            style = SpotlightTextStyle.Text16W600,
+                                            color = MaterialTheme.colorScheme.onBackground,
+                                        )
+                                        Icon(
+                                            painter =
+                                                painterResource(
+                                                    id =
+                                                        if (isPlaying) {
+                                                            SpotlightIcons.Pause
+                                                        } else {
+                                                            SpotlightIcons.Play
+                                                        },
+                                                ),
+                                            contentDescription = null,
+                                            tint = MinimizedPlayerBackground,
+                                            modifier =
+                                                Modifier
+                                                    .padding(bottom = 16.dp)
+                                                    .size(SpotlightDimens.FullsizePlayerTopAppBarHeight * 0.75f)
+                                                    .clip(CircleShape)
+                                                    .background(MaterialTheme.colorScheme.primary)
+                                                    .padding(
+                                                        (
+                                                            SpotlightDimens.FullsizePlayerTopAppBarHeight -
+                                                                SpotlightDimens.PlayerControllerMediumIconSize
+                                                        ) / 2,
+                                                    )
+                                                    .noRippleClickable {
+                                                        isPlaying = !isPlaying
+                                                        if (isPlaying) {
+                                                            viewModel.pause()
+                                                        } else {
+                                                            viewModel.playAlbum(
+                                                                (songsUiState as ArtistSongsUiState.Success).songsList.items,
+                                                            )
+                                                        }
+                                                    },
+                                        )
+                                    }
+                                }
                             }
                             items(
                                 (songsUiState as ArtistSongsUiState.Success).songsList.items.size,
@@ -174,7 +232,7 @@ fun ArtistScreen(
                                 SongItem(
                                     song = Song(name = item.title, url = item.url, id = item.id),
                                     cover = item.image,
-                                    modifier = Modifier.padding(horizontal = 10.dp),
+                                    modifier = Modifier.padding(start = 10.dp),
                                 )
                             }
                         }

@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,15 +29,16 @@ class PlayerViewModel
         val playerUiState: StateFlow<PlayerUiState> = _playerUiState.asStateFlow()
 
         init {
-//        observePlayerState()
             observeSongChanges()
             observePlaybackState()
             observePosition()
+            observeMetadata()
         }
 
         private fun observeSongChanges() {
             viewModelScope.launch {
                 playerManager.currentSongFlow
+                    .distinctUntilChangedBy { it?.id }
                     .collectLatest { song ->
                         when (val response = songRepository.getSongInfo(song?.id ?: "")) {
                             is ApiResponse.Error -> {
@@ -78,7 +80,15 @@ class PlayerViewModel
                             }
 
                             is ApiResponse.Success -> {
-                                _playerUiState.update { it.copy(songInfo = response.data) }
+                                val songInfo =
+                                    if (response.data.artists.isNullOrEmpty()) {
+                                        response.data.copy(
+                                            artists = listOf(Artist(name = currentMediaMetadata.value?.artist.toString())),
+                                        )
+                                    } else {
+                                        response.data
+                                    }
+                                _playerUiState.update { it.copy(songInfo = songInfo) }
                             }
                         }
                     }
@@ -108,6 +118,22 @@ class PlayerViewModel
                 playerManager.currentPositionFlow.collect { position ->
                     _playerUiState.update {
                         it.copy(position = position)
+                    }
+                }
+            }
+        }
+
+        private fun observeMetadata() {
+            viewModelScope.launch {
+                playerManager.currentMediaMetadata.collectLatest { metadata ->
+                    val artistName = metadata?.artist?.toString() ?: ""
+
+                    _playerUiState.update { currentState ->
+                        val updatedSongInfo =
+                            currentState.songInfo?.copy(
+                                artists = listOf(Artist(name = artistName)),
+                            )
+                        currentState.copy(songInfo = updatedSongInfo)
                     }
                 }
             }

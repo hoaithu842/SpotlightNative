@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
@@ -34,10 +36,10 @@ import coil.compose.AsyncImagePainter
 import io.github.hoaithu842.spotlight.domain.model.SongInfo
 import io.github.hoaithu842.spotlight.extension.noRippleClickable
 import io.github.hoaithu842.spotlight.extension.shimmerLoadingAnimation
+import io.github.hoaithu842.spotlight.extension.toColor
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightDimens
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightIcons
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightTextStyle
-import io.github.hoaithu842.spotlight.ui.theme.MinimizedPlayerBackground
 import io.github.hoaithu842.spotlight.ui.theme.NavigationGray
 import io.github.hoaithu842.spotlight.ui.theme.ProgressIndicatorColor
 import io.github.hoaithu842.spotlight.ui.theme.ProgressIndicatorTrackColor
@@ -64,11 +66,19 @@ fun MinimizedPlayer(
                 .clip(
                     shape = RoundedCornerShape(size = 12.dp),
                 )
-                .background(MinimizedPlayerBackground)
+                .background(
+                    brush =
+                        Brush.horizontalGradient(
+                            colors =
+                                listOf(
+                                    song?.color?.toColor() ?: MaterialTheme.colorScheme.surface,
+                                    Color.Black,
+                                ),
+                        ),
+                )
                 .clickable {
                     onPlayerClick()
                 },
-//            .padding(bottom = 2.dp)
     ) {
         Box(
             modifier =

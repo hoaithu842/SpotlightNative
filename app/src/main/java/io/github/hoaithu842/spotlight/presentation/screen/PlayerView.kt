@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -24,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
@@ -33,6 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import io.github.hoaithu842.spotlight.extension.gesturesDisabled
+import io.github.hoaithu842.spotlight.extension.toColor
 import io.github.hoaithu842.spotlight.presentation.component.ArtistCard
 import io.github.hoaithu842.spotlight.presentation.component.CreditCard
 import io.github.hoaithu842.spotlight.presentation.component.LyricsCard
@@ -42,7 +45,6 @@ import io.github.hoaithu842.spotlight.presentation.viewmodel.PlayerViewModel
 import io.github.hoaithu842.spotlight.ui.designsystem.FullsizePlayerTopAppBar
 import io.github.hoaithu842.spotlight.ui.designsystem.PlayerControllerTopAppBar
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightDimens
-import io.github.hoaithu842.spotlight.ui.theme.MinimizedPlayerBackground
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,11 +58,6 @@ fun PlayerView(
     viewModel: PlayerViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.playerUiState.collectAsStateWithLifecycle()
-//    val currentPosition by viewModel.currentPositionFlow.collectAsStateWithLifecycle(initialValue = 0)
-//    val currentSongArtist by viewModel.currentMediaMetadata.collectAsStateWithLifecycle(initialValue = null)
-//    val currentSong by viewModel.currentSongFlow.collectAsStateWithLifecycle(initialValue = null)
-//    val isPlaying by viewModel.isPlayingFlow.collectAsStateWithLifecycle(initialValue = false)
-//    val duration by viewModel.durationFlow.collectAsStateWithLifecycle(initialValue = 0)
     val coroutineScope = rememberCoroutineScope()
 
     var isLoading by remember { mutableStateOf(true) }
@@ -90,125 +87,147 @@ fun PlayerView(
         }
     }
 
-    Box(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .background(if (currentAlpha != 1f) MinimizedPlayerBackground else Color.Transparent),
-    ) {
-        LazyColumn(
+    if (uiState.songInfo?.title != null) {
+        Box(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .statusBarsPadding()
-                    .padding(horizontal = SpotlightDimens.FullsizePlayerMainContentHorizontalPadding),
-            state = lazyListState,
+                modifier
+                    .fillMaxWidth()
+                    .background(
+                        if (currentAlpha != 1f) {
+                            Brush.verticalGradient(
+                                colors =
+                                    listOf(
+                                        uiState.songInfo?.color?.toColor()
+                                            ?: MaterialTheme.colorScheme.surface,
+                                        Color.Black,
+                                    ),
+                            )
+                        } else {
+                            Brush.verticalGradient(
+                                colors = listOf(Color.Transparent, Color.Transparent),
+                            )
+                        },
+                    ),
         ) {
-            item {
-                FullsizePlayerTopAppBar(
-                    artists = uiState.songInfo?.artists?.joinToString(separator = ", ") ?: "",
-                    onMinimizeClick = {
-                        coroutineScope.launch {
-                            changeNavBarDisplay()
-                            scaffoldState.bottomSheetState.partialExpand()
+            LazyColumn(
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .statusBarsPadding()
+                        .padding(horizontal = SpotlightDimens.FullsizePlayerMainContentHorizontalPadding),
+                state = lazyListState,
+            ) {
+                item {
+                    FullsizePlayerTopAppBar(
+                        artists =
+                            uiState.songInfo?.artists?.joinToString(separator = ", ") { it.name }
+                                ?: "",
+                        onMinimizeClick = {
+                            coroutineScope.launch {
+                                changeNavBarDisplay()
+                                scaffoldState.bottomSheetState.partialExpand()
+                            }
+                        },
+                        modifier = Modifier.statusBarsPadding(),
+                    )
+                }
+                item {
+                    MainPlayerContent(
+                        isPlaying = uiState.isPlaying,
+                        song = uiState.songInfo,
+                        currentPosition = uiState.position,
+                        duration = uiState.duration,
+                        painter = painter,
+                        isLoading = isLoading,
+                        onPrevClick = viewModel::prev,
+                        onMainFunctionClick = viewModel::playOrPause,
+                        onNextClick = viewModel::next,
+                    )
+                }
+
+                item {
+                    LyricsCard(
+                        modifier = Modifier.padding(vertical = 10.dp),
+                    )
+                }
+
+                item {
+                    ArtistCard(
+                        artists =
+                            uiState.songInfo?.artists?.joinToString(separator = ", ") { it.name }
+                                ?: "",
+                        imageUrl = uiState.songInfo?.image?.url ?: "",
+                        modifier = Modifier.padding(vertical = 10.dp),
+                    )
+                }
+
+                item {
+                    CreditCard(
+                        creditsList =
+                            listOf(
+                                Pair(first = "Jax", second = "Main Artist, Writer"),
+                                Pair(first = "Billy Gerrity", second = "Producer"),
+                                Pair(first = "Wayne Wilkins", second = "Producer, Writer"),
+                            ),
+                        modifier = Modifier.padding(vertical = 10.dp),
+                    )
+                }
+            }
+
+            AnimatedVisibility(
+                visible = shouldDisplayTopAppBar,
+                enter = slideInVertically(),
+                exit = fadeOut(),
+            ) {
+                PlayerControllerTopAppBar(
+                    song = uiState.songInfo,
+                    isPlaying = uiState.isPlaying,
+                    currentPosition = uiState.position,
+                    duration = uiState.duration,
+                    onMainFunctionClick = viewModel::playOrPause,
+                    onPlayerClick = {
+                        scope.launch {
+                            lazyListState.animateScrollToItem(0)
                         }
                     },
                     modifier = Modifier.statusBarsPadding(),
                 )
             }
-            item {
-                MainPlayerContent(
-                    isPlaying = uiState.isPlaying,
-                    song = uiState.songInfo,
-                    currentPosition = uiState.position,
-                    duration = uiState.duration,
-                    painter = painter,
-                    isLoading = isLoading,
-                    onPrevClick = viewModel::prev,
-                    onMainFunctionClick = viewModel::playOrPause,
-                    onNextClick = viewModel::next,
-                )
-            }
 
-            item {
-                LyricsCard(
-                    modifier = Modifier.padding(vertical = 10.dp),
-                )
-            }
-
-            item {
-                ArtistCard(
-                    imageUrl = uiState.songInfo?.image?.url ?: "",
-                    modifier = Modifier.padding(vertical = 10.dp),
-                )
-            }
-
-            item {
-                CreditCard(
-                    creditsList =
-                        listOf(
-                            Pair(first = "Jax", second = "Main Artist, Writer"),
-                            Pair(first = "Billy Gerrity", second = "Producer"),
-                            Pair(first = "Wayne Wilkins", second = "Producer, Writer"),
-                        ),
-                    modifier = Modifier.padding(vertical = 10.dp),
-                )
-            }
-        }
-
-        AnimatedVisibility(
-            visible = shouldDisplayTopAppBar,
-            enter = slideInVertically(),
-            exit = fadeOut(),
-        ) {
-            PlayerControllerTopAppBar(
+            MinimizedPlayer(
                 song = uiState.songInfo,
                 isPlaying = uiState.isPlaying,
                 currentPosition = uiState.position,
                 duration = uiState.duration,
-                onMainFunctionClick = viewModel::playOrPause,
+                painter = painter,
+                isLoading = isLoading,
                 onPlayerClick = {
-                    scope.launch {
-                        lazyListState.animateScrollToItem(0)
+                    coroutineScope.launch {
+                        changeNavBarDisplay()
+                        scaffoldState.bottomSheetState.expand()
                     }
                 },
-                modifier = Modifier.statusBarsPadding(),
+                onMainFunctionClick = viewModel::playOrPause,
+                modifier =
+                    Modifier
+                        .align(Alignment.TopCenter)
+                        .graphicsLayer {
+                            val scrollOffset = onScrollProvider()
+
+                            if (!hasInit) {
+                                hasInit = true
+                                initialOffset = scrollOffset
+                            }
+
+                            val sizeDelta =
+                                1 - (initialOffset - scrollOffset).dp / SpotlightDimens.MinimizedPlayerHeight
+
+                            updateDelta(sizeDelta)
+                            currentAlpha = sizeDelta.coerceIn(0f, 1f)
+                        }
+                        .alpha(currentAlpha)
+                        .gesturesDisabled(disabled = !shouldBeClickable),
             )
         }
-
-        MinimizedPlayer(
-            song = uiState.songInfo,
-            isPlaying = uiState.isPlaying,
-            currentPosition = uiState.position,
-            duration = uiState.duration,
-            painter = painter,
-            isLoading = isLoading,
-            onPlayerClick = {
-                coroutineScope.launch {
-                    changeNavBarDisplay()
-                    scaffoldState.bottomSheetState.expand()
-                }
-            },
-            onMainFunctionClick = viewModel::playOrPause,
-            modifier =
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .graphicsLayer {
-                        val scrollOffset = onScrollProvider()
-
-                        if (!hasInit) {
-                            hasInit = true
-                            initialOffset = scrollOffset
-                        }
-
-                        val sizeDelta =
-                            1 - (initialOffset - scrollOffset).dp / SpotlightDimens.MinimizedPlayerHeight
-
-                        updateDelta(sizeDelta)
-                        currentAlpha = sizeDelta.coerceIn(0f, 1f)
-                    }
-                    .alpha(currentAlpha)
-                    .gesturesDisabled(disabled = !shouldBeClickable),
-        )
     }
 }
