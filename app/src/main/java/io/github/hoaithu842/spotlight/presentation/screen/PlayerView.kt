@@ -21,6 +21,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,12 +65,12 @@ fun PlayerView(
     val painter =
         rememberAsyncImagePainter(
             model =
-                ImageRequest.Builder(LocalContext.current)
-                    .data(uiState.songInfo?.image?.url ?: "")
-                    .listener(onSuccess = { _, _ ->
-                        isLoading = false
-                    })
-                    .build(),
+            ImageRequest.Builder(LocalContext.current)
+                .data(uiState.songInfo?.image?.url ?: "")
+                .listener(onSuccess = { _, _ ->
+                    isLoading = false
+                })
+                .build(),
         )
     val lazyListState = rememberLazyListState()
     val shouldDisplayTopAppBar by remember {
@@ -88,40 +89,42 @@ fun PlayerView(
     }
 
     if (uiState.songInfo?.title != null) {
+        var isFavorite by rememberSaveable { mutableStateOf(uiState.songInfo?.liked ?: false) }
+
         Box(
             modifier =
-                modifier
-                    .fillMaxWidth()
-                    .background(
-                        if (currentAlpha != 1f) {
-                            Brush.verticalGradient(
-                                colors =
-                                    listOf(
-                                        uiState.songInfo?.color?.toColor()
-                                            ?: MaterialTheme.colorScheme.surface,
-                                        Color.Black,
-                                    ),
-                            )
-                        } else {
-                            Brush.verticalGradient(
-                                colors = listOf(Color.Transparent, Color.Transparent),
-                            )
-                        },
-                    ),
+            modifier
+                .fillMaxWidth()
+                .background(
+                    if (currentAlpha != 1f) {
+                        Brush.verticalGradient(
+                            colors =
+                            listOf(
+                                uiState.songInfo?.color?.toColor()
+                                    ?: MaterialTheme.colorScheme.surface,
+                                Color.Black,
+                            ),
+                        )
+                    } else {
+                        Brush.verticalGradient(
+                            colors = listOf(Color.Transparent, Color.Transparent),
+                        )
+                    },
+                ),
         ) {
             LazyColumn(
                 modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .statusBarsPadding()
-                        .padding(horizontal = SpotlightDimens.FullsizePlayerMainContentHorizontalPadding),
+                Modifier
+                    .fillMaxSize()
+                    .statusBarsPadding()
+                    .padding(horizontal = SpotlightDimens.FullsizePlayerMainContentHorizontalPadding),
                 state = lazyListState,
             ) {
                 item {
                     FullsizePlayerTopAppBar(
                         artists =
-                            uiState.songInfo?.artists?.joinToString(separator = ", ") { it.name }
-                                ?: "",
+                        uiState.songInfo?.artists?.joinToString(separator = ", ") { it.name }
+                            ?: "",
                         onMinimizeClick = {
                             coroutineScope.launch {
                                 changeNavBarDisplay()
@@ -134,6 +137,7 @@ fun PlayerView(
                 item {
                     MainPlayerContent(
                         isPlaying = uiState.isPlaying,
+                        isFavorite = isFavorite,
                         song = uiState.songInfo,
                         currentPosition = uiState.position,
                         duration = uiState.duration,
@@ -154,8 +158,8 @@ fun PlayerView(
                 item {
                     ArtistCard(
                         artists =
-                            uiState.songInfo?.artists?.joinToString(separator = ", ") { it.name }
-                                ?: "",
+                        uiState.songInfo?.artists?.joinToString(separator = ", ") { it.name }
+                            ?: "",
                         imageUrl = uiState.songInfo?.image?.url ?: "",
                         modifier = Modifier.padding(vertical = 10.dp),
                     )
@@ -164,11 +168,11 @@ fun PlayerView(
                 item {
                     CreditCard(
                         creditsList =
-                            listOf(
-                                Pair(first = "Jax", second = "Main Artist, Writer"),
-                                Pair(first = "Billy Gerrity", second = "Producer"),
-                                Pair(first = "Wayne Wilkins", second = "Producer, Writer"),
-                            ),
+                        listOf(
+                            Pair(first = "Jax", second = "Main Artist, Writer"),
+                            Pair(first = "Billy Gerrity", second = "Producer"),
+                            Pair(first = "Wayne Wilkins", second = "Producer, Writer"),
+                        ),
                         modifier = Modifier.padding(vertical = 10.dp),
                     )
                 }
@@ -209,24 +213,24 @@ fun PlayerView(
                 },
                 onMainFunctionClick = viewModel::playOrPause,
                 modifier =
-                    Modifier
-                        .align(Alignment.TopCenter)
-                        .graphicsLayer {
-                            val scrollOffset = onScrollProvider()
+                Modifier
+                    .align(Alignment.TopCenter)
+                    .graphicsLayer {
+                        val scrollOffset = onScrollProvider()
 
-                            if (!hasInit) {
-                                hasInit = true
-                                initialOffset = scrollOffset
-                            }
-
-                            val sizeDelta =
-                                1 - (initialOffset - scrollOffset).dp / SpotlightDimens.MinimizedPlayerHeight
-
-                            updateDelta(sizeDelta)
-                            currentAlpha = sizeDelta.coerceIn(0f, 1f)
+                        if (!hasInit) {
+                            hasInit = true
+                            initialOffset = scrollOffset
                         }
-                        .alpha(currentAlpha)
-                        .gesturesDisabled(disabled = !shouldBeClickable),
+
+                        val sizeDelta =
+                            1 - (initialOffset - scrollOffset).dp / SpotlightDimens.MinimizedPlayerHeight
+
+                        updateDelta(sizeDelta)
+                        currentAlpha = sizeDelta.coerceIn(0f, 1f)
+                    }
+                    .alpha(currentAlpha)
+                    .gesturesDisabled(disabled = !shouldBeClickable),
             )
         }
     }

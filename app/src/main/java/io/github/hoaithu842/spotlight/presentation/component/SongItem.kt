@@ -67,7 +67,7 @@ fun SongItem(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    text = artists,
+                    text = artists.ifBlank { "Song" },
                     style = SpotlightTextStyle.Text11W400,
                     color = NavigationGray,
                     modifier = Modifier.padding(top = SpotlightDimens.LibraryTextPadding.times(0.5f)),

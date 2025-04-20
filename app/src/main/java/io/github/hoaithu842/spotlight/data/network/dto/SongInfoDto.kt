@@ -15,6 +15,8 @@ data class SongInfoDto(
     val releaseDate: String?,
     @SerializedName("color")
     val color: String?,
+    @SerializedName("liked")
+    val liked: Boolean?,
     @SerializedName("url")
     val url: String?,
     @SerializedName("image")

@@ -41,6 +41,7 @@ import io.github.hoaithu842.spotlight.ui.theme.ProgressIndicatorTrackColor
 @Composable
 fun MainPlayerContent(
     isPlaying: Boolean,
+    isFavorite: Boolean,
     song: SongInfo?,
     currentPosition: Long,
     duration: Long,
@@ -105,7 +106,7 @@ fun MainPlayerContent(
             }
 
             Icon(
-                painter = painterResource(SpotlightIcons.Heart),
+                painter = painterResource(if (isFavorite) SpotlightIcons.HeartSelected else SpotlightIcons.Heart),
                 contentDescription = "",
                 tint = MaterialTheme.colorScheme.onBackground,
                 modifier =

@@ -240,6 +240,7 @@ fun SongInfoDto?.toDomain(): SongInfo =
         duration = this?.duration ?: 0,
         releaseDate = this?.releaseDate,
         color = this?.color,
+        liked = this?.liked,
         url = this?.url,
         image = this?.image.toDomain(),
         categories = this?.categories?.map { it.toDomain() } ?: listOf(),
