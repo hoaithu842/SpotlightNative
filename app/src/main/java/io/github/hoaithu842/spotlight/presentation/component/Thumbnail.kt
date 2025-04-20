@@ -1,5 +1,6 @@
 package io.github.hoaithu842.spotlight.presentation.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,10 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.github.hoaithu842.spotlight.R
 import io.github.hoaithu842.spotlight.extension.noRippleClickable
 import io.github.hoaithu842.spotlight.ui.designsystem.OuterBox
 import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightDimens
@@ -305,10 +308,32 @@ fun HorizontalWithTitleThumbnail(
                 .height(SpotlightDimens.LibraryItemHeight)
                 .noRippleClickable(onClick),
     ) {
-        Cover(
-            imageUrl = imageUrl,
-            modifier = Modifier.size(SpotlightDimens.LibraryItemHeight),
-        )
+        if (imageUrl.isBlank()) {
+            if (description == "Artist") {
+                Image(
+                    painter = painterResource(R.drawable.person),
+                    contentDescription = "",
+                    modifier =
+                        Modifier
+                            .size(SpotlightDimens.LibraryItemHeight),
+                    contentScale = ContentScale.Fit,
+                )
+            } else {
+                Image(
+                    painter = painterResource(R.drawable.song),
+                    contentDescription = "",
+                    modifier =
+                        Modifier
+                            .size(SpotlightDimens.LibraryItemHeight),
+                    contentScale = ContentScale.Fit,
+                )
+            }
+        } else {
+            Cover(
+                imageUrl = imageUrl,
+                modifier = Modifier.size(SpotlightDimens.LibraryItemHeight),
+            )
+        }
         Column(
             modifier =
                 Modifier

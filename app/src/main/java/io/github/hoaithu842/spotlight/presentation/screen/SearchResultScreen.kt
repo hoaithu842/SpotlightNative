@@ -13,7 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.hoaithu842.spotlight.domain.model.SearchResult
+import io.github.hoaithu842.spotlight.domain.model.SongSearchResult
 import io.github.hoaithu842.spotlight.presentation.component.HorizontalWithTitleThumbnail
 import io.github.hoaithu842.spotlight.presentation.viewmodel.SearchResultUiState
 import io.github.hoaithu842.spotlight.presentation.viewmodel.SearchResultViewModel
@@ -31,12 +32,14 @@ import io.github.hoaithu842.spotlight.ui.designsystem.SpotlightTextStyle
 
 @Composable
 fun SearchResultScreen(
+    onPlaylistClick: (String) -> Unit,
+    onArtistClick: (String) -> Unit,
     onCancelClick: () -> Unit,
     viewModel: SearchResultViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.searchResultUiState.collectAsStateWithLifecycle()
 
-    var searchQuery by remember { mutableStateOf("") }
+    var searchQuery by rememberSaveable { mutableStateOf("") }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -60,7 +63,7 @@ fun SearchResultScreen(
                     .background(MaterialTheme.colorScheme.background),
         ) {
             when (uiState) {
-                SearchResultUiState.Error -> Text("Error")
+                SearchResultUiState.Error -> {}
                 SearchResultUiState.Loading -> {
                     Column(
                         modifier = Modifier.fillMaxSize(),
@@ -73,7 +76,14 @@ fun SearchResultScreen(
 
                 is SearchResultUiState.Success -> {
                     val result = (uiState as SearchResultUiState.Success).result
-                    ResultDisplay(result = result)
+                    ResultDisplay(
+                        result = result,
+                        onSongClick = {
+                            viewModel.playSong(it)
+                        },
+                        onArtistClick = onArtistClick,
+                        onPlaylistClick = onPlaylistClick,
+                    )
                 }
             }
         }
@@ -83,6 +93,9 @@ fun SearchResultScreen(
 @Composable
 fun ResultDisplay(
     result: SearchResult,
+    onSongClick: (SongSearchResult?) -> Unit,
+    onPlaylistClick: (String) -> Unit,
+    onArtistClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -97,13 +110,15 @@ fun ResultDisplay(
             )
         }
         item {
-            HorizontalWithTitleThumbnail(
-                imageUrl = "",
-                title = result.topResult?.name ?: "",
-                description = result.topResult?.type ?: "",
-                onClick = {},
-                modifier = Modifier.padding(10.dp),
-            )
+            if (result.topResult != null) {
+                HorizontalWithTitleThumbnail(
+                    imageUrl = "",
+                    title = result.topResult.name ?: "",
+                    description = result.topResult.type ?: "",
+                    onClick = {},
+                    modifier = Modifier.padding(5.dp),
+                )
+            }
         }
         item {
             Text(
@@ -118,8 +133,8 @@ fun ResultDisplay(
                 imageUrl = "",
                 title = result.songs?.get(it)?.title ?: "",
                 description = "Song",
-                onClick = {},
-                modifier = Modifier.padding(10.dp),
+                onClick = { onSongClick(result.songs?.get(it)) },
+                modifier = Modifier.padding(5.dp),
             )
         }
         item {
@@ -134,9 +149,9 @@ fun ResultDisplay(
             HorizontalWithTitleThumbnail(
                 imageUrl = "",
                 title = result.artists?.get(it)?.name ?: "",
-                description = "Song",
-                onClick = {},
-                modifier = Modifier.padding(10.dp),
+                description = "Artist",
+                onClick = { onArtistClick(result.artists?.get(it)?.id ?: "") },
+                modifier = Modifier.padding(5.dp),
             )
         }
         item {
@@ -151,9 +166,9 @@ fun ResultDisplay(
             HorizontalWithTitleThumbnail(
                 imageUrl = "",
                 title = result.playlists?.get(it)?.name ?: "",
-                description = "Song",
-                onClick = {},
-                modifier = Modifier.padding(10.dp),
+                description = "Playlist",
+                onClick = { onPlaylistClick(result.playlists?.get(it)?.id ?: "") },
+                modifier = Modifier.padding(5.dp),
             )
         }
     }

@@ -7,6 +7,7 @@ data class SongInfo(
     val duration: Long,
     val releaseDate: String?,
     val color: String?,
+    val url: String?,
     val image: Image?,
     val categories: List<AlbumCategory>?,
     val artists: List<Artist>?,

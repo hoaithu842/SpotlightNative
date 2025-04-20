@@ -63,6 +63,8 @@ fun SpotlightNavHost(
             userProfile = userProfile,
             onAvatarClick = onAvatarClick,
             onCancelClick = navHostController::popBackStack,
+            onArtistClick = navHostController::navigateToArtistScreen,
+            onPlaylistClick = navHostController::navigateToRecommendationScreen,
             onNavigateToSearchClick = {
                 navHostController.navigateToSearchResultScreen(
                     navOptions =

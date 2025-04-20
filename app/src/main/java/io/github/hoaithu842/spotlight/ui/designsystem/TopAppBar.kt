@@ -119,7 +119,7 @@ fun HomeTopAppBar(
                 )
             } else {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    painter = painterResource(id = R.drawable.person),
                     contentDescription = "",
                     modifier =
                         Modifier
@@ -223,7 +223,7 @@ fun LibraryTopAppBar(
                     )
                 } else {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_launcher_background),
+                        painter = painterResource(id = R.drawable.person),
                         contentDescription = "",
                         modifier =
                             Modifier
@@ -630,7 +630,7 @@ fun SearchTopAppBar(
                     )
                 } else {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_launcher_background),
+                        painter = painterResource(id = R.drawable.person),
                         contentDescription = "",
                         modifier =
                             Modifier

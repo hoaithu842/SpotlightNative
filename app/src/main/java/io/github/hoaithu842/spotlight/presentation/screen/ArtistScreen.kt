@@ -49,7 +49,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.hoaithu842.spotlight.domain.model.ArtistCategory
-import io.github.hoaithu842.spotlight.domain.model.Image
 import io.github.hoaithu842.spotlight.domain.model.Song
 import io.github.hoaithu842.spotlight.extension.noRippleClickable
 import io.github.hoaithu842.spotlight.presentation.component.RoundedCornerCover
@@ -92,37 +91,16 @@ fun ArtistScreen(
                 .background(MaterialTheme.colorScheme.surface),
     ) {
         when (uiState) {
-            ArtistUiState.Error -> Text("Error")
+            ArtistUiState.Error -> {
+            }
+
             ArtistUiState.Loading -> {
-                Box(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(),
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    RoundedCornerCover(
-                        imageUrl = "",
-                        contentScale = ContentScale.FillWidth,
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .height(dpWidth.dp * (1 - scrollBehavior.state.collapsedFraction)),
-                    )
-                    ArtistBanner(
-                        artistName = "",
-                        expandedHeight = dpWidth.dp,
-                        scrollBehavior = scrollBehavior,
-                        onBackClick = onBackClick,
-                    )
-                }
-                LazyColumn {
-                    items(100, key = { it }) {
-                        SongItem(
-                            song = Song(),
-                            cover = Image(),
-                            modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding),
-                        )
-                    }
+                    DotsCollision()
                 }
             }
 
@@ -211,7 +189,6 @@ fun ArtistScreen(
                                                         ) / 2,
                                                     )
                                                     .noRippleClickable {
-                                                        isPlaying = !isPlaying
                                                         if (isPlaying) {
                                                             viewModel.pause()
                                                         } else {
@@ -219,6 +196,7 @@ fun ArtistScreen(
                                                                 (songsUiState as ArtistSongsUiState.Success).songsList.items,
                                                             )
                                                         }
+                                                        isPlaying = !isPlaying
                                                     },
                                         )
                                     }
@@ -232,7 +210,7 @@ fun ArtistScreen(
                                 SongItem(
                                     song = Song(name = item.title, url = item.url, id = item.id),
                                     cover = item.image,
-                                    modifier = Modifier.padding(start = 10.dp),
+                                    modifier = Modifier.padding(start = 10.dp, top = 5.dp, bottom = 5.dp),
                                 )
                             }
                         }
@@ -327,7 +305,7 @@ fun ArtistSectionDisplay(
                     VerticalCircularWithTitleThumbnail(
                         imageUrl = artist.image.url ?: "",
                         title = artist.title,
-                        description = artist.type,
+                        description = artist.type.replaceFirstChar { it.uppercase() },
                         onClick = { onArtistClick(artist.id) },
                     )
                 } else {

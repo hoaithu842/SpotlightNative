@@ -287,7 +287,7 @@ fun RecommendationDetails(
             modifier = Modifier.padding(vertical = SpotlightDimens.TopAppBarHorizontalPadding * 2),
         ) {
             Image(
-                painter = painterResource(R.drawable.ic_launcher_background),
+                painter = painterResource(R.drawable.person),
                 contentDescription = "",
                 modifier = Modifier.size(SpotlightDimens.HomeScreenDrawerHeaderOptionIconSize),
             )

@@ -19,6 +19,8 @@ fun NavGraphBuilder.searchGraph(
     userProfile: UserProfile?,
     onAvatarClick: () -> Unit,
     onCancelClick: () -> Unit,
+    onArtistClick: (String) -> Unit,
+    onPlaylistClick: (String) -> Unit,
     onNavigateToSearchClick: () -> Unit,
 ) {
     navigation<SearchGraph>(
@@ -30,6 +32,8 @@ fun NavGraphBuilder.searchGraph(
             onNavigateToSearchClick = onNavigateToSearchClick,
         )
         searchResultScreen(
+            onArtistClick = onArtistClick,
+            onPlaylistClick = onPlaylistClick,
             onCancelClick = onCancelClick,
         )
     }
@@ -58,9 +62,15 @@ data object SearchResultRoute
 fun NavController.navigateToSearchResultScreen(navOptions: NavOptions? = null) =
     navigate(route = SearchResultRoute, navOptions = navOptions)
 
-fun NavGraphBuilder.searchResultScreen(onCancelClick: () -> Unit) {
+fun NavGraphBuilder.searchResultScreen(
+    onArtistClick: (String) -> Unit,
+    onPlaylistClick: (String) -> Unit,
+    onCancelClick: () -> Unit,
+) {
     composable<SearchResultRoute> {
         SearchResultScreen(
+            onArtistClick = onArtistClick,
+            onPlaylistClick = onPlaylistClick,
             onCancelClick = onCancelClick,
         )
     }
