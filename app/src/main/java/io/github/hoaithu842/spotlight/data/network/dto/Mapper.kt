@@ -194,18 +194,21 @@ fun SearchResultDto.TopResult.toDomain() =
         id = this.id,
         name = this.name,
         type = this.type,
+        image = this.image.toDomain(),
     )
 
 fun SearchResultDto.Song.toDomain(): SongSearchResult =
     SongSearchResult(
         id = this.id,
         title = this.title,
+        image = this.image.toDomain(),
     )
 
 fun SearchResultDto.Playlist.toDomain(): PlaylistSearchResult =
     PlaylistSearchResult(
         id = this.id,
         name = this.name,
+        image = this.image.toDomain(),
     )
 
 fun SearchResultDto?.toDomain(): SearchResult =

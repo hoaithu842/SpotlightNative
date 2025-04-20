@@ -19,6 +19,8 @@ data class SearchResultDto(
         val name: String?,
         @SerializedName("type")
         val type: String?,
+        @SerializedName("image")
+        val image: ImageDto?,
     )
 
     data class Song(
@@ -26,6 +28,8 @@ data class SearchResultDto(
         val id: String?,
         @SerializedName("title")
         val title: String?,
+        @SerializedName("image")
+        val image: ImageDto?,
     )
 
     data class Playlist(
@@ -33,5 +37,7 @@ data class SearchResultDto(
         val id: String?,
         @SerializedName("name")
         val name: String?,
+        @SerializedName("image")
+        val image: ImageDto?,
     )
 }

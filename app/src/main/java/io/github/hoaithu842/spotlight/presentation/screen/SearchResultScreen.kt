@@ -112,7 +112,7 @@ fun ResultDisplay(
         item {
             if (result.topResult != null) {
                 HorizontalWithTitleThumbnail(
-                    imageUrl = "",
+                    imageUrl = result.topResult.image.url,
                     title = result.topResult.name ?: "",
                     description = result.topResult.type ?: "",
                     onClick = {},
@@ -130,7 +130,7 @@ fun ResultDisplay(
         }
         items(count = result.songs?.size ?: 0) {
             HorizontalWithTitleThumbnail(
-                imageUrl = "",
+                imageUrl = result.songs?.get(it)?.image?.url ?: "",
                 title = result.songs?.get(it)?.title ?: "",
                 description = "Song",
                 onClick = { onSongClick(result.songs?.get(it)) },
@@ -164,7 +164,7 @@ fun ResultDisplay(
         }
         items(count = result.playlists?.size ?: 0) {
             HorizontalWithTitleThumbnail(
-                imageUrl = "",
+                imageUrl = result.playlists?.get(it)?.image?.url ?: "",
                 title = result.playlists?.get(it)?.name ?: "",
                 description = "Playlist",
                 onClick = { onPlaylistClick(result.playlists?.get(it)?.id ?: "") },

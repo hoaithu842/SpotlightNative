@@ -11,14 +11,17 @@ data class TopSearchResult(
     val id: String?,
     val name: String?,
     val type: String?,
+    val image: Image,
 )
 
 data class SongSearchResult(
     val id: String?,
     val title: String?,
+    val image: Image,
 )
 
 data class PlaylistSearchResult(
     val id: String?,
     val name: String?,
+    val image: Image,
 )
